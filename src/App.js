@@ -1,8 +1,9 @@
-import logo from './logo.svg';
+import Login from "./Pages/Login";
 
 function App() {
   return (
     <div className="App">
+    <Login/>
       
     </div>
   );
