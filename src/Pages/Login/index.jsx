@@ -10,22 +10,28 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { SyledLoginFlyingBox, SyledLoginHolder, SyledLoginImgHolder } from "./sstyle";
+import { FormHolderAndHeading, StyledLoginHeading, StyledLogoAndTitle, SyledLoginFlyingBox, SyledLoginHolder, SyledLoginImgHolder } from "./sstyle";
 
 const Login = () => {
   return (
     <SyledLoginHolder>
-      <SyledLoginImgHolder>
-        <img src="/Images/BackLogin.png" alt="BackImg" />
+      <SyledLoginImgHolder
+      
+
+      >
+        {/* <img src="" alt="BackImg" /> */}
 
         <SyledLoginFlyingBox>
           <Typography
+          className="login-title-textlft"
           sx={{
             color:"#fff",
             fontSize:"1.8rem",
 
           }}
-           variant="h5" component={"h4"}>
+           variant="h5" component={"h4"}
+           
+           >
             Academic course file management And collect the data for Semestr
           </Typography>
           <Typography
@@ -40,20 +46,28 @@ const Login = () => {
         </SyledLoginFlyingBox>
       </SyledLoginImgHolder>
 
-      <Box>
-        <Box className="loginHeading">
-          <Box>
+      <FormHolderAndHeading>
+        <StyledLoginHeading className="loginHeading">
+
+          <StyledLogoAndTitle 
+
+          >
             <img src="/Images/logo-o6u 1.png" alt="logo" />
 
             <Typography variant="body2" component={"p"}>
               6 October university
             </Typography>
-          </Box>
+          </StyledLogoAndTitle>
 
-          <Typography variant="body2" component={"p"}>
+          <Typography
+            sx={{
+              color:"#F57F21"
+            }}
+          
+           variant="body2" component={"p"}>
             Welcome Back, Please login to your account
           </Typography>
-        </Box>
+        </StyledLoginHeading>
 
         <form
           style={{
@@ -61,26 +75,46 @@ const Login = () => {
             justifyContent: "center",
             alignItems: "flex-start",
             flexDirection: "column",
-            gap: "1rem",
+            gap: ".5rem",
+            width:"100%"
           }}
           action="#"
         >
-          <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input type="text" />
+          <FormControl
+          fullWidth={true}
+          >
+            <FormLabel
+            htmlFor="email"
+            >Email</FormLabel>
+            <Input
+              id="email"
+              placeholder="Enter Your Email...."
+             type="text" />
           </FormControl>
-          <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input type="text" />
+          <FormControl
+          fullWidth
+          >
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <Input type="text" id="Password" placeholder="Enter The Password...." />
           </FormControl>
-          <FormControl>
-            <FormControlLabel label="Parent" control={<Checkbox />} />
+          <FormControl
+          fullWidth
+          >
+            <FormControlLabel label="Rember me" control={<Checkbox />} />
           </FormControl>
-          <FormControl>
-            <Button type="submit">Submit</Button>
+          <FormControl
+          fullWidth
+          >
+            <Button
+
+            sx={{
+              background:"linear-gradient(45deg, #5DA9E0, #FF5C00)",
+              color:"#fff",
+            }}
+             type="submit">Submit</Button>
           </FormControl>
         </form>
-      </Box>
+      </FormHolderAndHeading>
     </SyledLoginHolder>
   );
 };
