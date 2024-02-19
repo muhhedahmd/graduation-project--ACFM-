@@ -7,10 +7,97 @@ import {
   Input,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { FormHolderAndHeading, StyledLoginHeading, StyledLogoAndTitle, SyledLoginFlyingBox, SyledLoginHolder, SyledLoginImgHolder } from "./sstyle";
 
+import  * as yup from "yup";
 const Login = () => {
+  
+  const [userData, setUserData ] = useState({
+    email:"",
+    password:"",
+    checkBox :false
+
+
+  })
+const [errors , setErrors] = useState({
+  email:"",
+  passwoard:"",
+
+})
+  const HandleChange = (e)=>{
+    // console.log(e.target.checked)
+    const {name , value , checked} = e.target
+    setUserData(prev=>{
+      return {
+        ...prev , 
+        [name]:value
+        ,checkBox:checked
+
+      }
+    })
+
+
+    console.log(userData)
+  }
+  
+    const  schema  = yup.object().shape({
+        email:yup.string().email().required("").required(""),
+        passwoard:yup.string().max(16).min(6).required(""),
+        
+        // passwoard:yup.string().matches(/(^(?=.*[a-zA-Z]+)(?=.*(\d+){3,})(?=.*(\W+){3,})).*$/g).min(6).max(16).min(6).required(""),
+    })
+    
+    
+    
+      const handleSubmit = (e)=>{
+    
+        schema.validate({
+          email:userData.email,
+          passwoard:userData.password,
+        
+      } , 
+      {abortEarly: false}
+      ).then(isValid =>{
+        setErrors({
+          email:"",
+          passwoard:"",
+        
+        })
+            console.log(isValid)
+
+
+         
+      }).catch((validationErrors) => {
+        const errorss = {};
+    
+          validationErrors.inner.forEach((error) => {
+    
+            errorss[error.path] = error.message;
+            console.log()
+            setErrors( prev=>{
+              return{
+                ...prev , 
+                ...errorss
+              }
+            })
+          });
+          console.log(errors)
+        });
+        console.log(errors)
+        // setIsLooding(true)
+        
+        // console.log(errors)
+      
+      return e.preventDefault()
+        
+    
+      }
+    
+
+
+
+
   return (
     <SyledLoginHolder>
       <SyledLoginImgHolder
@@ -69,6 +156,7 @@ const Login = () => {
         </StyledLoginHeading>
 
         <form
+        onSubmit = {(e)=>handleSubmit(e)}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -80,26 +168,37 @@ const Login = () => {
           action="#"
         >
           <FormControl
+            color={`${errors.email === "" ? "primary" : "error"}`}
           fullWidth={true}
           >
             <FormLabel
             htmlFor="email"
             >Email</FormLabel>
             <Input
+            name="email"
+            onChange={(e)=>HandleChange(e)}
               id="email"
               placeholder="Enter Your Email...."
-             type="text" />
+             type="email" />
           </FormControl>
           <FormControl
           fullWidth
+            color={`${errors.passwoard === ""? "primary" : "error"}`}
           >
             <FormLabel htmlFor="password">Password</FormLabel>
-            <Input type="text" id="Password" placeholder="Enter The Password...." />
+            <Input
+             name="password"
+            onChange={(e)=>HandleChange(e)}
+             type="password" id="Password" placeholder="Enter The Password...." />
           </FormControl>
           <FormControl
           fullWidth
+
           >
-            <FormControlLabel label="Rember me" control={<Checkbox />} />
+            <FormControlLabel label="Rember me" control={<Checkbox 
+            
+            name="checkBox" onChange={(e)=>HandleChange(e)} 
+             />} />
           </FormControl>
           <FormControl
           fullWidth
