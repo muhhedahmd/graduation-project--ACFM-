@@ -1,12 +1,10 @@
 import {
-  Box,
   Button,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
   Input,
-  InputLabel,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -19,6 +17,7 @@ const Login = () => {
       
 
       >
+      
         {/* <img src="" alt="BackImg" /> */}
 
         <SyledLoginFlyingBox>
