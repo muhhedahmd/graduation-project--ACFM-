@@ -8,125 +8,117 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { FormHolderAndHeading, StyledLoginHeading, StyledLogoAndTitle, SyledLoginFlyingBox, SyledLoginHolder, SyledLoginImgHolder } from "./sstyle";
+import {
+  FormHolderAndHeading,
+  StyledLoginHeading,
+  StyledLogoAndTitle,
+  SyledLoginFlyingBox,
+  SyledLoginHolder,
+  SyledLoginImgHolder,
+} from "./sstyle";
 
-import  * as yup from "yup";
+import * as yup from "yup";
+import UseAuth from "../../Components/Contexts/Authantication";
 const Login = () => {
-  
-  const [userData, setUserData ] = useState({
-    email:"",
-    password:"",
-    checkBox :false
 
-
-  })
-const [errors , setErrors] = useState({
-  email:"",
-  passwoard:"",
-
-})
-  const HandleChange = (e)=>{
+  const {Login , isAuthenticated} = UseAuth()
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+    checkBox: false,
+  });
+  const [errors, setErrors] = useState({
+    email: "",
+    passwoard: "",
+  });
+  const HandleChange = (e) => {
     // console.log(e.target.checked)
-    const {name , value , checked} = e.target
-    setUserData(prev=>{
+    const { name, value, checked } = e.target;
+    setUserData((prev) => {
       return {
-        ...prev , 
-        [name]:value
-        ,checkBox:checked
+        ...prev,
+        [name]: value,
+        checkBox: checked,
+      };
+    });
 
-      }
-    })
+    console.log(userData);
+  };
 
+  const schema = yup.object().shape({
+    email: yup.string().email().required("").required(""),
+    passwoard: yup.string().max(16).min(6).required(""),
 
-    console.log(userData)
-  }
-  
-    const  schema  = yup.object().shape({
-        email:yup.string().email().required("").required(""),
-        passwoard:yup.string().max(16).min(6).required(""),
-        
-        // passwoard:yup.string().matches(/(^(?=.*[a-zA-Z]+)(?=.*(\d+){3,})(?=.*(\W+){3,})).*$/g).min(6).max(16).min(6).required(""),
-    })
-    
-    
-    
-      const handleSubmit = (e)=>{
-    
-        schema.validate({
-          email:userData.email,
-          passwoard:userData.password,
-        
-      } , 
-      {abortEarly: false}
-      ).then(isValid =>{
+    // passwoard:yup.string().matches(/(^(?=.*[a-zA-Z]+)(?=.*(\d+){3,})(?=.*(\W+){3,})).*$/g).min(6).max(16).min(6).required(""),
+  });
+
+  const handleSubmit = (e) => {
+    schema
+      .validate(
+        {
+          email: userData.email,
+          passwoard: userData.password,
+        },
+        { abortEarly: false }
+      )
+      .then((isValid) => {
         setErrors({
-          email:"",
-          passwoard:"",
-        
-        })
-            console.log(isValid)
-
-
-         
-      }).catch((validationErrors) => {
-        const errorss = {};
-    
-          validationErrors.inner.forEach((error) => {
-    
-            errorss[error.path] = error.message;
-            console.log()
-            setErrors( prev=>{
-              return{
-                ...prev , 
-                ...errorss
-              }
-            })
-          });
-          console.log(errors)
+          email: "",
+          passwoard: "",
         });
-        console.log(errors)
-        // setIsLooding(true)
-        
-        // console.log(errors)
-      
-      return e.preventDefault()
-        
-    
-      }
-    
+        Login()
 
+        // console.log(isValid);
+      })
+      .catch((validationErrors) => {
+        const errorss = {};
 
+        validationErrors.inner.forEach((error) => {
+          errorss[error.path] = error.message;
+          console.log();
+          setErrors((prev) => {
+            return {
+              ...prev,
+              ...errorss,
+            };
+          });
+        });
+        console.log(errors);
+      });
+    console.log(errors);
+    // setIsLooding(true)
 
+    console.log(isAuthenticated)
+
+    return e.preventDefault();
+  };
 
   return (
     <SyledLoginHolder>
-      <SyledLoginImgHolder
-      
-
-      >
-      
+      <SyledLoginImgHolder>
         {/* <img src="" alt="BackImg" /> */}
 
         <SyledLoginFlyingBox>
           <Typography
-          className="login-title-textlft"
-          sx={{
-            color:"#fff",
-            fontSize:"1.8rem",
-
-          }}
-           variant="h5" component={"h4"}
-           
-           >
+            className="login-title-textlft"
+            sx={{
+              color: "#fff",
+              fontSize: "1.8rem",
+            }}
+            variant="h5"
+            component={"h4"}
+          >
             Academic course file management And collect the data for Semestr
           </Typography>
           <Typography
-          sx={{
-            fontSize:"2rem",
-            fontWeight:"bold",
-            color:"#3E334E"
-          }}
-           variant="h5" component={"h4"}>
+            sx={{
+              fontSize: "2rem",
+              fontWeight: "bold",
+              color: "#3E334E",
+            }}
+            variant="h5"
+            component={"h4"}
+          >
             ACFM.
           </Typography>
         </SyledLoginFlyingBox>
@@ -134,10 +126,7 @@ const [errors , setErrors] = useState({
 
       <FormHolderAndHeading>
         <StyledLoginHeading className="loginHeading">
-
-          <StyledLogoAndTitle 
-
-          >
+          <StyledLogoAndTitle>
             <img src="/Images/logo-o6u 1.png" alt="logo" />
 
             <Typography variant="body2" component={"p"}>
@@ -147,69 +136,71 @@ const [errors , setErrors] = useState({
 
           <Typography
             sx={{
-              color:"#F57F21"
+              color: "#F57F21",
             }}
-          
-           variant="body2" component={"p"}>
+            variant="body2"
+            component={"p"}
+          >
             Welcome Back, Please login to your account
           </Typography>
         </StyledLoginHeading>
 
         <form
-        onSubmit = {(e)=>handleSubmit(e)}
+          onSubmit={(e) => handleSubmit(e)}
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-start",
             flexDirection: "column",
             gap: ".5rem",
-            width:"100%"
+            width: "100%",
           }}
           action="#"
         >
           <FormControl
             color={`${errors.email === "" ? "primary" : "error"}`}
-          fullWidth={true}
+            fullWidth={true}
           >
-            <FormLabel
-            htmlFor="email"
-            >Email</FormLabel>
+            <FormLabel htmlFor="email">Email</FormLabel>
             <Input
-            name="email"
-            onChange={(e)=>HandleChange(e)}
+              name="email"
+              onChange={(e) => HandleChange(e)}
               id="email"
               placeholder="Enter Your Email...."
-             type="email" />
+              type="email"
+            />
           </FormControl>
           <FormControl
-          fullWidth
-            color={`${errors.passwoard === ""? "primary" : "error"}`}
+            fullWidth
+            color={`${errors.passwoard === "" ? "primary" : "error"}`}
           >
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input
-             name="password"
-            onChange={(e)=>HandleChange(e)}
-             type="password" id="Password" placeholder="Enter The Password...." />
+              name="password"
+              onChange={(e) => HandleChange(e)}
+              type="password"
+              id="Password"
+              placeholder="Enter The Password...."
+            />
           </FormControl>
-          <FormControl
-          fullWidth
-
-          >
-            <FormControlLabel label="Rember me" control={<Checkbox 
-            
-            name="checkBox" onChange={(e)=>HandleChange(e)} 
-             />} />
+          <FormControl fullWidth>
+            <FormControlLabel
+              label="Rember me"
+              control={
+                <Checkbox name="checkBox" onChange={(e) => HandleChange(e)} />
+              }
+            />
           </FormControl>
-          <FormControl
-          fullWidth
-          >
+          <FormControl fullWidth>
             <Button
-
-            sx={{
-              background:"linear-gradient(45deg, #5DA9E0, #FF5C00)",
-              color:"#fff",
-            }}
-             type="submit">Submit</Button>
+              sx={{
+                background: "linear-gradient(45deg, #5DA9E0, #FF5C00)",
+                color: "#fff",
+              }}
+              type="submit"
+            >
+              Submit
+            </Button>
           </FormControl>
         </form>
       </FormHolderAndHeading>
