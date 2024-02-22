@@ -1,12 +1,11 @@
 import {
-  Autocomplete,
+  
   Box,
   Button,
   List,
   ListItem,
-  TextField,
+  
   Typography,
-  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -15,12 +14,10 @@ import { Close } from "@mui/icons-material";
 import CustomAutocomplete from "./AutoComplete";
 import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
-import { MainDrawerData } from "../Components/Data/Data";
 import MenuCollapse from "./MenuCollapse";
 
 const MainDrawer = () => {
   // const options = ['Option 1', 'Option 2', 'Option 3'];
-  const ismd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const theme = useTheme();
   const [isExpand, setIsExpand] = useState(false);
   const handleClouseDrawer = () => {

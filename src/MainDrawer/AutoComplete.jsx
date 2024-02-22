@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import styled from "styled-components";
-import { Box, Divider, ListItem, Popper, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import {  Divider, ListItem, Typography } from "@mui/material";
 
 const StyledAutocomplete = styled(Autocomplete)`
   .MuiAutocomplete-root {
@@ -150,7 +149,6 @@ export default function CustomAutocomplete({isExpand}) {
         />
       )}
         renderOption={(params , option)=>{
-          console.log(option , params)
           return (
         <ListItem
         disablePadding
@@ -200,7 +198,6 @@ export default function CustomAutocomplete({isExpand}) {
       }}
       onChange={(event, value) => {
         setSelected(value);
-        console.log(value);
       }}
     />
 :""

@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { MainDrawerData } from '../Components/Data/Data'
-import { Box, Button, Collapse, List, ListItem, Typography } from '@mui/material'
-import { useTheme } from '@emotion/react'
+import { Box, Collapse, List, ListItem, Typography } from '@mui/material'
 import {  StyledBtnFlexCenter, StyledCollapse } from './style'
 // import { useTheme } from 'styled-components'
 
 const MenuCollapse = ({isExpand}) => {
 
-    const theme = useTheme()
     const initialState = MainDrawerData.reduce((acc, item) => {
         acc[item.Ttile.split(" ").join("-")] = false;
         return acc;
     }, {});
     const [collapse , setCollapse]= useState({...initialState} )
-    console.log(collapse)
 
 
     useEffect(()=>{
@@ -24,7 +21,6 @@ const MenuCollapse = ({isExpand}) => {
     },[initialState, isExpand])
 
     const HandleClickMenucollapse = (e)=>{
-        console.log(isExpand)
         if(!isExpand){
 
             const {id} = e.target

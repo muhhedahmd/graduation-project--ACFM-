@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Button, List, ListItem } from "@mui/material";
+import { Box, Button, List } from "@mui/material";
 
 
 
@@ -36,38 +36,7 @@ export const StyledMainDrawer = styled(Box)(({theme , isExpand })=>{
 
 })
 
-export const SoloIconDrawer = styled(Box)(({theme , isExpand })=>{
-    return {
-     
-        '.isNotExpandText':{
-            transition:".3s",
-            // transform:`translateX(${!isExpand?"100%":"0"})`,
-            visibility:"hidden",
-            opacity:"0",
-            display:"none",
 
-        },
-        '.isNotExpandIcon':{
-            transition:".3s",
-            // transform:`translateX(${!isExpand?"100%":"0"})`,
-            visibility:"hidden",
-            opacity:"0",
-            display:"none",
-
-        },
-        'p':{
-            transition:".3s",
-
-        }
-    
-    
-    
-    }
-        
-        
-     
-
-})
 export const StyledBtnFlexCenter = styled(Button)(({theme , isExpand })=>{
 
         if(!isExpand){
