@@ -6,6 +6,12 @@ import AppRouter from "./Components/Routes";
 function App() {
   const theme =createTheme({
     palette: {
+      bullet:{
+        "1nd":"#FFFFFF",
+        "2nd":"#02133E",
+        "3nd":"#004BFF",
+
+      },
       primary: {
         main: '#FF5C00', // primary color
       },
@@ -14,7 +20,7 @@ function App() {
       },
       icons:{
         default:"#5B5B5B",
-        
+
       },
       background: {
         default: '#F7F7F7', // default background color
