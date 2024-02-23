@@ -226,7 +226,7 @@ const Header = () => {
       width:"20rem"
     }}
     >
-    <MainDrawer isMD={isSm  }  area='Menudrawer'/>
+    <MainDrawer setMenuDrawer={setMenuDrawer} isMD={isSm  }  area='Menudrawer'/>
 
     </Box>
 

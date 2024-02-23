@@ -6,6 +6,7 @@ import {
   ListItem,
   
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -16,7 +17,9 @@ import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
 
-const MainDrawer = ({isMD , area}) => {
+const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
+  // const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
+
   const theme = useTheme();
   const [isExpand, setIsExpand] = useState(false);
   const handleClouseDrawer = () => {
@@ -61,6 +64,7 @@ const MainDrawer = ({isMD , area}) => {
           >
             ACFM
           </Typography>
+          {!(area === "Menudrawer") ? 
           <Button
             onClick={() => handleClouseDrawer()}
             disableRipple
@@ -73,7 +77,7 @@ const MainDrawer = ({isMD , area}) => {
               cursor: "pointer",
             }}
           >
-            {!isExpand ? (
+            {!isExpand ?(
               <Close
                 sx={{
                   fontWeight: "bold",
@@ -87,8 +91,28 @@ const MainDrawer = ({isMD , area}) => {
                   fontSize: "1.4rem",
                 }}
               />
-            )}
+            )
+            } 
           </Button>
+          :<Button
+          onClick={()=>setMenuDrawer(false)}
+            sx={{
+              width: "fit-content",
+              color: "#ffff",
+              padding: 0,
+              display: "flex",
+              justifyContent: `${isExpand ? "center" : "flex-end"}`,
+              cursor: "pointer",
+            }}
+          >
+  <Close
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.4rem",
+                }}
+              />
+          </Button>
+          }
         </ListItem>
       </List>
 
@@ -136,12 +160,11 @@ const MainDrawer = ({isMD , area}) => {
 
             <CustomAutocomplete
               isExpand={!isExpand}
-              //  className={`${!isExpand ?  "" : "isNotExpand" }`}
             />
           </Box>
         </ListItem>
       </List>
-<MenuCollapse isExpand={isExpand}/>
+<MenuCollapse  isExpand={isExpand}/>
     </StyledMainDrawer>
   );
 };

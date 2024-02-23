@@ -40,12 +40,15 @@ const MenuCollapse = ({isExpand}) => {
   return (
     <List
     disablePadding
-        
+        sx={{
+          width:"100%"
+        }}
     >
     {MainDrawerData.map((item)=>{
       return (
           <ListItem
           sx={{
+            width:"100%",
             display:"flex",
             justifyContent:"flex-start",
             alignItems:"flex-start",
