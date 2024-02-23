@@ -6,7 +6,6 @@ import {
   ListItem,
   
   Typography,
-  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
