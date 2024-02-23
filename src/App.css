@@ -38,7 +38,8 @@
 }
 
 .isNotExpandText{
+  transition: .3s;
   visibility: hidden;
-  opacity: 0;
+  /* opacity: 0; */
   display: none;
 }

@@ -1,10 +1,19 @@
-import { AppBar, Box, CssBaseline, List, ListItem, ListItemIcon, Toolbar, Typography, useTheme } from '@mui/material'
-import React from 'react'
+import { AppBar, Box, Button, CssBaseline, Drawer, List, ListItem, ListItemIcon, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material'
+import React, { useState } from 'react'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import SegmentIcon from "@mui/icons-material/Segment";
+import { StyledListItemCenter } from './style';
+import MainDrawer from '../../MainDrawer';
 
 const Header = () => {
   const theme = useTheme()
-  console.log()
+  console.log(theme)
+  const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
+  const [MenuDrawer , setMenuDrawer] = useState(false)
+  const HandleDrawer =()=>{
+    setMenuDrawer((prev)=>!prev)
+  }
+
   return (
     <>
 <CssBaseline/>
@@ -16,6 +25,7 @@ const Header = () => {
         background:theme.palette.background.paper
       }}
        >
+
         <Toolbar >
       <List
       disablePadding
@@ -28,6 +38,12 @@ const Header = () => {
             gap:"1rem"
           }}
       >
+
+
+      {!isSm  ?
+      
+      <>
+
       <ListItem>
         <ListItemIcon>
           <img style={{
@@ -107,7 +123,90 @@ const Header = () => {
           </ListItem>
         </List>
       </ListItem>
+      </>
 
+          :  <>
+
+          <StyledListItemCenter
+          gap={0}
+          
+          
+          >
+          <Button
+          sx={{
+            padding:"0"
+          }}
+          onClick={()=>HandleDrawer()}
+          >
+
+             <SegmentIcon
+                sx={{
+                  color:theme.palette.primary.main,
+                  fontWeight: "bold",
+                  fontSize: "1.4rem",
+                }}
+              />
+          </Button>
+
+        <ListItemIcon>
+          <img style={{
+            maxWidth:"2.2rem"
+          }} src="Images/logo-o6u 1.png" alt="" />
+        </ListItemIcon>
+
+     
+      </StyledListItemCenter>
+
+      
+      <ListItem
+       sx={{
+              width:"fit-content",}}
+      >
+        <List
+        disablePadding
+            sx={{
+              width:"fit-content",
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            gap:"1rem"
+          }}
+        >
+          <ListItem
+          
+          sx={{
+            width:"fit-content",
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            gap:"1rem",
+            color:theme.palette.icons.default,
+    
+          }}
+          >
+      <Box
+      sx={{
+        display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+      }}
+      >
+      <AccountCircleOutlinedIcon sx={{
+        fontSize:"1.2rem"
+      }}/>
+      </Box>
+          <Typography variant='body2' component={"p"}>
+           Dr:Name
+          </Typography>
+          </ListItem>
+  
+        </List>
+      </ListItem>
+
+
+          </>
+
+    }
 
       </List>
       
@@ -115,6 +214,24 @@ const Header = () => {
 
         </Toolbar>
     </AppBar>
+    <Drawer
+    onClose={()=>setMenuDrawer(false)}
+    open={MenuDrawer}
+    anchor='left'
+    aria-expanded={MenuDrawer ? 'true' : 'false'}
+    aria-describedby='Menudrawer'
+    >
+    <Box
+    sx={{
+      width:"20rem"
+    }}
+    >
+    <MainDrawer isMD={isSm  }  area='Menudrawer'/>
+
+    </Box>
+
+
+    </Drawer>
 
     </>
 

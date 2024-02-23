@@ -3,7 +3,20 @@ import { Box, Button, List } from "@mui/material";
 
 
 
-export const StyledMainDrawer = styled(Box)(({theme , isExpand })=>{
+export const StyledMainDrawer = styled(Box)(({theme , isExpand  , isMD , area})=>{
+    if(isMD || area === 'Menudrawer'){
+        return {
+
+            overflow: "hidden",
+            padding: "1rem",
+            width: "100%",
+            height: "100vh",
+            borderRadius:"0",
+            margin:"0",
+            backgroundColor: "#FF5C00",
+        }
+    }
+ 
     return {
      
         '.isNotExpandText':{

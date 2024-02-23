@@ -16,8 +16,7 @@ import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
 
-const MainDrawer = () => {
-  // const options = ['Option 1', 'Option 2', 'Option 3'];
+const MainDrawer = ({isMD , area}) => {
   const theme = useTheme();
   const [isExpand, setIsExpand] = useState(false);
   const handleClouseDrawer = () => {
@@ -25,8 +24,12 @@ const MainDrawer = () => {
   };
   return (
     <StyledMainDrawer
+      isMD={isMD}
+      area={area}
       isExpand={isExpand}
       sx={{
+
+
         overflow:"hidden",
         transition: ".4s",
         padding: "1rem",

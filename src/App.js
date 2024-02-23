@@ -1,6 +1,7 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 import { AuthProvider } from "./Components/Contexts/Authantication";
 import AppRouter from "./Components/Routes";
+import { grey } from "@mui/material/colors";
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         "1nd":"#FFFFFF",
         "2nd":"#02133E",
         "3nd":"#004BFF",
+        "4nd":grey[900],
 
       },
       primary: {
@@ -32,7 +34,6 @@ function App() {
     <div className="App">
     <ThemeProvider theme={theme}>
 <AuthProvider>
-  
     <AppRouter/>
 </AuthProvider>
     </ThemeProvider>
