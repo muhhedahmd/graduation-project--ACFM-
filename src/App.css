@@ -2,10 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -90,3 +86,21 @@
   }
 }
 
+
+.css-1ddfved-MuiInputBase-root-MuiInput-root::after{
+  border-bottom: 2px solid #ff5c00 !important;
+}
+.css-1ddfved-MuiInputBase-root-MuiInput-root::before{
+  border-bottom: 1px solid  #9999 !important;
+}
+.css-l0dd6t-MuiAutocomplete-root .MuiInput-root .MuiInput-input{
+  color: #444 !important;
+}
+.css-fg1hdf-MuiTableCell-root.MuiTableCell-head {
+  background-color: #fff !important;
+  color: #313131 !important;
+}
+.css-15wf72z-MuiTableCell-root.MuiTableCell-head {
+  background-color: #fff !important;
+  color: #313131 !important;
+}
