@@ -1,10 +1,9 @@
-import { AppBar, Box, Button, CssBaseline, Drawer, FormControl, Input, List, ListItem, ListItemIcon, TextField, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { AppBar, Box, Button, CssBaseline, Drawer, FormControl, List, ListItem, ListItemIcon, TextField, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SegmentIcon from "@mui/icons-material/Segment";
 import { StyledListItemCenter } from './style';
 import MainDrawer from '../../MainDrawer';
-import { pink } from '@mui/material/colors';
 
 const Header = () => {
   const theme = useTheme()

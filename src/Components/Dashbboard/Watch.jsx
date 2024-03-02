@@ -3,7 +3,6 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
-import { useTheme } from '@emotion/react';
 
 const data = [
   { value: 10, label: 'A' },
@@ -37,7 +36,7 @@ function PieCenterLabel({ children }) {
 }
 
 export default function Watch() {
-  const theme = useTheme();
+
   return (
     <Box
     sx={{
