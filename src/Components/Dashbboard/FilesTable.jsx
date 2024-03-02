@@ -1,10 +1,8 @@
 import {
   Box,
-  Collapse,
-
 } from "@mui/material";
 
-import React, { useState } from "react";
+import React, {  } from "react";
 import { useTheme } from "@emotion/react";
 
 
@@ -70,7 +68,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
   const collapseRef = useRef()
 
-    const [collapse , setcollapse]  = useState({})
   return (
     <TableContainer 
     sx={{
@@ -114,16 +111,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
             id={row.id}
             onClick={()=>{
               console.log(collapseRef.current.id)
-            setcollapse((prev)=>
-            {
-              return{
-                ...prev , 
-                [row.id] :row.id === collapseRef.current.id 
-
-              }
-              
-              
-              })
+          
           }}
 
              key={row.id}>
@@ -155,7 +143,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         
             </StyledTableRow>
             
-            <Collapse
+            {/* <Collapse
             id={row.id}
             ref={collapseRef}
             
@@ -168,7 +156,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
                </StyledTableCell>
               
             </StyledTableRow>
-            </Collapse>
+            </Collapse> */}
             </>
             )
 
