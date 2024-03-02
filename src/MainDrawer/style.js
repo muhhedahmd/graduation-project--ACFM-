@@ -6,6 +6,8 @@ import { Box, Button, List } from "@mui/material";
 export const StyledMainDrawer = styled(Box)(({theme , isExpand  , isMD , area})=>{
     if(isMD || area === 'Menudrawer'){
         return {
+            position:'relative',
+            zIndex:10,
 
             overflow: "hidden",
             padding: "1rem",
@@ -13,37 +15,33 @@ export const StyledMainDrawer = styled(Box)(({theme , isExpand  , isMD , area})=
             height: "100vh",
             borderRadius:"0",
             margin:"0",
-            backgroundColor: "#FF5C00",
+            backgroundColor: theme.palette.primary.main,
+
         }
+    }
+    else{
+
+        
+
+        return{
+            zIndex:"1000",
+            top:"-7vh",
+            borderRight: "3px solid #ff5c00",
+            position:'relative',
+            // zIndex:10,
+
+            overflow:"hidden",
+            transition: ".4s",
+            padding: "1rem",
+            width: `${!isExpand ? "17rem" : "9rem"}`,
+            
+            height: "100vh",
+            backgroundColor: theme.palette.primary.main,
+        }
+
     }
  
-    return {
-     
-        '.isNotExpandText':{
-            transition:".3s",
-            // transform:`translateX(${!isExpand?"100%":"0"})`,
-            visibility:"hidden",
-            opacity:"0",
-            display:"none",
-
-        },
-        '.isNotExpandIcon':{
-            transition:".3s",
-            // transform:`translateX(${!isExpand?"100%":"0"})`,
-            visibility:"hidden",
-            opacity:"0",
-            display:"none",
-
-        },
-        'p':{
-            transition:".3s",
-
-        }
-    
-    
-    
-    }
-        
+   
         
      
 
@@ -70,7 +68,7 @@ export const StyledBtnFlexCenter = styled(Button)(({theme , isExpand })=>{
         }
         else {
             return{
-                transitionDelay:".2s",
+                // transitionDelay:".2s",
                 padding:"0",
                 margin:".8rem 0  ",
 
@@ -93,25 +91,26 @@ export const StyledCollapse = styled(List)(({theme , isExpand })=>{
         justifyContent: "flex-start",
         alignItems: "flex-start",
         flexDirection: "column",
-        width: "11rem",
+        width: "100%",
         borderRadius: "10px",
-        backgroundColor:theme.palette.secondary.main,
-
+        backgroundColor:theme.palette.background.default,
+      
         '&:before':{
             content:'""',
             position:"absolute",
             top:"0"
             ,left:"0px",
             height:"calc( 100% - 0px)",
-            width:".5rem",
+            width:".3rem",
             borderRadius:"10px 0 0 10px",
-            background: "linear-gradient(45deg, #fff0e6, #ff5c00)",
+            background: "linear-gradient(45deg, #444556 , #ffff)",
 
         },
 
 
         'li':{
-
+           
+            height: "100%",
             padding:".2rem  0 0 1rem"
         }
 

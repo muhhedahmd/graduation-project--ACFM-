@@ -31,12 +31,12 @@ const StyledAutocomplete = styled(Autocomplete)`
   }
   .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-1h51icj-MuiAutocomplete-root
     .MuiAutocomplete-inputRoot {
-    background-color: #c84800;
+    /* background-color: #c84800; */
   }
 
   .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-1h51icj-MuiAutocomplete-root
     .MuiAutocomplete-inputRoot {
-    background: #c84800;
+    /* background: #c84800; */
     padding: 0 0.3rem;
   }
 
@@ -59,8 +59,10 @@ const StyledAutocomplete = styled(Autocomplete)`
     letter-spacing: 1px;
   }
   .css-2bwei5-MuiFormControl-root-MuiTextField-root {
-    background: #c84800;
+    color: #0e0e0e9e
+    /* background: #c84800; */
   }
+
   .css-1hl2jvf-MuiInputBase-root-MuiInput-root::before {
     border: none;
   }
@@ -76,11 +78,11 @@ const StyledAutocomplete = styled(Autocomplete)`
     border-radius: 5px;
   }
   .css-7iolvi-MuiAutocomplete-listbox .MuiAutocomplete-option {
-    background-color:"#c84800";
+    /* background-color:"#c84800"; */
     font-size:".8rem";
     color:#fff;
     &[aria-selected='true']:not([disabled]){
-      background-color:"#ff5722";
+      /* background-color:"#ff5722"; */
     }
     
   }
@@ -113,16 +115,16 @@ export default function CustomAutocomplete({isExpand}) {
         
         },
         ' .MuiAutocomplete-popper':{
-          backgroundColor:"#c84800"
+          // backgroundColor:"#c84800"
         },
         '.MuiAutocomplete-paper':{
-          backgroundColor:"#c84800"
+          // backgroundColor:"#c84800"
         },
         '.MuiAutocomplete-popper > *':{
-          backgroundColor:"#c84800"
+          // backgroundColor:"#c84800"
         },
         '.MuiAutocomplete-option':{
-          backgroundColor:"#c84800"
+          // backgroundColor:"#c84800"
 
         }
         

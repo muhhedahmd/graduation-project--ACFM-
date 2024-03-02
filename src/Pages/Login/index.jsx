@@ -21,7 +21,7 @@ import * as yup from "yup";
 import UseAuth from "../../Components/Contexts/Authantication";
 const Login = () => {
 
-  const {Login , isAuthenticated} = UseAuth()
+  const {Login } = UseAuth()
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -68,6 +68,8 @@ const Login = () => {
         });
         Login()
 
+ 
+
         // console.log(isValid);
       })
       .catch((validationErrors) => {
@@ -75,7 +77,6 @@ const Login = () => {
 
         validationErrors.inner.forEach((error) => {
           errorss[error.path] = error.message;
-          console.log();
           setErrors((prev) => {
             return {
               ...prev,
@@ -83,12 +84,8 @@ const Login = () => {
             };
           });
         });
-        console.log(errors);
       });
-    console.log(errors);
-    // setIsLooding(true)
 
-    console.log(isAuthenticated)
 
     return e.preventDefault();
   };
@@ -96,7 +93,7 @@ const Login = () => {
   return (
     <SyledLoginHolder>
       <SyledLoginImgHolder>
-        {/* <img src="" alt="BackImg" /> */}
+
 
         <SyledLoginFlyingBox>
           <Typography

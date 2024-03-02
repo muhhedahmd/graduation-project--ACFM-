@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { MainDrawerData } from '../Components/Data/Data'
-import { Box, Collapse, List, ListItem, Typography } from '@mui/material'
+import { Box, Collapse, List, ListItem, SvgIcon, Typography } from '@mui/material'
 import {  StyledBtnFlexCenter, StyledCollapse } from './style'
+import { useTheme } from '@emotion/react'
 // import { useTheme } from 'styled-components'
 
 const MenuCollapse = ({isExpand}) => {
-
+  const theme = useTheme()
     const initialState = MainDrawerData.reduce((acc, item) => {
         acc[item.Ttile.split(" ").join("-")] = false;
         return acc;
@@ -44,9 +45,10 @@ const MenuCollapse = ({isExpand}) => {
           width:"100%"
         }}
     >
-    {MainDrawerData.map((item)=>{
+    {MainDrawerData.map((item , i )=>{
       return (
           <ListItem
+          key={i}
           sx={{
             width:"100%",
             display:"flex",
@@ -71,15 +73,24 @@ const MenuCollapse = ({isExpand}) => {
           
           onClick={(e)=>HandleClickMenucollapse(e)}
           >
+       <SvgIcon
+       sx={{
+        width:"1.3rem",
+        fill: theme.palette.text.primary,
+       }}
+       >
 
-          <img 
-          id={item.Ttile.split(" ").join("-")}
-          
-          src={item.iconPath} alt={item.Ttile+"img"} />
+      {item.iconPath}
+       </SvgIcon>
+
           <Typography
+
         className={`${!isExpand ? "" : "isNotExpandText"}`}
 
           sx={{
+            color: theme.palette.text.primary,
+
+              fontWeight:"600",
             width:"max-content"
           }}
           id={item.Ttile.split(" ").join("-")}
@@ -91,6 +102,9 @@ const MenuCollapse = ({isExpand}) => {
           </StyledBtnFlexCenter>
           </Box>
               <Collapse
+              sx={{
+                width:"100%"
+              }}
               in={collapse[item.Ttile.split(" ").join("-")]}
               id={item.Ttile.split(" ").join("-")}
               >
@@ -99,7 +113,12 @@ const MenuCollapse = ({isExpand}) => {
                 >
                 {item.nested.map((item)=>{
                     return (
+
                         <ListItem
+                        
+                        sx={{
+                          width:"100%"
+                        }}
                         disablePadding
                         key={item}
                         >
@@ -107,7 +126,7 @@ const MenuCollapse = ({isExpand}) => {
                         <Typography
 
                         sx={{
-                            color:"#fff"
+                            color: theme.palette.text.primary
                         }}
                          variant='caption' component={"p"}>
                             {item}

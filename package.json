@@ -10,6 +10,8 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
     "@mui/styled-engine-sc": "^5.14.10",
+    "@mui/x-charts": "^6.19.5",
+    "@react-pdf/renderer": "^3.3.8",
     "@tensorflow-models/body-pix": "^2.2.1",
     "@tensorflow/tfjs": "^4.14.0",
     "@testing-library/jest-dom": "^5.17.0",

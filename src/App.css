@@ -40,6 +40,53 @@
 .isNotExpandText{
   transition: .3s;
   visibility: hidden;
-  /* opacity: 0; */
   display: none;
 }
+::-webkit-scrollbar {
+  width: 12px; /* width of the scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* color of the handle on hover */
+}
+
+/* Specify the corners of the scrollbar */
+::-webkit-scrollbar-corner {
+  background: transparent; /* color of the scrollbar corners */
+}
+
+
+
+@media (max-width:762px) {
+  html{
+    font-size: .9rem;
+  }
+}
+
+.dropped {
+  animation: pulse 1s linear;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+

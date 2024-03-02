@@ -20,7 +20,7 @@ export default function AppRouter(){
             
         ]
     },
-    { path: "*", element: <h2>Page not found</h2> }
+    // { path: "*", element: <h2>Page not found</h2> }
 ]);
 
 

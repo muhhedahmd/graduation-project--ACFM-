@@ -5,8 +5,9 @@ import {
   List,
   ListItem,
   
+  SvgIcon,
+  
   Typography,
-  useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import Bullets from "./Bullets";
@@ -15,11 +16,11 @@ import CustomAutocomplete from "./AutoComplete";
 import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
+import { useTheme } from "@emotion/react";
 
 const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
   // const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
-
-  const theme = useTheme();
+  const theme = useTheme()
   const [isExpand, setIsExpand] = useState(false);
   const handleClouseDrawer = () => {
     setIsExpand((prev) => !prev);
@@ -29,47 +30,62 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
       isMD={isMD}
       area={area}
       isExpand={isExpand}
-      sx={{
-
-
-        overflow:"hidden",
-        transition: ".4s",
-        padding: "1rem",
-        width: `${!isExpand ? "14rem" : "8rem"}`,
-
-        height: " 86vh",
-        borderRadius: "27px",
-        margin: ".7rem 0 0 1.4rem",
-        backgroundColor: theme.palette.primary.main,
-      }}
+      
     >
       <Bullets />
       <List>
         <ListItem
           disablePadding
           sx={{
-            color: "#fff",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
+
+<Box
+sx={{
+
+  display:"flex",
+  justifyContent:"flex-start",
+  alignItems:"center",
+  gap:".6rem"
+}}>
+<img style={{
+            maxWidth:"2.2rem"
+          }} src="Images/logo-o6u 1.png" alt="" />
+         
+          
           <Typography
             sx={{
+              visibility:`${!isExpand ? "visible" : "hidden"}`,
+              opacity:`${!isExpand ? "1" : "0"}`,
+              fontSize:`${!isExpand ? "1.25rem" : "0rem"}`,
+              cursor:"none",
+              zIndex:"-1",
+
+              transition:".3s opacity",
+              color: theme.palette.text.heading,
+
               fontWeight: "700",
             }}
             variant="h6"
             component={"p"}
           >
+          
+          
             ACFM
           </Typography>
+          </Box>
+
           {!(area === "Menudrawer") ? 
           <Button
             onClick={() => handleClouseDrawer()}
             disableRipple
             sx={{
               width: "fit-content",
-              color: "#ffff",
+              color: theme.palette.primary.main,
+
               padding: 0,
               display: "flex",
               justifyContent: `${isExpand ? "center" : "flex-end"}`,
@@ -77,15 +93,37 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
             }}
           >
             {!isExpand ?(
+              <SvgIcon 
+              
+              color={theme.palette.bullet["1nd"]}
+              sx={{
+              // color: theme.palette.primary.main + "!important",
+              color:theme.palette.bullet["1nd"],
+                  fontWeight: "bold",
+                  fontSize: "1.4rem",
+                }}
+
+              >
+
               <Close
+
                 sx={{
+                  color:theme.palette.bullet["1nd"],
+
+              // color: theme.palette.primary.main + "!important",
+                  
                   fontWeight: "bold",
                   fontSize: "1.4rem",
                 }}
               />
+              </SvgIcon>
             ) : (
               <SegmentIcon
+
                 sx={{
+                  color:theme.palette.bullet["1nd"],
+
+
                   fontWeight: "bold",
                   fontSize: "1.4rem",
                 }}
@@ -97,7 +135,8 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
           onClick={()=>setMenuDrawer(false)}
             sx={{
               width: "fit-content",
-              color: "#ffff",
+              fill: theme.palette.text.heading,
+
               padding: 0,
               display: "flex",
               justifyContent: `${isExpand ? "center" : "flex-end"}`,
@@ -106,6 +145,8 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
           >
   <Close
                 sx={{
+              fill: theme.palette.text.heading,
+                  
                   fontWeight: "bold",
                   fontSize: "1.4rem",
                 }}
@@ -133,6 +174,8 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
             <Box
               sx={{
                 transition:".4s",
+              color: theme.palette.text.heading,
+
 
                 
                 display: "flex",
@@ -144,6 +187,9 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
             >
               <img
               style={{
+                filter: "invert(.6)",
+              // fill: theme.palette.text.heading,
+
                 transition:".4s"
               }}
                src="images/main course.png" alt="" />
@@ -158,6 +204,7 @@ const MainDrawer = ({isMD , area ,setMenuDrawer}) => {
             </Box>
 
             <CustomAutocomplete
+            
               isExpand={!isExpand}
             />
           </Box>
