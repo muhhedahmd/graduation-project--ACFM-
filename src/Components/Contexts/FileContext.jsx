@@ -22,7 +22,7 @@ const reducer = (state, action) => {
 
             return {
                 ...state,
-                uploadedFiles: [...state.uploadedFiles, {file:action.payload.file  , id:action.payload.id , url:url}]
+                uploadedFiles: [...state.uploadedFiles, {file:action.payload.file  , id:action.payload.id , url:url , Description:action.payload.Description }]
             };
         default:
             return state;
@@ -32,10 +32,10 @@ const reducer = (state, action) => {
 export const FileContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
 
-    const uploadFile = (file ,id) => {
+    const uploadFile = (file ,id , Description) => {
         dispatch({
             type: FILE_OPERATION.UPLOAD_FILE,
-            payload: { file:file  , id:id}
+            payload: { file:file  , id:id , Description:Description}
         });
     };
 

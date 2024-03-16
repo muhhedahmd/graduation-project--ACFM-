@@ -12,10 +12,10 @@ const data = [
 const size = {
 
   
-  width: "420",
+  width: 420,
    
 
-  height: "300",
+  height: 300,
 
 };
 

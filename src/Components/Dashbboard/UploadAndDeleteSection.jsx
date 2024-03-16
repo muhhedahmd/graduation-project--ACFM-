@@ -2,21 +2,45 @@ import { useTheme } from "@emotion/react";
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import UploadSection from "./UploadSection";
+import styled from "@emotion/styled";
 
 
+const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
+  
+    if(Drawer){
+      return {
+        flexDirection: "column",
+        padding: "2rem 1rem",
+        display: "flex",
+        justifyContent: "flexstart",
+        alignItems: "center",
+        textAlign:"center"
+        
+      }
+    }
+      else{
+        return{
 
-const UploadAndDeleteSection = () => {
+          flexDirection: "column",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          height: "100%",
+          width: "100%",
+        }
+      }
+    
+
+  }
+)
+
+
+const UploadAndDeleteSection = ({Drawer}) => {
   const theme = useTheme();
   return (
-    <Box
-      sx={{
-        flexDirection: "column",
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        height: "100%",
-        width: "100%",
-      }}
+    <StyledUploadAndOptionsSectionDrawer
+    Drawer={Drawer}
+    
     >
       <UploadSection/>
 
@@ -73,7 +97,7 @@ const UploadAndDeleteSection = () => {
 
       
    
-    </Box>
+    </StyledUploadAndOptionsSectionDrawer>
   );
 };
 

@@ -88,13 +88,12 @@ const StyledAutocomplete = styled(Autocomplete)`
   }
 `;
 
-const options = ["Option 1", "Option 2", "Option 3"];
 
-export default function CustomAutocomplete({isExpand}) {
+export default function CustomAutocomplete({ options, isexpand}) {
   const [selected, setSelected] = useState(options[0]);
   return (
 <>
-{isExpand? 
+{isexpand? 
     <StyledAutocomplete
       filterSelectedOptions
       value={selected}

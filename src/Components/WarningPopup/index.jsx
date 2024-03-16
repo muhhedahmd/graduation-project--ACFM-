@@ -7,8 +7,8 @@ const slideInAnimation = (isVisible, bottom) => {
   return `
     @keyframes slideIn {
       0% { bottom: ${isVisible ? bottom : '-15rem'}; opacity: ${isVisible ? 1 : 0}; }
-      99%{ bottom: ${isVisible ? '-6rem' : '-15rem'}; opacity: ${isVisible ? 0 : 1}; }
-      100% { bottom: ${isVisible ? bottom : '-15rem'}; opacity: ${isVisible ? 1 : 0}; }
+    100%{ bottom: ${isVisible ? '-6rem' : '-15rem'}; opacity: ${isVisible ? 0 : 1}; }
+
     }
   `;
 };

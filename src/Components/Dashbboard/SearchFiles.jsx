@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react'
-import { Box, Button, Drawer, FormControl, Input, useMediaQuery } from '@mui/material'
+import { Box, Button, Drawer, FormControl, Input, Typography, useMediaQuery } from '@mui/material'
 import React, { useState } from 'react'
 import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -29,7 +29,7 @@ const [open , setOpen] = useState(false)
 
       padding: ".5rem .5rem .5rem .7rem",
 width: "100%",
-margin: "0 .5rem .5rem  0px",
+margin: "0 0 .5rem  0px",
 boxShadow: "rgb(222, 222, 222) 3px 3px 4px",
 height: "12%",
 borderRadius: "9px",
@@ -107,7 +107,27 @@ height:"100%"
 
   
   >
-  <UploadAndDeleteSection/>
+  <Box 
+  
+  sx={{
+    display:"flex",
+    flexDirection:"column",
+    alignItems:"flex-start"
+    ,justifyContent:"flex-start",
+    gap:"1rem",
+    margin:"1rem 0 0 .5rem ",
+    padding:"0rem"
+  }}
+  >
+
+  <Typography
+   variant='h5' component={"p"}>
+  Upload And Options
+  </Typography>
+
+  <UploadAndDeleteSection Drawer={true}/>
+
+  </Box>
 
   </Drawer>
 

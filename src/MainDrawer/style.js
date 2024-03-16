@@ -3,7 +3,7 @@ import { Box, Button, List } from "@mui/material";
 
 
 
-export const StyledMainDrawer = styled(Box)(({theme , isExpand  , isMD , area})=>{
+export const StyledMainDrawer = styled(Box)(({theme , isexpand  , isMD , area})=>{
     if(isMD || area === 'Menudrawer'){
         return {
             position:'relative',
@@ -33,7 +33,7 @@ export const StyledMainDrawer = styled(Box)(({theme , isExpand  , isMD , area})=
             overflow:"hidden",
             transition: ".4s",
             padding: "1rem",
-            width: `${!isExpand ? "17rem" : "9rem"}`,
+            width: `${!isexpand ? "17rem" : "9rem"}`,
             
             height: "100vh",
             backgroundColor: theme.palette.primary.main,
@@ -48,9 +48,9 @@ export const StyledMainDrawer = styled(Box)(({theme , isExpand  , isMD , area})=
 })
 
 
-export const StyledBtnFlexCenter = styled(Button)(({theme , isExpand })=>{
+export const StyledBtnFlexCenter = styled(Button)(({theme , isexpand })=>{
 
-        if(!isExpand){
+        if(!isexpand){
             return{
                 transition:".5s",
                 transitionDelay:".2s",
@@ -84,7 +84,7 @@ export const StyledBtnFlexCenter = styled(Button)(({theme , isExpand })=>{
      
 
 })
-export const StyledCollapse = styled(List)(({theme , isExpand })=>{
+export const StyledCollapse = styled(List)(({theme , isexpand })=>{
 
       return {position:"relative",
         display: "flex",

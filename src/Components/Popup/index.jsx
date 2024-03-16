@@ -7,65 +7,69 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFile } from "../Contexts/FileContext";
 
-const Popup = ({ Name  , active , setActivePopup   , file , fileNameObj}) => {
-  const {uploadFile} = useFile()
-  
+const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
+  const { uploadFile } = useFile();
 
-    const HandleSubmit = (e)=>{
-      
-        if(Data[Name.split(" ").join("")])
-        {
+  const [Data, SetData] = useState({
+    FileName: fileNameObj, // Set file name properly
+    Description: "",
+  });
 
-          uploadFile(file  , Math.round(Math.random()* file?.size))
-          setActivePopup(false)  
-        }
-
-      e.preventDefault()
-    }
-    const [Data, SetData] = useState({
-      FileName:fileNameObj, // Set file name properly
-      Description: ""
+  useEffect(() => {
+    SetData({
+      [Name.split(" ").join("")]: fileNameObj,
+      Description: "",
     });
+  }, [Name, fileNameObj]);
 
-    // useEffect(()=>{
-    //   SetData({
-    //     [Name.split(" ").join("")]:fileNameObj, 
-    //     Description: ""
-    //   })
-    // },[Name, fileNameObj])
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    SetData((prev) => {
+      return {
+        ...prev,
+        [id]: value,
+      };
+    });
+    console.log(Data);
+  };
 
-    const handleChange = (e) => {
-      const { id, value } = e.target;
-      SetData((prev) => {
-        return {
-          ...prev,
-          [id]: value, // Check if the id is for the file name field
-        };
-      });
-    };
+  const Handleclose = () => {
+    setActivePopup((prev) => false);
+    SetData({
+      [Name.split(" ").join("")]: fileNameObj,
+      Description: "",
+    });
+  };
 
-    const Handleclose = ()=>{
-      setActivePopup(prev=>false)
-     SetData({
-        [Name.split(" ").join("")] : fileNameObj,
-        Description:""
-      }
-      )
+  const HandleSubmit = (e) => {
+    if (Data[Name.split(" ").join("")]) {
+      const myNewFile = new File([file], Data.FileName, { type: file.type });
+
+      // const formData = new FormData()
+      // formData.append('file',myNewFile);
+      // formData.append("Description" , Data?.Description)
+
+      uploadFile(
+        myNewFile,
+        Math.round(Math.random() * file?.size),
+        Data.Description
+      );
+      console.log(Data?.Description);
+      setActivePopup(false);
     }
 
+    e.preventDefault();
+  };
   return (
     <Box
-
       className="popup"
       sx={{
-     
-
-        visibility:`${active ?  "visible" : "hidden"}`,
-        opacity:`${active ?  "1" : "0"}`,
-        zIndex:`${active ?  "9999" : "-100"}`,
+        visibility: `${active ? "visible" : "hidden"}`,
+        opacity: `${active ? "1" : "0"}`,
+        zIndex: `${active ? "9999" : "-100"}`,
         height: "100vh",
         width: "100vw",
         backdropFilter: "brightness(.9) blur(2px)",
@@ -105,25 +109,22 @@ const Popup = ({ Name  , active , setActivePopup   , file , fileNameObj}) => {
           },
         }}
       >
-      <Box
-      sx={{
-        display:"flex",
-        justifyContent:"space-between",
-        alignItems:"center",
-        width:"100%"
-      }}
-      >
-
-        <Typography variant="h5" component={"p"}>
-          File Info
-        </Typography>
-            <Close 
-            onClick={()=>Handleclose() }
-            fontSize="medium"/>
-      </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Typography variant="h5" component={"p"}>
+            File Info
+          </Typography>
+          <Close onClick={() => Handleclose()} fontSize="medium" />
+        </Box>
 
         <form
-        onSubmit={(e)=>HandleSubmit(e)}
+          onSubmit={(e) => HandleSubmit(e)}
           style={{
             display: "flex",
             justifyContent: "flex-start",
@@ -159,17 +160,17 @@ const Popup = ({ Name  , active , setActivePopup   , file , fileNameObj}) => {
             </FormLabel>
 
             <TextField
-    onChange={(e) => handleChange(e)}
-    fullWidth
-    variant="standard"
-    placeholder="File Name"
-    required
-    id={Name.split(" ").join("")}
-    value={Data[Name.split(" ").join("")] /* Corrected here */}
-    style={{
-        width: "100%"
-    }}
-/>
+              onChange={(e) => handleChange(e)}
+              fullWidth
+              variant="standard"
+              placeholder="File Name"
+              required
+              id={Name.split(" ").join("")}
+              value={Data[Name.split(" ").join("")] /* Corrected here */}
+              style={{
+                width: "100%",
+              }}
+            />
           </FormControl>
           <FormControl
             fullWidth
@@ -195,17 +196,17 @@ const Popup = ({ Name  , active , setActivePopup   , file , fileNameObj}) => {
             >
               {"Description"}
             </FormLabel>
-        <TextField
-        multiline
-                label="Description"
-                variant="standard"
-                style={{
-                  width: "100%",
-                }}
-                placeholder="Description"
-                id={"Description"}
-              />
-
+            <TextField
+            onChange={(e)=>handleChange(e)}
+              multiline
+              label="Description"
+              variant="standard"
+              style={{
+                width: "100%",
+              }}
+              placeholder="Description...."
+              id={"Description"}
+            />
           </FormControl>
 
           <Box
@@ -217,9 +218,9 @@ const Popup = ({ Name  , active , setActivePopup   , file , fileNameObj}) => {
             }}
           >
             <Button
-            type="submit"
+              type="submit"
               sx={{
-                margin:".5rem 0 0 0",
+                margin: ".5rem 0 0 0",
                 padding: ".3rem",
                 width: "100%",
                 transition: ".3s",

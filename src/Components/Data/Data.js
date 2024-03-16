@@ -16,7 +16,7 @@ export const MainDrawerData = [
     ),
 
     Ttile: "Material",
-    nested: ["Lecture Notes and Books"],
+    nested: ["Lecture Notes" , "Books"],
   },
   {
     iconPath: (
@@ -79,7 +79,7 @@ export const MainDrawerData = [
     ),
 
     Ttile: "Admin",
-    nested: ["Generate Report", "Admin files", "Create user", "Mange users"],
+    nested: ["Generate Report", "Admin files", "Create User","Open Semester", "Mange users"],
   },
   {
     iconPath: (
@@ -100,3 +100,6 @@ export const MainDrawerData = [
     nested: ["profile", "Log out"],
   },
 ];
+console.log(MainDrawerData.map((item)=>{
+  console.log(item.Ttile)
+}))
