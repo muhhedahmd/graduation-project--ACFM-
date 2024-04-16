@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Box, Typography } from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
 
+
 const options = {
   series: [60],
   chart: {
