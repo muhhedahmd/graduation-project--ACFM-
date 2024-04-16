@@ -5,7 +5,7 @@ import Header from '../../Components/Header'
 import MainDrawer from '../../MainDrawer'
 import Dashbboard from '../../Components/Dashbboard'
 
-const StudentPage = () => {
+const StudentPage = ({page}) => {
   const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
   
   return (

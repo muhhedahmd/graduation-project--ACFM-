@@ -13,10 +13,10 @@ const InfoBoxes = ({title , icon ,value}) => {
         textAlign:"start",
         height:"70%",
         borderRadius:"5px",
-      width:`${isSm ?"100%" :"19%" }`,
+      width:`${isSm ?"100%" :"20%" }`,
 
-        padding:"1rem 1rem",
 
+    padding: '1rem 0 1rem 1rem',
         boxShadow:"4px 2px 4px #dedede",
         bgcolor:"#fff",
     }}

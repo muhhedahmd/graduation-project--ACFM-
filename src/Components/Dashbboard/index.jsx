@@ -19,7 +19,6 @@ sx={{
             maxHeight:"85vh",
             // margin:"1rem 0  0 0 ",
     borderRadius: "4px",
-    margin:" 2rem 1rem   0rem 1rem",
     flexDirection:"row",
     height:"-webkit-fill-available"
 
@@ -44,7 +43,6 @@ height:"100%",
 }}
 >
 
-{/* <InfoBoxes/> */}
 <FilesTable/>
 
 </Box>

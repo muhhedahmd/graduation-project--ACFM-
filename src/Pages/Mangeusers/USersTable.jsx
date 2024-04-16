@@ -12,7 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 
-import CatagoryOptions from "../../Components/Dashbboard/CatagoryOptions";
 import PopOverMenu from "../../Components/Dashbboard/PopOverMenu";
 import { useFile } from "../../Components/Contexts/FileContext";
 import SearchFiles from "../../Components/Dashbboard/SearchFiles";
@@ -130,16 +129,7 @@ function CustomizedTables() {
                       Dr: khaled
                     </Typography>
                   </TableCell>
-                  <TableCell
-                    onClick={() =>
-                      setOpenRowId(openRowId === row.id ? null : row.id)
-                    }
-                    align="right"
-                  >
-                
-                    <CatagoryOptions/>
-                     
-                  </TableCell>
+              
 
 
                   <TableCell

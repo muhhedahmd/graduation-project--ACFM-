@@ -23,7 +23,7 @@ import SearchBarRoutes from "./SearchBarRoutes";
 
 const Header = ({ nosearch , bgcolor }) => {
   const theme = useTheme();
-  const isSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isSm = useMediaQuery((theme) => theme.breakpoints.down("lg"));
   const [MenuDrawer, setMenuDrawer] = useState(false);
   const HandleDrawer = () => {
     setMenuDrawer((prev) => !prev);
