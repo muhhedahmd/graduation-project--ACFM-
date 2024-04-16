@@ -1,8 +1,8 @@
-import { WrapperFlexBox } from './Style';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import ReactApexChart from 'react-apexcharts';
 
+import { WrapperFlexBox } from './Style';
 const CourseProgress = () => {
     const options = {
         series: [60],
