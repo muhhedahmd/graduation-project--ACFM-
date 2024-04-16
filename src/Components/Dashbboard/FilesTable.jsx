@@ -209,7 +209,7 @@ const FilesTable = ( {NoSearch , Report}) => {
           boxShadow: "rgb(222, 222, 222) 3px 3px 4px",
           background: theme.palette.background.paper,
 
-          height: `${Report ?"99%" : "87%" }`,
+          height: `${Report ?"99%" : "88%" }`,
           width: `${Report ?"97%" : "auto" }`,
           
           // height: ;

@@ -6,12 +6,14 @@ import {
   FormLabel,
   Input,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import React, { useEffect, useImperativeHandle, useState } from "react";
 import { useFile } from "../Contexts/FileContext";
 import { forwardRef } from "react";
 
 const Popup = forwardRef(({ Name, file, fileNameObj } , ref) => {
+  const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
 const [active , setActive] = useState(false)
 
 
@@ -93,7 +95,7 @@ const [active , setActive] = useState(false)
     >
       <Box
         sx={{
-          width: "40%",
+          width: `${isSm? "80%" : "40%"}`,
           padding: "1.5rem",
           bgcolor: "#fff",
           display: "flex",

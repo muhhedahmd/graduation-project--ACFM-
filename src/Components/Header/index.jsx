@@ -44,6 +44,7 @@ const Header = ({ nosearch , bgcolor }) => {
       >
         <Toolbar>
           <List
+          
             disablePadding
             sx={{
               width: "100%",
@@ -56,7 +57,9 @@ const Header = ({ nosearch , bgcolor }) => {
             {!isSm  ? (
               <>
                 <ListItem
+                  disablePadding
                   sx={{
+
                     width: "fit-content",
                   }}
                 >
@@ -131,9 +134,10 @@ const Header = ({ nosearch , bgcolor }) => {
               </>
             ) : (
               <>
-                <StyledListItemCenter gap={0}>
+                <StyledListItemCenter  disablePadding gap={"1"}>
                   <Button
                     sx={{
+                      minWidth: "2rem",
                       padding: "0",
                     }}
                     onClick={() => HandleDrawer()}
@@ -160,6 +164,7 @@ const Header = ({ nosearch , bgcolor }) => {
 
                 <ListItem
                   sx={{
+                    padding:"0",
                     width: "fit-content",
                   }}
                 >
@@ -175,6 +180,7 @@ const Header = ({ nosearch , bgcolor }) => {
                   >
                     <ListItem
                       sx={{
+                        padding:".5rem",
                         width: "fit-content",
                         display: "flex",
                         justifyContent: "center",
