@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import UploadAndDeleteSection from './UploadAndDeleteSection';
+import Watch from './Watch';
 
 const SearchFiles = () => {
     const theme = useTheme()
@@ -126,6 +127,7 @@ height:"100%"
   </Typography>
 
   <UploadAndDeleteSection Drawer={true}/>
+  <Watch/>
 
   </Box>
 

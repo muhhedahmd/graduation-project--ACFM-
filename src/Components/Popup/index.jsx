@@ -4,13 +4,22 @@ import {
   Button,
   FormControl,
   FormLabel,
-  TextField,
+  Input,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 import { useFile } from "../Contexts/FileContext";
+import { forwardRef } from "react";
 
-const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
+const Popup = forwardRef(({ Name, file, fileNameObj } , ref) => {
+const [active , setActive] = useState(false)
+
+
+  useImperativeHandle(ref, () => ({
+    open: () => setActive(true),
+  }));
+
+
   const { uploadFile } = useFile();
 
   const [Data, SetData] = useState({
@@ -37,7 +46,7 @@ const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
   };
 
   const Handleclose = () => {
-    setActivePopup((prev) => false);
+    setActive((prev) => false);
     SetData({
       [Name.split(" ").join("")]: fileNameObj,
       Description: "",
@@ -48,9 +57,7 @@ const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
     if (Data[Name.split(" ").join("")]) {
       const myNewFile = new File([file], Data.FileName, { type: file.type });
 
-      // const formData = new FormData()
-      // formData.append('file',myNewFile);
-      // formData.append("Description" , Data?.Description)
+
 
       uploadFile(
         myNewFile,
@@ -58,7 +65,7 @@ const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
         Data.Description
       );
       console.log(Data?.Description);
-      setActivePopup(false);
+      setActive(false);
     }
 
     e.preventDefault();
@@ -159,7 +166,8 @@ const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
               {Name}
             </FormLabel>
 
-            <TextField
+            <Input
+            className="borderAfter"
               onChange={(e) => handleChange(e)}
               fullWidth
               variant="standard"
@@ -196,7 +204,8 @@ const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
             >
               {"Description"}
             </FormLabel>
-            <TextField
+            <Input
+            className="borderAfter"
             onChange={(e)=>handleChange(e)}
               multiline
               label="Description"
@@ -239,6 +248,5 @@ const Popup = ({ Name, active, setActivePopup, file, fileNameObj }) => {
       </Box>
     </Box>
   );
-};
-
+})
 export default Popup;

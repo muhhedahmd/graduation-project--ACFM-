@@ -1,39 +1,81 @@
 import * as React from 'react';
-import { PieChart } from '@mui/x-charts/PieChart';
-import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import ReactApexChart from 'react-apexcharts';
 
-const data = [
-  { value: 10, label: 'A' },
-  { value: 2, label: 'b' },
-];
+const options = {
+  series: [60],
+  chart: {
+  height: 150,
+  type: 'radialBar',
+  toolbar: {
+    show: true
+  }
+},
+plotOptions: {
+  radialBar: {
+    startAngle: -135,
+    endAngle: 225,
+     hollow: {
+      margin: 0,
+      size: '80%',
+      background: '#fff',
+      image: undefined,
+      imageOffsetX: 0,
+      imageOffsetY: 0,
+      position: 'front',
+      dropShadow: {
+        enabled: true,
+        top: 2,
+        left: 0,
+        blur: 3,
+        opacity: 0.2
+      }
+    },
+    track: {
+      background: '#fff',
+      strokeWidth: '67%',
+      margin: 0, // margin is in pixels
+      dropShadow: {
+        enabled: false,
+        top: -3,
+        left: 0,
+        blur: 4,
+        opacity: .1
+      }
+    },
 
-const size = {
-
-  
-  width: 420,
-   
-
-  height: 300,
-
+    dataLabels: {
+      show: true,
+      name: {
+        offsetY: -10,
+        show: true,
+        color: '#888',
+        fontSize: '17px'
+      },
+      value: {
+        formatter: function(val) {
+          return parseInt(val);
+        },
+        color: '#111',
+        fontSize: '36px',
+        show: true,
+      }
+    }
+  }
+},
+fill: {
+  type: 'solid',
+  colors: ['#ff5c00']
+},
+stroke: {
+  lineCap: 'round'
+},
+labels: ['Math 123hc'],
 };
 
-const StyledText = styled('text')(({ theme }) => ({
-  fill: theme.palette.text.primary,
-  textAnchor: 'middle',
-  dominantBaseline: 'central',
-  fontSize: 20,
-}));
 
-function PieCenterLabel({ children }) {
-  const { width, height, left, top } = useDrawingArea();
-  return (
-    <StyledText x={left + width / 2} y={top + height / 2}>
-      {children}
-    </StyledText>
-  );
-}
+
+
 
 export default function Watch() {
 
@@ -45,34 +87,30 @@ export default function Watch() {
       height:"100%",
       boxShadow:"3px 3px 5px #dedede",
       borderRadius:"11px",
-      padding: "0 1rem 0 0",
+      padding: ".5rem",
+      display:"flex",
+      justifyContent:"flex-start",
+      alignItems:"flex-start",
+      gap:"1rem",
+      flexDirection:"column",
     margin: "0 8px 5px 3px",
     }}
     >
 
-    <PieChart
-      sx={{
-        background: 'transparent', // Set background tof
-        display:"flex",
-        justifyContent:"space-between",
-        alignItems:"center",
-    
-      }}
-      margin={{
-    left: -100,
-    right: 20,
-    top: 100,
-    bottom: 24,
-  }}
-      
-      viewBox='32 0 440 201'
-      series={[{ data, innerRadius: 80 }]}
-      {...size}
+<Typography
+textAlign={"left"}
 
-    > 
+>Course Progress</Typography>
+      <div
+      style={{
+        alignSelf:"center"
+      }} 
+    
       
-      <PieCenterLabel>Category</PieCenterLabel>
-    </PieChart>
+       id="chart">
+        <ReactApexChart options={options} series={options.series} type="radialBar" height={200} />
+      </div>
     </Box>
   );
 }
+

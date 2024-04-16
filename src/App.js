@@ -1,13 +1,16 @@
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Box, ThemeProvider, createTheme } from "@mui/material";
 import { AuthProvider } from "./Components/Contexts/Authantication";
 import AppRouter from "./Components/Routes";
-// import { grey } from "@mui/material/colors";
 import './App.css'
 import { FileContextProvider } from "./Components/Contexts/FileContext";
-// import { useEffect } from "react";
+import { SemesterContextProvider } from "./Components/Contexts/SemesterContext";
+import { UseView } from "./Components/Contexts/viewedFileContext";
+import PDFViewer from "./Components/PDFViewer";
 
 
 function App() {
+  const  {viewFile   } = UseView()
+
   
   const theme =createTheme({
     palette: {
@@ -26,7 +29,7 @@ function App() {
         main: '#FFFFFF', // secondary color
       },
       icons:{
-        default: '0e0e0e9e', // secondary color
+        default: '#0e0e0e9e', // secondary color
         // default: '#aaaa', // secondary color
 
 
@@ -43,33 +46,6 @@ function App() {
       },
     },
   })
-  // const darkTheme = createTheme({
-  //   palette: {
-  //     mode: 'dark',
-  //     bullet: {
-  //       "1nd": "#02133E", // adjust bullet colors to fit dark mode
-  //       "2nd": "#FFFFFF",
-  //       "3nd": "#004BFF",
-  //     },
-  //     primary: {
-  //       main: '#373737', // primary color
-  //     },
-  //     secondary: {
-  //       main: '#373737', // secondary color
-  //     },
-  //     icons: {
-  //       default: "#FF5C00", // adjust icon color for better visibility in dark mode
-  //     },
-  //     background: {
-  //       default: '#121212', // default background color for dark mode
-  //       paper: '#373737', // background color for paper elements in dark mode
-  //     },
-  //     text: {
-  //       primary: '#FFFFFF', // adjust text color for better visibility in dark mode
-  //       secondary: '#CCCCCC', // adjust secondary text color for better visibility in dark mode
-  //     },
-  //   },
-  // });
 
   return (
     <div
@@ -79,10 +55,32 @@ function App() {
      className="App">
     <ThemeProvider theme={theme}>
 <AuthProvider>
+<SemesterContextProvider>
+
 <FileContextProvider>
 
     <AppRouter/>
+
+    {
+        viewFile ? 
+        <>
+      <Box
+      className="flex-space-between-center"
+      sx={{
+        position:"fixed",
+        justifyContent:"center",
+        gap:"3rem"
+      }}
+      >
+      <PDFViewer pdfData={viewFile} />
+      </Box>
+        </>
+      :
+      null
+      }
+
 </FileContextProvider>
+</SemesterContextProvider>
 </AuthProvider>
     </ThemeProvider>
     </div>

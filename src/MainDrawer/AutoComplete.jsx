@@ -113,25 +113,14 @@ export default function CustomAutocomplete({ options, isexpand}) {
           borderRadius: "10px",
         
         },
-        ' .MuiAutocomplete-popper':{
-          // backgroundColor:"#c84800"
-        },
-        '.MuiAutocomplete-paper':{
-          // backgroundColor:"#c84800"
-        },
-        '.MuiAutocomplete-popper > *':{
-          // backgroundColor:"#c84800"
-        },
-        '.MuiAutocomplete-option':{
-          // backgroundColor:"#c84800"
 
-        }
         
       }}
       componentsProps={{
         popper: {
           sx: {
-            marginTop: "55px"
+            marginTop: "55px",
+            color:"#333 !important"
           }
         }
       }}
@@ -197,7 +186,7 @@ export default function CustomAutocomplete({ options, isexpand}) {
         </ListItem>
           )
       }}
-      onChange={(event, value) => {
+      onChange={(value) => {
         setSelected(value);
       }}
     />

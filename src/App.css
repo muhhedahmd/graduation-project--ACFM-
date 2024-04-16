@@ -107,3 +107,114 @@
 .css-1p2woo9-MuiPaper-root-MuiTableContainer-root{
   box-shadow: none !important;
 }
+
+.css-maupu5-MuiButtonGroup-root .MuiButtonGroup-firstButton 
+, .css-maupu5-MuiButtonGroup-root .MuiButtonGroup-middleButton {
+  border: none !important;
+
+}
+.css-maupu5-MuiButtonGroup-root {
+  padding: 0 !important;
+  border-radius: 0;
+  box-shadow:none !important;
+  width: 10rem !important;
+}
+.css-maupu5-MuiButtonGroup-root :hover{
+  background: transparent !important;
+}
+
+
+.css-1hjgrc1-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled, .Mui-error):before {
+  border-bottom: 1px solid #cccc!important
+  
+}
+.css-1hjgrc1-MuiInputBase-root-MuiInput-root:before {
+  border-bottom: 1px solid #cccc!important
+  
+}
+.css-1hjgrc1-MuiInputBase-root-MuiInput-root::after {
+  border-bottom: 2px solid #ff5c00 !important
+
+}
+
+/* .css-172kpif-MuiResponsiveChart-container {
+  transform: translateX(-8rem) !important;
+  width: 123% !important;
+  height: 244px !important;
+
+} */
+
+/* @media (max-width : 600px) {
+  .css-172kpif-MuiResponsiveChart-container {
+  transform: translateX(-12rem) !important;
+  width: 186% !important;
+  height: 172px !important;
+  }
+} */
+
+.Main-Holder{
+  overflow-y: auto;
+  padding: 1rem;
+  width: 90%;
+  height: 88vh;
+  background: #fff;
+  border-radius: 7px;
+  margin: 1.5rem 1rem;
+  box-shadow: 3px 3px #dedede;
+}
+
+@media  (max-width:992px){
+.Main-Holder{
+  margin: 1.5rem auto;
+}
+
+}
+
+.css-gw7mzq-MuiInputBase-root-MuiInput-root::after{
+    border-bottom: 2px solid #ff5c00 !important
+}
+.usersCell{
+  color:#fff !important;
+  width: 1rem;
+  background-color: #ff5c00;
+}
+.borderAfter::after {
+  border-bottom: 2px solid #ff5c00 !important
+
+}
+
+.flex-space-between-center {
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.not-Submited-required-single-file{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgb(255 208 181);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Defult-btn{
+  border: 1px solid #ff5c00;
+  color: #ff5c00;
+  background-color: #ffff;
+  box-shadow: none;
+
+
+}
+.Defult-btn:hover , .Defult-btn:focus {
+  background-color: #ff5c00;
+  
+  box-shadow: none !important;
+
+
+}
+.t-main{
+  transform: translate(-1px , -95vh) !important
+}
+

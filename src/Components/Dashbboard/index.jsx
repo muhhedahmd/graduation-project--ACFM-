@@ -7,6 +7,7 @@ import { useTheme } from '@emotion/react'
 
 
 const Dashbboard = () => {
+
   const theme = useTheme()
   const isSm = useMediaQuery(theme.breakpoints.down('sm'))
   return (
@@ -69,6 +70,7 @@ sx={{
 <UploadAndDeleteSection/>
 
 </Box>
+  
 </Box>
 
   )

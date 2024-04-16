@@ -1,4 +1,4 @@
-import { Box,  Collapse, Typography } from "@mui/material";
+import { Box,  Collapse,  Typography } from "@mui/material";
 
 import React, { useState } from "react";
 import { useTheme } from "@emotion/react";
@@ -11,57 +11,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import { useFile } from "../Contexts/FileContext";
 
-import SearchFiles from "./SearchFiles";
-import PopOverMenu from "./PopOverMenu";
-import CatagoryOptions from "./CatagoryOptions";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   // hide last border
-//   "&:last-child td, &:last-child th": {
-//     border: 0,
-//   },
-//   "& .css-15wf72z-MuiTableCell-root.MuiTableCell-head": {
-//     background: "#fff",
-//     color: grey[400],
-//   },
-//   ".css-1udbg1u-MuiTableCell-root.MuiTableCell-head": {
-//     background: "#fff",
-//     color: grey[400],
-//   },
-// }));
-
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//   createData('Eclair', 262, 16.0, 24, 6.0),
-//   createData('Cupcake', 305, 3.7, 67, 4.3),
-//   createData('Gingerbread', 356, 16.0, 49, 3.9),
-// ];
+import CatagoryOptions from "../../Components/Dashbboard/CatagoryOptions";
+import PopOverMenu from "../../Components/Dashbboard/PopOverMenu";
+import { useFile } from "../../Components/Contexts/FileContext";
+import SearchFiles from "../../Components/Dashbboard/SearchFiles";
 
 
-// const StyledDownloadLink = styled(Link)
 
 function CustomizedTables() {
-  const { state } = useFile();
+    const  {state}= useFile()
   const [openRowId, setOpenRowId] = useState(null);
 
   return (
@@ -74,7 +33,8 @@ function CustomizedTables() {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead
           sx={{
-            borderBottom: "3px solid #ff5c00",
+            bgcolor:"#ff5c00 !important",
+            borderBottom: "3px solid #dedede",
           }}
         >
           <TableRow
@@ -83,22 +43,38 @@ function CustomizedTables() {
             }}
           >
             <TableCell
-              sx={{
-                width: "1rem",
-                bgcolor: "#fff",
-              }}
-              align="left"
+                          className="usersCell p-0" 
+
+              align="center"
             >
               Name
             </TableCell>
-            <TableCell align="right">Upload Date</TableCell>
-            <TableCell align="right">Upload By</TableCell>
-            <TableCell align="right">Catagory</TableCell>
-            <TableCell align="right">Semester</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell
+            className="usersCell" 
+        
+            align="right">Last Active</TableCell>
+            <TableCell
+            className="usersCell" 
+        
+             align="right">Create Date</TableCell>
+       
+            <TableCell
+            className="usersCell" 
+        
+             align="right">Role</TableCell>
+            <TableCell  
+            
+                         className="usersCell "  
+
+            align="center">Action</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody
+          sx={{
+            height:"10vh"
+            
+          }}
+        >
           {state.uploadedFiles.map((row) => {
             return (
               <>
@@ -239,7 +215,7 @@ function CustomizedTables() {
   );
 }
 
-const FilesTable = ( {NoSearch , Report}) => {
+const UsersTable = ( {NoSearch , Report}) => {
   const theme = useTheme();
   return (
     <Box
@@ -277,4 +253,4 @@ const FilesTable = ( {NoSearch , Report}) => {
   );
 };
 
-export default FilesTable;
+export default UsersTable;

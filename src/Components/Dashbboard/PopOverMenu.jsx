@@ -1,13 +1,17 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import {  Divider, Link, List, ListItem } from "@mui/material";
+import {  Button, Divider, Link, List, ListItem } from "@mui/material";
 import { Delete, Download, Edit,  } from "@mui/icons-material";
 import PreviewIcon from '@mui/icons-material/Preview';
 import ListIcon from "@mui/icons-material/List";
 import styled from "@emotion/styled";
+import { UseView } from "../Contexts/viewedFileContext";
+
+
 export default function PopOverMenu({ url, Filename}) {
+  const { setViewFile } = UseView();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -17,6 +21,7 @@ export default function PopOverMenu({ url, Filename}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -30,7 +35,7 @@ export default function PopOverMenu({ url, Filename}) {
               cursor:"pointer",
               transition:".3s",
               ':hover , :focus':{
-                  color:"#ff6b81",
+                  color:"#333",
                 }
         }
       })
@@ -79,6 +84,7 @@ export default function PopOverMenu({ url, Filename}) {
        
           >
       <Link
+      onClick={()=>   setAnchorEl(null)}
       sx={{
         width:"max-content",
         color:"inherit",
@@ -87,6 +93,7 @@ export default function PopOverMenu({ url, Filename}) {
         justifyContent:"center",
         alignItems:"center",
         textDecoration:"none"
+        
       }}
       
        download={Filename} href={url}>
@@ -102,7 +109,10 @@ export default function PopOverMenu({ url, Filename}) {
             
 
           />
-          <StyledListItem>
+          <StyledListItem
+      onClick={()=>   setAnchorEl(null)}
+          
+          >
             <Edit fontSize=".5rem" />
             <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}>
               Edit
@@ -114,10 +124,24 @@ export default function PopOverMenu({ url, Filename}) {
             />
           
           <StyledListItem
+
+          role="button"
+       
+          onClick={()=>{
+         setAnchorEl(null)
+            
+            setViewFile(url)}}
            
           >
+          
+          
+  
+
             <PreviewIcon  fontSize=".5rem" />
-            <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}>
+            <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}
+            
+            
+            >
               View
             </Typography>
       

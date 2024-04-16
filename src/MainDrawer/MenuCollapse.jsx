@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { StyledBtnFlexCenter, StyledCollapse } from "./style";
 import { useTheme } from "@emotion/react";
-import { Link, NavLink } from "react-router-dom";
-// import { useTheme } from 'styled-components'
+import { NavLink } from "react-router-dom";
 
 const MenuCollapse = ({ isexpand }) => {
   const theme = useTheme();
@@ -25,7 +24,7 @@ const MenuCollapse = ({ isexpand }) => {
     if (isexpand) {
       setCollapse(initialState);
     }
-  }, [isexpand]);
+  }, [initialState, isexpand]);
 
   const HandleClickMenucollapse = (e) => {
     if (!isexpand) {
@@ -135,7 +134,7 @@ const MenuCollapse = ({ isexpand }) => {
 
 
                           }}
-                          to={"/"+Nitem.split(" ").join("")}
+                          to={"/"+Nitem.split(" ").join("").toLowerCase()}
                         >
                           {Nitem}
                         </NavLink>

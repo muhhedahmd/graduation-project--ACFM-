@@ -42,7 +42,7 @@ export const MainDrawerData = [
       </svg>
     ),
     Ttile: "Student",
-    nested: ["Attendnce", "Exams and Solution", "Assignments"],
+    nested: ["attendance", "Exams And Solutions", "Assignments"],
   },
   {
     iconPath: (
@@ -79,7 +79,7 @@ export const MainDrawerData = [
     ),
 
     Ttile: "Admin",
-    nested: ["Generate Report", "Admin files", "Create User","Open Semester", "Mange users"],
+    nested: ["Generate Report", "Admin Files", "Create User","Open Semester", "Manage Users"],
   },
   {
     iconPath: (
@@ -100,6 +100,3 @@ export const MainDrawerData = [
     nested: ["profile", "Log out"],
   },
 ];
-console.log(MainDrawerData.map((item)=>{
-  console.log(item.Ttile)
-}))

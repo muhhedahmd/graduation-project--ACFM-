@@ -16,7 +16,6 @@ import MenuCollapse from "./MenuCollapse";
 import { useTheme } from "@emotion/react";
 
 const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
-  // const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
   const theme = useTheme();
   const [isexpand, setIsexpand] = useState(false);
   const handleClouseDrawer = () => {

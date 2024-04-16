@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Box, Typography, Button } from '@mui/material';
-import React, {  useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import uploadIcon from "./file-add.svg";
 import { useTheme } from '@emotion/react';
 import Popup from '../Popup';
@@ -19,8 +19,9 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const UploadSection = () => {
+  const ref = useRef(null)
+
   const [file, setFile] = useState(null);
-  const [activePopup , setActivePopup ] = useState(false)
   const [isInvalid , setIsInValid] = useState(false)
   const theme = useTheme();
 
@@ -28,9 +29,8 @@ const UploadSection = () => {
     const selectedFile = event.target.files[0];
     if(selectedFile?.type === "application/pdf")
     {
-
       setFile(selectedFile);
-      setActivePopup(true)
+      ref.current.open()
     }
    else if(selectedFile?.type !== "application/pdf") {
 
@@ -102,7 +102,7 @@ const UploadSection = () => {
         </Typography>
       </Button>
      
-    <Popup setActivePopup={setActivePopup} fileNameObj={file?.name}  file={file} active={activePopup} Name={"File Name"}/>
+    <Popup ref={ref}  fileNameObj={file?.name}  file={file}  Name={"File Name"}/>
     <WarningPopup isInvalid={isInvalid} setIsInvalid={setIsInValid}/>
     </Box>
   );

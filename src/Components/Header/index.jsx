@@ -4,11 +4,11 @@ import {
   Button,
   CssBaseline,
   Drawer,
-  FormControl,
+  
   List,
   ListItem,
   ListItemIcon,
-  TextField,
+  
   Toolbar,
   Typography,
   useMediaQuery,
@@ -19,6 +19,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import SegmentIcon from "@mui/icons-material/Segment";
 import { StyledListItemCenter } from "./style";
 import MainDrawer from "../../MainDrawer";
+import SearchBarRoutes from "./SearchBarRoutes";
 
 const Header = ({ nosearch , bgcolor }) => {
   const theme = useTheme();
@@ -72,47 +73,7 @@ const Header = ({ nosearch , bgcolor }) => {
 
 
                       {!nosearch ? 
-                      
-                <ListItem
-                  sx={{
-                    maxWidth: " 34rem",
-                    minWidth: " 20rem",
-                    backgroundColor: " #fff",
-                    padding: "0 .5rem .5rem .3rem",
-                    boxShadow: "3px 4px 6px #dedede",
-                    borderRadius: "7px",
-                    bgcolor: "#fff",
-                  }}
-                  disablePadding
-                >
-                  <form
-                    action="#"
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    <FormControl fullWidth>
-                      <TextField
-                        fullWidth
-                        color="secondary"
-                        variant="standard"
-                        sx={{
-                          fontSize: ".8rem",
-                          paddingTop: "0",
-                        }}
-                        type="text"
-                        InputProps={{
-                          classes: {
-                            notchedOutline: {
-                              borderWidth: "1px",
-                              borderColor: "yellow !important",
-                            },
-                          },
-                        }}
-                      />
-                    </FormControl>
-                  </form>
-                </ListItem>
+                        <SearchBarRoutes/>
                 :""
                       }
 

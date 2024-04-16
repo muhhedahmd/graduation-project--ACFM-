@@ -24,7 +24,6 @@ export const StyledMainDrawer = styled(Box)(({theme , isexpand  , isMD , area})=
         
 
         return{
-            zIndex:"1000",
             top:"-7vh",
             borderRight: "3px solid #ff5c00",
             position:'relative',
@@ -48,7 +47,7 @@ export const StyledMainDrawer = styled(Box)(({theme , isexpand  , isMD , area})=
 })
 
 
-export const StyledBtnFlexCenter = styled(Button)(({theme , isexpand })=>{
+export const StyledBtnFlexCenter = styled(Button)(({ isexpand })=>{
 
         if(!isexpand){
             return{
@@ -84,7 +83,7 @@ export const StyledBtnFlexCenter = styled(Button)(({theme , isexpand })=>{
      
 
 })
-export const StyledCollapse = styled(List)(({theme , isexpand })=>{
+export const StyledCollapse = styled(List)(({theme })=>{
 
       return {position:"relative",
         display: "flex",
