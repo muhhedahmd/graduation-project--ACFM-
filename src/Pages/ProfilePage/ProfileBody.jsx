@@ -1,27 +1,29 @@
-import { Box } from '@mui/material'
+import { Box, useMediaQuery } from '@mui/material'
 import React from 'react'
 import UserFile from './UserFile'
-import CourseProgress from './CourseProgress'
+import ProfileInfo from './ProfileInfo'
 
 const ProfileBody = () => {
+  const isSm = useMediaQuery(theme=>theme.breakpoints.down("md")) 
   return (
     <Box
     sx={{
         p:"1rem",
-        pt:"4rem",
+        pt:"3rem",
        display:"flex",
-       justifyContent:"space-between",
+       justifyContent:"flex-start",
        width:"100%",
        alignItems:"flex-start",
-       flexWrap:"wrap",
-       flexDirection:"column"
+       flexDirection:`${isSm?"column": "row"}`,
+       gap:"1rem",
+       overflow:"auto"
        
     }}
     >
+    <ProfileInfo/>
 
             <UserFile/>
 
-            <CourseProgress/>
     </Box>
   )
 }

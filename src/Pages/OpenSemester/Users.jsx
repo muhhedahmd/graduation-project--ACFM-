@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Button, Checkbox, FormControlLabel, SvgIcon, Typography } from "@mui/material";
 import { Clear } from "@mui/icons-material";
-import AsynchronousAutoCompete from "./AutoCompleteUsers";
 import { v4 as uuid5 } from "uuid";
 import { useTheme } from "@emotion/react";
 import {StyledFormGroup} from  './Style'
@@ -97,7 +96,6 @@ const Users = () => {
     ],
   });
 
-  const [SelectedItem, setSelectedItem] = useState(null);
 
   const handleCheck = (e) => {
     const courseId = e.target.id; // Get the ID of the clicked checkbox
@@ -116,12 +114,6 @@ const Users = () => {
     });
   };
 
-  useEffect(() => {
-    const selectedFromRef = ref?.current?.selected;
-    if (selectedFromRef !== null && selectedFromRef !== undefined) {
-      setSelectedItem(selectedFromRef);
-    }
-  }, [ref.current.selected]);
   return (
     <Box
       sx={{
@@ -136,6 +128,7 @@ const Users = () => {
         bgcolor: "#fff",
         boxShadow: "3px 3px 3px #dedede",
         padding: "1rem",
+        overflow:"auto"
       }}
       margin={"1rem  0 0 0"}
       className="HolderUsers&Courses"
@@ -149,7 +142,6 @@ const Users = () => {
           gap: "1rem",
         }}
       >
-        <AsynchronousAutoCompete ref={ref} />
 
         <Button sx={{ padding: "1rem 0 " }}>
           <SvgIcon color={theme.palette.primary.paper}>
@@ -159,91 +151,14 @@ const Users = () => {
       </Box>
       <StyledFormGroup
         sx={{
-          margin: ".5rem 0 0 0 ",
+          // margin: ".5rem 0 0 0 ",
+          overflow:"auto",
 
           // overflow: "visible !important",
           width: "100% !important",
         }}
       >
-        {SelectedItem ?
-         (
-          <>
-            <Typography variant="subtitle1" component={"p"}>
-              Selected Courses: 
-            </Typography>
-            {Object.keys(courses).map((semester) =>
-              courses[semester].map((item) => (
-                item.courseName === SelectedItem.courseName ? 
-                <>
-                <Typography
-                align="start" 
-                variant="h6" 
-                component={"div"}
-                >
-
-                {semester}
-                </Typography>
-                  <FormControlLabel
-                    key={item.id}
-                    id={item.id}
-                    checked={item.checked}
-                    onClick={(e) => handleCheck(e, setCourses)}
-                    sx={{
-                      width: "97%",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      padding: ".5rem .5rem .5rem 0",
-                      gap: "1rem",
-                      color: item.checked ? theme.palette.primary.paper : "#333",
-                      transition: ".3s",
-                      borderRadius: "6px",
-                    }}
-                    control={
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: ".5rem",
-                          flexWrap: "nowrap",
-                          width: "max-content",
-                        }}
-                      >
-                        <Checkbox
-                          id={item.id}
-                          style={{
-                            color: theme.palette.primary.paper,
-                            padding: "0",
-                            '&.Mui-checked': {
-                              color: theme.palette.primary.paper,
-                            }
-                          }}
-                          checked={item.checked}
-                        />
-                        <Typography
-                          id={item.id}
-                          sx={{
-                            width: "max-content",
-                            minWidth: "max-content",
-                            cursor: "pointer",
-                          }}
-                          variant="subtitle2"
-                          onClick={(e) => handleCheck(e, setCourses)}
-                        >
-                          {item.courseName} {item.courseCode}
-                        </Typography>
-                      </Box>
-                    }
-                  />
-                </>
-
-                  :null
-                
-              ))
-            )}
-          </>
-        ) : (
+  {
           Object.keys(courses).map((itemC) => (
             <Box
               key={`course-${itemC}`}
@@ -279,10 +194,14 @@ const Users = () => {
                       color: item.checked ? theme.palette.primary.paper : "#333",
                       transition: ".3s",
                       borderRadius: "6px",
+                      margin:"0"
                     }}
                     control={
                       <Box
+                      className="item-holder-course"
                         sx={{
+
+                          margin:"0",
                           display: "flex",
                           justifyContent: "flex-start",
                           alignItems: "center",
@@ -321,7 +240,7 @@ const Users = () => {
               ))}
             </Box>
           ))
-        )}
+  }      
       </StyledFormGroup>
     </Box>
   );

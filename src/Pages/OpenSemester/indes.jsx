@@ -7,10 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect,  useState } from "react";
-import Header from "../../Components/Header";
 import Users from "./Users";
 import Btn from "../../Components/Btn";
-import MainDrawer from "../../MainDrawer";
+import StanderdBox from "../../Components/StanderdBox";
 
 const OpenSemester = () => {
  
@@ -49,23 +48,12 @@ const OpenSemester = () => {
 
   const theme = useTheme();
   return (
-    <Box
-    sx={{
-      maxHeight:"100vh",
-      overflow:"hidden"
-    }}
-    >
-      <Header />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          gap:"1rem",
-          width: "100vw",
-        }}
-      >
-        <MainDrawer />
+
+<StanderdBox>
+
+
+
+
         <Box
           sx={{
             width: "100vw",
@@ -101,6 +89,7 @@ const OpenSemester = () => {
                 justifyContent: "center",
                 margin: "0rem 0 0 0 ",
                 gap: "3rem",
+                overflow:"auto"
               }}
             >
               {Object.keys(Semester).map((ksem) => {
@@ -173,8 +162,9 @@ const OpenSemester = () => {
           </Box>
 
         </Box>
-      </Box>
-    </Box>
+      
+</StanderdBox>
+    
   );
 };
 

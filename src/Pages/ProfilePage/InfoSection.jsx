@@ -1,8 +1,7 @@
-import { Box, Button, Collapse, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button,  Typography } from "@mui/material";
+import React from "react";
 
 const InfoSection = ({ Title, info }) => {
-  const [CollapseCourse, setCollapseCourse] = useState(false);
   return (
     <>
       {Title === "Courses :" ? (
@@ -10,18 +9,18 @@ const InfoSection = ({ Title, info }) => {
           sx={{
             display: "flex",
             justifyContent: "flex-start",
-            alignItems: "center",
+            alignItems: "flex-start",
           }}
         >
           <Typography
             role="button"
-            onClick={() => setCollapseCourse((prev) => !prev)}
             sx={{
               textAlign: "start",
               // alignSelf:"flex-start",
               color: "#111",
               minWidth: "7rem",
               alignSelf: " center",
+              width: "max-content",
             }}
             variant="subtitle1"
             component={"p"}
@@ -29,21 +28,19 @@ const InfoSection = ({ Title, info }) => {
             {Title}
           </Typography>
 
-          <Collapse 
-          
-          in={CollapseCourse} about="">
+         
             <Box
               sx={{
                 borderRadius: "6px",
                 border: "1px solid #d3d3d3",
                 padding: ".5rem",
                 overflow: "auto",
-                maxWidth: "12rem",
+                maxWidth: "15rem",
+                marginLeft: "2rem",
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "flex-start",
                 gap: ".5rem",
-                flexWrap: "wrap",
               }}
             >
               {info.map((item, i) => {
@@ -64,7 +61,6 @@ const InfoSection = ({ Title, info }) => {
                 );
               })}
             </Box>
-          </Collapse>
         </Box>
       ) : (
         <Box

@@ -84,10 +84,16 @@ const CourseProgress = () => {
         borderRadius: '6px',
         padding: '.1rem',
         flexDirection: 'column',
+        width:"20%",
       }}
     >
       <Typography>Course Progress</Typography>
-      <div id="chart">
+      <div
+      style={{
+        width:"100%"
+      }}
+      
+       id="chart">
         <ReactApexChart options={options} series={options.series} type="radialBar" height={250} />
       </div>
     </WrapperFlexBox>

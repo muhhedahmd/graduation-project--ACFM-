@@ -18,7 +18,8 @@ const ProfilePage = () => {
     <Box
       className='Main-Holder'
       sx={{
-        padding:"0"
+        padding:"0",
+        overflow:"auto"
       }}
     
     >

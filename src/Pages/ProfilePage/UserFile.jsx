@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box,  Typography } from '@mui/material'
 import React from 'react'
 import { StyledOptionButton, WrapperFlexBox } from './Style'
 
@@ -19,12 +19,16 @@ const UserFile = () => {
    
     >
     <Typography 
+    role='button'
     sx={{
         color:"#333"
     }}
     variant="h6">
         Files
     </Typography>
+   
+
+
         
     <WrapperFlexBox
     gap={"2rem"}

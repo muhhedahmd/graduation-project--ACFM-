@@ -1,7 +1,6 @@
-import { Avatar, Box,Typography, useMediaQuery } from '@mui/material'
+import { Box,Typography, useMediaQuery } from '@mui/material'
 import React from 'react'
 import InfoSection from './InfoSection'
-import UserFile from './UserFile'
 
 const ProfileInfo = () => {
   const   AssignedCourse = ["math1 " , "math2" , "math3" , "physics2" ] 
@@ -10,7 +9,7 @@ const ProfileInfo = () => {
     <Box
     className="MainContainer"
     sx={{
-        width:"100%",
+        width:"auto",
         display:"flex",
         justifyContent:"space-between"
         ,alignItems:"flex-start",
@@ -23,62 +22,37 @@ const ProfileInfo = () => {
     <Box
 
     sx={{
-        width:"50%",
+        width:"auto",
         display:"flex",
         justifyContent:"flex-start",
         alignItems:"flex-start",
         
-        gap:"2rem",
-        padding:"1rem",
+        gap:"1rem",
         flexDirection:"column"
     }}
     >
-    <Box
-    
-    sx={{
-      width:"100%",
-      
-          display:"flex",
-        justifyContent:"flex-start",
-        alignItems:"center",
-        
-        gap:"2rem",
-        padding:"1rem",
 
-    }}
-    >
     <Typography
-    variant='subtitle2'
-    component={"p"}
+    variant='h6'
+    fontWeight={"bold"}
     >
-      Profile image
+    User Info
 
     </Typography>
 
-    <Avatar
-    sx={{
-      width:"2rem",
-      height:"2rem"
-    }}
     
-    >
-      
-    </Avatar>
-    </Box>
-    
-    <InfoSection Title={"About :"} info={"loremmponwniwpn knoeniwqio inpnip"} />
     <InfoSection Title={"First Name :"} info={"Khaled"} />
-    <InfoSection Title={"Access :"} info={"Instractor"} />
     <InfoSection Title={"Secound Name :"} info={"Mohamed"} />
     <InfoSection Title={"Email :"} info={"123@gmail.com"} />
     <InfoSection Title={"Password :"} info={"*****"} />
+    <InfoSection Title={"Access :"} info={"Instractor"} />
     
     <InfoSection Title={"Courses :"} info={AssignedCourse} />
+    <InfoSection Title={"About :"} info={"loremmponwniwpn knoeniwqio inpnip"} />
 
 
 
     </Box>
-   <UserFile/>
     </Box>
   )
 }
