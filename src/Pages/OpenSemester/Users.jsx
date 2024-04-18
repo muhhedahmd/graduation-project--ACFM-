@@ -4,8 +4,8 @@ import { Clear } from "@mui/icons-material";
 import { v4 as uuid5 } from "uuid";
 import { useTheme } from "@emotion/react";
 import {StyledFormGroup} from  './Style'
-const Users = () => {
-  const ref = useRef();
+import AutoCompleteUsers from "./AutoCompleteUsers";
+const Users = ({setSemesterState}) => {
   const theme = useTheme()
   const [courses, setCourses] = useState({
     Fall: [
@@ -95,24 +95,37 @@ const Users = () => {
       },
     ],
   });
-
+  const [isClear  ,SetIsClear]  =useState(false)
 
   const handleCheck = (e) => {
     const courseId = e.target.id; // Get the ID of the clicked checkbox
 
     setCourses((prevCourses) => {
-      const entries = Object.entries(prevCourses);
+        const updatedCourses = Object.entries(prevCourses).map(([semester, courses]) => ({
+            [semester]: courses.map((course) =>
+                course.id === courseId ? { ...course, checked: !course.checked } : course
+            )
+        }));
 
-      return Object.fromEntries(
-        entries.map(([semester, courses]) => [
-          semester,
-          courses.map((course) =>
-            course.id === courseId ? { ...course, checked: !course.checked } : course
-          )
-        ])
-      );
+        const updatedState = updatedCourses.reduce((acc, cur) => {
+            const [semester, courses] = Object.entries(cur)[0];
+            acc[semester] = courses;
+            return acc;
+        }, {});
+
+        const flattenedCourses = Object.values(updatedState).flat();
+
+        const filteredCourses = flattenedCourses.filter((course) => course.checked);
+
+        setSemesterState((prev) => ({
+            ...prev,
+            courses: filteredCourses
+        }));
+
+        return updatedState;
     });
-  };
+};
+
 
   return (
     <Box
@@ -142,10 +155,10 @@ const Users = () => {
           gap: "1rem",
         }}
       >
-
-        <Button sx={{ padding: "1rem 0 " }}>
+<AutoCompleteUsers setSemesterState={setSemesterState} isClear={isClear} SetIsClear={SetIsClear}  />
+        <Button onClick={()=>SetIsClear(true)} sx={{ padding: "1rem 0 " }}>
           <SvgIcon color={theme.palette.primary.paper}>
-            <Clear onClick={ref?.current?.HandleClear()} sx={{ color: theme.palette.primary.paper }} />
+            <Clear onClick={()=>SetIsClear(true)} sx={{ color: theme.palette.primary.paper }} />
           </SvgIcon>
         </Button>
       </Box>

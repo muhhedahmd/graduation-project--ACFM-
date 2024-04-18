@@ -2,13 +2,19 @@ import { Box, FormGroup, FormLabel} from '@mui/material'
 import React from 'react'
 import CustomAutocomplete from '../../MainDrawer/AutoComplete'
 import Btn from '../../Components/Btn'
+import { useUserContext } from '../../Components/Contexts/UserContext'
+import { useSemester } from '../../Components/Contexts/SemesterContext'
 
 const AssignCourses = () => {
+  const {state } = useUserContext()
+  const  {semesterState}= useSemester()
+
 
 
   return (
     <Box sx={{
-        width:"100%"
+        width:"100%",
+        transition:".3s"
     }}>
     <form
     style={{
@@ -32,7 +38,7 @@ const AssignCourses = () => {
         Select a user 
 
         </FormLabel>   
-        <CustomAutocomplete id="Users" options={["1" , "1" ,"2"]} isexpand={"true"} />
+        <CustomAutocomplete id="Users" options={state} isexpand={"true"} />
     </FormGroup>
     <FormGroup>
 
@@ -50,7 +56,7 @@ const AssignCourses = () => {
         Select courses
 
         </FormLabel>   
-        <CustomAutocomplete id="Course" options={["1" , "1" ,"2"]} isexpand={"true"} />
+        <CustomAutocomplete id="Course" options={semesterState} isexpand={"true"} />
     </FormGroup>
         
             <Btn 

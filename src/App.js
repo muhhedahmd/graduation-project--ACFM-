@@ -3,9 +3,10 @@ import { AuthProvider } from "./Components/Contexts/Authantication";
 import AppRouter from "./Components/Routes";
 import './App.css'
 import { FileContextProvider } from "./Components/Contexts/FileContext";
-import { SemesterContextProvider } from "./Components/Contexts/SemesterContext";
+import {  SemesterProvider } from "./Components/Contexts/SemesterContext";
 import { UseView } from "./Components/Contexts/viewedFileContext";
 import PDFViewer from "./Components/PDFViewer";
+import { UserProvider } from "./Components/Contexts/UserContext";
 
 
 function App() {
@@ -55,7 +56,9 @@ function App() {
      className="App">
     <ThemeProvider theme={theme}>
 <AuthProvider>
-<SemesterContextProvider>
+<UserProvider>
+
+<SemesterProvider>
 
 <FileContextProvider>
 
@@ -80,7 +83,9 @@ function App() {
       }
 
 </FileContextProvider>
-</SemesterContextProvider>
+</SemesterProvider>
+</UserProvider>
+
 </AuthProvider>
     </ThemeProvider>
     </div>

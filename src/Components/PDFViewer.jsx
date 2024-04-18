@@ -17,8 +17,8 @@ const PDFViewer = ({ pdfData }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-        zIndex: '99', // Higher z-index to appear on top
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        zIndex: '99999999999999999999999999999999999999', 
       }}
     >
       <div

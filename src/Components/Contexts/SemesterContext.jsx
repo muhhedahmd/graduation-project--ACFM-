@@ -1,86 +1,65 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from 'react';
 
-// Define action types
-export const SEMESTER_OPERATION = {
-    IN_SEMESTER: "IN_SEMESTER",
-    ADD_USER: "ADD_USER",
-    ADD_USER_COURSE: "ADD_USER_COURSE",
-}
+// Step 1: Create the context
+const SemesterContext = createContext();
 
-// Define initial state
-const initialState = {
-    semesterName: "",
-    users: [],
-};
+// Step 2: Define action types
+const SET_SEMESTER_DATA = 'SET_SEMESTER_DATA';
 
-// Create context
-const SemesterContext = createContext(initialState);
-
-// Reducer function to handle state changes
-const reducer = (state, action) => {
+const semesterReducer = (state, action) => {
     switch (action.type) {
-        case SEMESTER_OPERATION.IN_SEMESTER:
-            return {
-                ...state,
-                semesterName: action.payload.semesterName
-            };
-        case SEMESTER_OPERATION.ADD_USER:
-            const newUser = action.payload.user;
-            if (!state.users.some(user => user.id === newUser.id)) {
-                return {
-                    ...state,
-                    users: [...state.users, newUser]
-                };
-            }
-            return state; // If user already exists, return current state
-        case SEMESTER_OPERATION.ADD_USER_COURSE:
-            const { userId, courses } = action.payload;
-            return {
-                ...state,
-                users: state.users.map(user =>
-                    user.id === userId ? { ...user, courses } : user
-                )
-            };
-        default:
-            return state;
+      case SET_SEMESTER_DATA:
+  console.log('reducer', state);
+  const { Semester, year, courses } = action.payload;
+
+  // Check if the semester and year combination already exists in the state
+  const existingIndex = state.findIndex(entry => entry.Semester === Semester && entry.year === year);
+
+  if (existingIndex !== -1) {
+    // If the semester and year combination already exists, update the courses
+    return state.map((entry, index) => {
+      if (index === existingIndex) {
+        // Update the courses for the existing semester and year
+        return {
+          ...entry,
+          courses: courses
+        };
+      }
+      return entry;
+    });
+  } else {
+    // If it's a new semester and year combination, add it to the state
+    return [
+      ...state,
+      {
+        Semester: Semester,
+        year: year,
+        courses: courses
+      }
+    ];
+  }
+        
+      default:
+        return state;
     }
-};
+  };
+  
 
-// Semester context provider component
-export const SemesterContextProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+// Step 4: Create the custom hook
+export const useSemester = () => useContext(SemesterContext);
 
-    // Action creators
-    const inSemester = semesterName => {
-        dispatch({
-            type: SEMESTER_OPERATION.IN_SEMESTER,
-            payload: { semesterName }
-        });
-    };
+// Step 5: Create the context provider
+export const SemesterProvider = ({ children }) => {
+  const [semesterState, dispatch] = useReducer(semesterReducer, []);
 
-    const addUser = user => {
-        dispatch({
-            type: SEMESTER_OPERATION.ADD_USER,
-            payload: { user }
-        });
-    };
+  // Function to update semester data
+  const setSemesterData = (newSemesterData) => {
+    dispatch({ type: SET_SEMESTER_DATA, payload: newSemesterData });
+  };
 
-    const addUserCourse = (userId, courses) => {
-        dispatch({
-            type: SEMESTER_OPERATION.ADD_USER_COURSE,
-            payload: { userId, courses }
-        });
-    };
-
-    // Provide state and actions through context
-    return (
-        <SemesterContext.Provider value={{ state, inSemester, addUser, addUserCourse }}>
-            {children}
-        </SemesterContext.Provider>
-    );
-};
-
-// Custom hook to consume semester context
-export const useSemester = () => {
-    return useContext(SemesterContext);
+  return (
+    <SemesterContext.Provider value={{ semesterState, setSemesterData }}>
+      {children}
+    </SemesterContext.Provider>
+  );
 };

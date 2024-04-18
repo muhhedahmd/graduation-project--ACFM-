@@ -1,11 +1,10 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect,  } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { memo } from 'react';
 
-const AccessLevel = memo(forwardRef(function AccessLevel({ setAccessLevel ,  initialValue, ...props }, ref) {
+const AccessLevel = function AccessLevel({ error,  setAccessLevel ,  initialValue,  }) {
   const [value, setValue] = useState(initialValue || '');
 
   const handleChange = (event) => {
@@ -17,23 +16,20 @@ const AccessLevel = memo(forwardRef(function AccessLevel({ setAccessLevel ,  ini
     setValue(initialValue || '');
   }, [initialValue]);
 
-  useImperativeHandle(ref, () => ({
-    getValue: () => value
-  }), );
-
   return (
     <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-standard-label">Access</InputLabel>
+      <FormControl variant="standard" sx={{  minWidth: 120 }}>
+        <InputLabel
+        error={error}
+         id="demo-simple-select-standard-label">Access</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
           value={value}
           onChange={handleChange}
-          label="Access"
+          label=""
         >
           <MenuItem value="">
-            <em>None</em>
           </MenuItem>
           <MenuItem value={"Admin"}>Admin</MenuItem>
           <MenuItem value={"Instructor"}>Instructor</MenuItem>
@@ -43,6 +39,6 @@ const AccessLevel = memo(forwardRef(function AccessLevel({ setAccessLevel ,  ini
       </FormControl>
     </div>
   );
-}))
+}
 
 export default AccessLevel;

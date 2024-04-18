@@ -4,9 +4,11 @@ import FilesTable from './FilesTable'
 import UploadAndDeleteSection from './UploadAndDeleteSection'
 import Watch from './Watch'
 import { useTheme } from '@emotion/react'
+import { useFile } from '../Contexts/FileContext'
 
 
 const Dashbboard = () => {
+  const {state} = useFile()
 
   const theme = useTheme()
   const isSm = useMediaQuery(theme.breakpoints.down('sm'))
@@ -43,7 +45,7 @@ height:"100%",
 }}
 >
 
-<FilesTable/>
+<FilesTable state={state}/>
 
 </Box>
 

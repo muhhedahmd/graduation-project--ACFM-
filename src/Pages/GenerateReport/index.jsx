@@ -122,7 +122,7 @@ sx={{
 }}
 >
 
-    <FilesTable  Report={true} NoSearch={true}/>
+    <FilesTable state={null}  Report={true} NoSearch={true}/>
 </Box>
       
       <AddReport/>

@@ -1,24 +1,35 @@
 import { useTheme } from "@emotion/react";
 import {
   Box,
+  Button,
   FormControlLabel,
   FormGroup,
   Radio,
   Typography,
 } from "@mui/material";
-import React, { useEffect,  useState } from "react";
+import React, { useEffect,  useId,  useState } from "react";
 import Users from "./Users";
-import Btn from "../../Components/Btn";
 import StanderdBox from "../../Components/StanderdBox";
+import { useSemester } from "../../Components/Contexts/SemesterContext";
 
-const OpenSemester = () => {
+const OpenSemester = ({page}) => {
+  const {  setSemesterData } = useSemester()
+  const currentYear = new Date().getFullYear();
+
+
  
   const [Semester, setSemester] = useState({
     Fall: true,
     Spring: false,
     Saummer: false,
   });
+  const [SemesterState , setSemesterState ] = useState({
+    Semester:"Fall",
+    id:useId,
+    courses:[],
+    year:currentYear.toString() + '/' + (currentYear + 1).toString()
 
+  })
   const handleChange = (e, item, state, setState, onlyOne) => {
     const { checked } = e.target;
 
@@ -28,6 +39,9 @@ const OpenSemester = () => {
         updatedState[key] = key === item ? checked : false;
       }
       setState(updatedState);
+      setSemesterState((prev) => ({ ...prev, Semester: item }));
+
+
     } else {
       const updatedState = {
         ...state,
@@ -59,12 +73,20 @@ const OpenSemester = () => {
             width: "100vw",
             display: "flex",
             justifyContent: "flex-start",
-            alignItems: "center",
+            alignItems: "flex-start",
             height: "calc(100vh - 7vh)",
-
+flexDirection:"column",
             overflow: "hidden",
           }}
         >
+        <Typography
+        padding={"0 1rem"}
+        variant="h5"
+        component={"p"}
+        >
+
+        {page}
+        </Typography>
           <Box
             sx={{
               width: "100%",
@@ -75,7 +97,7 @@ const OpenSemester = () => {
               flexDirection: "column",
             }}
           >
-            <FormGroup
+            <Box
               sx={{
                 bgcolor: "#fff",
                 boxShadow: "3px 3px 4px #dedede",
@@ -140,7 +162,7 @@ const OpenSemester = () => {
                   />
                 );
               })}
-            </FormGroup>
+            </Box>
             <Box
             
               sx={{
@@ -151,13 +173,26 @@ const OpenSemester = () => {
                 flexDirection: "column",
               }}
             >
-              <Users />
+              <Users setSemesterState={setSemesterState} />
 
-              <Btn
+              <Button
+               sx={{
+        padding:".5rem  0 .5rem 0 ",
+        margin:"1rem 0 ",
+        width:"100%",
+        bgcolor: theme.palette.primary.paper,
+                        ":hover": {
+                          bgcolor: theme.palette.primary.paper,
+                        },
+    }}
+    
+            onClick={()=>setSemesterData(SemesterState)}
                 width="100%"
-                children={"Submit"}
-                padding={".5rem  0 .5rem 0 "}
-              />
+            
+              >
+
+                Submit
+              </Button>
             </Box>
           </Box>
 

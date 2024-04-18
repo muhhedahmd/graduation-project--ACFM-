@@ -117,3 +117,18 @@ export const StyledCollapse = styled(List)(({theme })=>{
       }
 
 })
+export const StyledMainBtn = styled(Button)(({})=>{
+    return {
+        width:"100%",
+        background:"#ff5c00"
+        ,':hover':{
+        background:"#ff5c00"
+
+        }
+        ,':focus':{
+        background:"#ff5c00"
+
+        }
+    }
+
+})

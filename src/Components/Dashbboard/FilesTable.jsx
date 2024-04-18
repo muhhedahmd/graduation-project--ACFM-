@@ -11,14 +11,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import { useFile } from "../Contexts/FileContext";
 
 import SearchFiles from "./SearchFiles";
 import PopOverMenu from "./PopOverMenu";
 
 
-function CustomizedTables() {
-  const { state } = useFile();
+function CustomizedTables({state}) {
   const [openRowId, setOpenRowId] = useState(null);
 
   return (
@@ -55,7 +53,7 @@ function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {state.uploadedFiles.map((row) => {
+          {state?.uploadedFiles?.map((row) => {
             return (
               <>
                 <TableRow key={row.id}>
@@ -186,7 +184,7 @@ function CustomizedTables() {
   );
 }
 
-const FilesTable = ( {NoSearch , Report}) => {
+const FilesTable = ( {NoSearch , Report , state}) => {
   const theme = useTheme();
   return (
     <Box
@@ -218,7 +216,7 @@ const FilesTable = ( {NoSearch , Report}) => {
           borderRadius: "9px",
         }}
       >
-        <CustomizedTables />
+        <CustomizedTables  state={state}/>
       </Box>
     </Box>
   );

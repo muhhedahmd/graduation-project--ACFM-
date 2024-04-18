@@ -8,14 +8,70 @@ import AssignCourses from './AssignCourses';
 import PDFViewer from '../../Components/PDFViewer';
 import { UseView } from '../../Components/Contexts/viewedFileContext';
 import { Close } from '@mui/icons-material';
+import { AnimatePresence , motion } from 'framer-motion';
+import { useUserContext } from '../../Components/Contexts/UserContext';
+import { v4 as uuidv4 } from 'uuid';
+import * as Yup from 'yup';
+import {  StyledMainBtn } from '../../MainDrawer/style';
 
-const CreateUser = () => {
+const validationSchema = Yup.object().shape({
+  AccesLevel: Yup.string().required('Access level is required'),
+  fName: Yup.string().min(4 , "The first name should be more than 4").max(10 ,"The first name should be less than 10").required('First name is required'),
+  lName: Yup.string().required('Last name is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+  about: Yup.string().required('About is required'),
+  img: Yup.string().required('Image is required'),
+});
+
+const CreateUser = ({page}) => {
+
+  const [validationErrors, setValidationErrors] = useState([]);
+
+
+  const {setUserData   ,state} = useUserContext()
+  const requiredFilesRef = useRef(null)
+  const userDetailsRef= useRef(null);
+
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+  
+  const handleClick = () => {
+    validationSchema.validate(userDetailsRef.current.UserData(), { abortEarly: false })
+      .then(validData => {
+        if (userDetailsRef.current.UserData().AccesLevel === "Instructor") {
+          const EveryFilesExisit = Object.values(requiredFilesRef.current.files()).every((item) => item !== null);
+          console.log(EveryFilesExisit);
+          if (EveryFilesExisit) {
+            setUserData({ id: uuidv4(), ...requiredFilesRef.current.files(), creationDate: formattedDate, ...userDetailsRef.current.UserData() });
+          }
+        } else {
+          console.log("added", state); // <-- This line doesn't seem to do anything
+          setUserData({ id: uuidv4(), creationDate: formattedDate, ...userDetailsRef.current.UserData() });
+        }
+      })
+      .catch(errors => {
+        // Data is invalid, update validation errors state
+        const formattedErrors = [];
+        errors?.inner?.forEach(err => {
+          // Check if the field already exists in formattedErrors
+          const existingError = formattedErrors.find(error => error.field === err.path);
+          if (!existingError) {
+            formattedErrors.push({ field: err.path, message: err.message });
+          }
+        });
+        setValidationErrors(formattedErrors);
+      });
+    // console.log("USER DATA", state);
+  }
+  
+
+
 const  {viewFile  ,setViewFile } = UseView()
 
   const [accessLevel, setAccessLevel] = useState('');
 
   const isMD = useMediaQuery((theme)=>theme.breakpoints.down("md"))
-  const ref= useRef(null);
   return (
     <StanderdBox>
       <CssBaseline />
@@ -23,6 +79,7 @@ const  {viewFile  ,setViewFile } = UseView()
       
       className="Main-Holder"
       sx={{
+        // overflow:"hidden",
         marginTop: "1rem",
         borderRadius: "6px",
         padding: "1rem",
@@ -31,9 +88,17 @@ const  {viewFile  ,setViewFile } = UseView()
         bgcolor: "#fff",
         boxShadow: "3px 3px 4px #dedede"
       }}>
+      <Typography
+      textAlign={"left"}
+      variant='h5'
+      component={"p"}
+      >
+        {page}
+      </Typography>
         <Box className='Holder-CreateUser' 
         
         sx={{
+
           gap: "3rem",
           height: "100%",
           width: "100%",
@@ -52,8 +117,10 @@ const  {viewFile  ,setViewFile } = UseView()
             height: "100%",
             width: `${isMD ? "100%" : "45%"}`
           }}>
-            <Typography variant='h6' component={"div"} sx={{ margin: "0 0 .7rem 0 " }}>1.User Information</Typography>
-            <UserDetails accessLevel={accessLevel}  setAccessLevel={setAccessLevel} ref={ref} />
+            <UserDetails validationErrors={validationErrors} accessLevel={accessLevel}  setAccessLevel={setAccessLevel} ref={userDetailsRef} />
+          <StyledMainBtn  onClick={handleClick}  width='100%' sx={{
+            bgcolor:"#ff5c00"
+          }} children={""} >Create user</StyledMainBtn>
           </Box>
           <Box className="Addtional-Info"
            sx={{
@@ -65,16 +132,27 @@ const  {viewFile  ,setViewFile } = UseView()
             gap: ".5rem",
             height: "100%",
           }}>
-           {accessLevel !== "Admin" && (
-              <>
-                <Typography variant='h6' component={"div"} sx={{ margin: "0 0 .7rem 0 " }}>2.Required Files</Typography>
 
-                <RequiredFiles   />
-
-              </>
-            )}
-            <Typography variant='h6' component={"div"} sx={{ margin: "0 0 .7rem 0 " }}>4.Assign Course</Typography>
             <AssignCourses />
+          <AnimatePresence>
+
+           {accessLevel === "Instructor" && (
+              <motion.div
+              style={{
+                width:"100%",
+                height:"100%",
+              }}
+              initial={{opacity:0}}
+              animate={{opacity:1}}
+              exit={{opacity:0}}
+              transition={{duration:.4}}
+              >
+
+                <RequiredFiles   requiredFilesRef={requiredFilesRef} />
+
+              </motion.div>
+            )}
+            </AnimatePresence>
           </Box>
         </Box>
       </Box>
@@ -111,6 +189,8 @@ const  {viewFile  ,setViewFile } = UseView()
         />
 
         </Button>
+
+
       <PDFViewer pdfData={viewFile} />
       </Box>
         </>

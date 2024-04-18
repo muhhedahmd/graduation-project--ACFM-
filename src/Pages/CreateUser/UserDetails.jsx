@@ -3,15 +3,14 @@ import {
   Box,
   Button,
   FormGroup,
-  Input,
-  InputLabel,
-  
+
   useMediaQuery,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 import AccesLevel from "./AccesLevel";
 import styled from "@emotion/styled";
 import { forwardRef } from "react";
+import SingleUserDetail from "./SingleUserDetail";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -24,54 +23,68 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
-const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
-  const isSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+const UserDetails = forwardRef(
+  ({ validationErrors, profile, setAccessLevel, accessLevel }, ref) => {
+    const [avtarImg, setAvatarImg] = useState(null);
 
-  const [UserData, SetUserData] = useState({
-    AccesLevel: null,
-    fName: "",
-    lName: "",
-    email: "",
-    password: "",
-    about: "",
-  });
-  const [avtarImg, setAvatarImg] = useState(null);
+    const isSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const handleChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (e.target.files[0]) {
-      if (selectedFile.type.startsWith("image/")) {
-        setAvatarImg(URL.createObjectURL(selectedFile));
-      }
-    }
-  };
-
-  const HandleChange = (e) => {
-    console.log(UserData);
-    const { id, value } = e.target;
-    SetUserData((prev) => {
-      return { ...prev, [id]: value, AccesLevel: accessLevel };
+    const [UserData, SetUserData] = useState({
+      AccesLevel: null,
+      fName: "",
+      lName: "",
+      email: "",
+      password: "",
+      about: "",
+      img: avtarImg,
     });
-  };
 
-  return (
-    
+    useImperativeHandle(
+      ref,
+      () => ({
+        UserData: () => UserData,
+      }),
+      [UserData]
+    );
+
+    const handleChangeAvtar = (e) => {
+      const selectedFile = e.target.files[0];
+      if (e.target.files[0]) {
+        if (selectedFile.type.startsWith("image/")) {
+          setAvatarImg(URL.createObjectURL(selectedFile));
+          SetUserData({ ...UserData, img: URL.createObjectURL(selectedFile) });
+        }
+      }
+    };
+
+    const HandleChange = (e) => {
+      const { id, value } = e.target;
+      SetUserData((prev) => {
+        return { ...prev, [id]: value, AccesLevel: accessLevel };
+      });
+    };
+
+    return (
       <form
         style={{
           width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          justifyContent: "space-around",
-          gap: "1rem",
-          height: "100%",
-        }}
+            justifyContent:" flex-start",
+    gap: "2.2em",
+    margin: ".5rem 0",
+    height: "84%", }}
       >
         <FormGroup
           sx={{
+            margin: "0 0 -.8rem 0",
+           
             width: "100%",
           }}
         >
+
+    
           <Box
             sx={{
               width: "100%",
@@ -81,9 +94,12 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
               gap: "2rem",
             }}
           >
-            <AccesLevel setAccessLevel={setAccessLevel} id="Access" />
+
+           
+            <AccesLevel error={validationErrors[0]} setAccessLevel={setAccessLevel} id="Access" />
 
             <Button
+            
               component="label"
               role={"button"}
               variant="contained"
@@ -94,7 +110,8 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
                     sx={{
                       width: "50px",
                       height: "50px",
-                      background: "linear-gradient(180deg, #ff7100, #fffbfb)",
+
+                      background: `${  validationErrors[6] ? 'linear-gradient(180deg, #f00111, #fffbfb)': 'linear-gradient(180deg, #ff7100, #fffbfb)'}`,
                     }}
                   >
                     {avtarImg ? (
@@ -112,7 +129,7 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
               }
               sx={{
                 boxShadow: "none",
-
+                padding:"0",
                 ":hover , :focus": {
                   bgcolor: "#fff",
                   boxShadow: "none",
@@ -121,7 +138,7 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
             >
               <VisuallyHiddenInput
                 type="file"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChangeAvtar(e)}
               />
             </Button>
           </Box>
@@ -133,96 +150,40 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
             justifyContent: "space-between",
             alignItems: "flex-start",
             gap: "1rem",
-            flexDirection: `${profile || isSm ? "column" : "row"}`,
+            flexDirection: `${isSm ? "column" : "row"}`,
             width: "100%",
           }}
         >
-          <FormGroup
-            sx={{
-              width: "100%",
-            }}
-          >
-            <InputLabel
-              sx={{
-                textAlign: "left",
-                color: "#6e6e6e",
-              }}
-              htmlFor="fName"
-            >
-              First Name
-            </InputLabel>
-            <Input
-              className="borderAfter"
-              onChange={(e) => HandleChange(e)}
-              value={UserData.fName}
-              id="fName"
-              placeholder="Enter your first name"
-              fullWidth
-              color="secondary"
-              variant="standard"
-              sx={{
-                width: `${profile || isSm ? "100%" : "15rem"}`,
-                fontSize: ".8rem",
-                paddingTop: "0",
-              }}
-              type="text"
-              InputProps={{
-                classes: {
-                  notchedOutline: {
-                    borderWidth: "1px",
-                    borderColor: "yellow !important",
-                  },
-                },
-              }}
-            />
-          </FormGroup>
-          <FormGroup
-            sx={{
-              width: "100%",
-            }}
-          >
-            <InputLabel
-              sx={{
-                textAlign: "left",
-                color: "#6e6e6e",
-              }}
-              htmlFor="lName"
-            >
-              Last Name
-            </InputLabel>
-            <Input
-              className="borderAfter"
-              onChange={(e) => HandleChange(e)}
-              value={UserData.lName}
-              id="lName"
-              placeholder="Enter your last name"
-              fullWidth
-              color="secondary"
-              variant="standard"
-              sx={{
-                width: `${profile || isSm ? "100%" : "15rem"}`,
-                fontSize: ".8rem",
-                paddingTop: "0",
-              }}
-              type="text"
-              InputProps={{
-                classes: {
-                  notchedOutline: {
-                    borderWidth: "1px",
-                    borderColor: "yellow !important",
-                  },
-                },
-              }}
-            />
-          </FormGroup>
-        </Box>
+         <SingleUserDetail 
+    id={"fName"}
+    lable={"First Name"}
 
+
+HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        />
+          <SingleUserDetail 
+    id={"lName"}
+    lable={"Last Name"}
+
+
+
+HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        />
+        </Box>
+{/* 
         <FormGroup
           style={{
             width: "100%",
           }}
         >
+        {validationErrors &&  (
+
+<ErrorMsg errorArray={validationErrors} path={"email"} /> 
+)}
+         
           <InputLabel
+            error={validationErrors[3]}
+
             sx={{
               textAlign: "left",
               color: "#6e6e6e",
@@ -232,6 +193,8 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
             Email
           </InputLabel>
           <Input
+            error={validationErrors[3]}
+
             className="borderAfter"
             onChange={(e) => HandleChange(e)}
             value={UserData.email}
@@ -254,13 +217,19 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
               },
             }}
           />
-        </FormGroup>
-        <FormGroup
+        </FormGroup> */}
+        {/* <FormGroup
           style={{
             width: "100%",
           }}
         >
+          {validationErrors &&  (
+
+<ErrorMsg errorArray={validationErrors} path={"password"} /> 
+)}
           <InputLabel
+            error={validationErrors[4]}
+
             sx={{
               textAlign: "left",
               color: "#6e6e6e",
@@ -270,6 +239,8 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
             Password
           </InputLabel>
           <Input
+            error={validationErrors[4]}
+
             className="borderAfter"
             onChange={(e) => HandleChange(e)}
             value={UserData.password}
@@ -292,49 +263,27 @@ const UserDetails = forwardRef(({ profile, setAccessLevel, accessLevel }) => {
               },
             }}
           />
-        </FormGroup>
+        </FormGroup> */}
+        
+        <SingleUserDetail 
+    id={"email"}
 
-        <FormGroup
-          style={{
-            width: "100%",
-          }}
-        >
-          <InputLabel
-            sx={{
-              textAlign: "left",
-              color: "#6e6e6e",
-            }}
-            htmlFor="about"
-          >
-            About
-          </InputLabel>
 
-          <Input
-            className="borderAfter"
-            value={UserData.about}
-            multiline
-            rows={4}
-            id="about"
-            placeholder="Password...."
-            fullWidth
-            variant="standard"
-            sx={{
-              fontSize: ".8rem",
-              paddingTop: "0",
-            }}
-            type="text"
-            InputProps={{
-              classes: {
-                notchedOutline: {
-                  borderWidth: "1px",
-                  borderColor: "yellow !important",
-                },
-              },
-            }}
-          />
-        </FormGroup>
+HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        />
+        <SingleUserDetail 
+    id={"password"}
+
+
+HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        />
+        <SingleUserDetail 
+    id={"about"}
+HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        />
       </form>
-  );
-});
+    );
+  }
+);
 
 export default UserDetails;

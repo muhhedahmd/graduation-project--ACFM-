@@ -1,14 +1,15 @@
 import { useTheme } from '@emotion/react'
 import { Box, Button, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import uploadIcon from '../../Components/Dashbboard/file-add.svg';
 import PopupRequriredFiles from './PopupRequriredFiles';
 
 
-const RequiredFiles = () => {
+const RequiredFiles = ({requiredFilesRef}) => {
   const [active , setActive] = useState(false)
     const theme = useTheme()
 
+    
   
       
   return (
@@ -37,11 +38,13 @@ const RequiredFiles = () => {
       borderRadius: "11px",
       position: "relative",
       width: "100%",
-      height: "40%",
-      boxShadow: "3px 3px 5px #dedede",
+
+      boxShadow: "none",
       background: theme.palette.background.paper,
+      border:"1px solid #dedede",
       p: "0",
       ":hover , :focus": {
+      boxShadow: "none",
         bgcolor: "#fff",
       },
     }}
@@ -63,7 +66,7 @@ const RequiredFiles = () => {
       Upload Files
     </Typography>
   </Button>
-  <PopupRequriredFiles setActive={setActive} active={active}/>
+  <PopupRequriredFiles ref={requiredFilesRef} setActive={setActive} active={active}/>
   
 </>
   )
