@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
 
-export default function CustomAutocomplete({ options, id }) {
+export default function CustomAutocomplete({ SetselectCourse, SetselectUser, options, id }) {
   const [filteredOptions, setFilteredOptions] = React.useState([]);
+  const [selectedValues, setSelectedValues] = React.useState([]);
 
   React.useEffect(() => {
     // Update filtered options based on the provided options and id
@@ -14,21 +15,31 @@ export default function CustomAutocomplete({ options, id }) {
         }, []);
         setFilteredOptions(allCourses);
         break;
+      case 'Users':
+        setFilteredOptions(options.filter(option => option.fName && option.lName));
+        break;
       default:
-        setFilteredOptions(options);
+        setFilteredOptions(Array.isArray(options) ? options : []);
         break;
     }
   }, [options, id]);
+
+  const handleAutocompleteChange = (event, newValue) => {
+    setSelectedValues(newValue);
+    if (id === 'Course') {
+      SetselectCourse(newValue);
+    } else if (id === 'Users') {
+      SetselectUser(newValue);
+    }
+  };
 
   const getOptionLabel = (option) => {
     switch (id) {
       case 'Course':
         return `${option.courseName} ${option.courseCode}`;
       case 'Users':
-        // Assuming that the option has properties fName and lName
-        return `${option.fName} ${option.lName}`;
+        return `${option.fName || ''} ${option.lName || ''}`;
       default:
-        // Default case, if id is neither 'Course' nor 'Users'
         return option.label || '';
     }
   };
@@ -39,12 +50,14 @@ export default function CustomAutocomplete({ options, id }) {
       freeSolo={id !== 'Course'}
       id={id + 'Autocomplete'}
       options={filteredOptions}
+      value={selectedValues}
+      onChange={handleAutocompleteChange}
       getOptionLabel={getOptionLabel}
       renderInput={(params) => (
         <TextField
           {...params}
           variant="standard"
-          placeholder={id === 'Course' ? 'Select the courses' : ''}
+          placeholder={id === 'Course' ? 'Select the courses' : 'Select the user'}
         />
       )}
     />

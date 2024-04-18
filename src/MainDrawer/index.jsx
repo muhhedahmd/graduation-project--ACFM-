@@ -9,7 +9,6 @@ import {
 import React, { useState } from "react";
 import Bullets from "./Bullets";
 import { Close } from "@mui/icons-material";
-import CustomAutocomplete from "./AutoComplete";
 import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
@@ -22,7 +21,6 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
     setIsexpand((prev) => !prev);
     
   };
-  const options = ["Option 1", "Option 2", "Option 3"];
   return (
     <StyledMainDrawer isMD={isMD} area={area} isexpand={isexpand}>
       <Bullets />
@@ -190,7 +188,7 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
               </Typography>
             </Box>
 
-            <CustomAutocomplete options={options} isexpand={!isexpand} />
+            {/* <CustomAutocomplete options={options} isexpand={!isexpand} /> */}
           </Box>
         </ListItem>
       </List>

@@ -1,11 +1,24 @@
 import { Box, FormGroup, FormLabel} from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import CustomAutocomplete from '../../MainDrawer/AutoComplete'
-import Btn from '../../Components/Btn'
 import { useUserContext } from '../../Components/Contexts/UserContext'
 import { useSemester } from '../../Components/Contexts/SemesterContext'
+import { StyledMainBtn } from '../../MainDrawer/style'
 
 const AssignCourses = () => {
+    const [selectUser , SetselectUser] = useState()
+    const [selectCourse , SetselectCourse] = useState()
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault(); // Prevent default form submission behavior
+        
+        // Perform form submission logic here, such as sending data to the server
+        
+        // Example:
+        console.log("Selected user:", selectUser);
+        console.log("Selected course:", selectCourse);
+    };
+
   const {state } = useUserContext()
   const  {semesterState}= useSemester()
 
@@ -17,6 +30,7 @@ const AssignCourses = () => {
         transition:".3s"
     }}>
     <form
+    onSubmit={handleFormSubmit}
     style={{
         width:"100%",
         display:"flex",
@@ -38,7 +52,7 @@ const AssignCourses = () => {
         Select a user 
 
         </FormLabel>   
-        <CustomAutocomplete id="Users" options={state} isexpand={"true"} />
+        <CustomAutocomplete SetselectUser={SetselectUser} id="Users" options={state} isexpand={"true"} />
     </FormGroup>
     <FormGroup>
 
@@ -50,22 +64,25 @@ const AssignCourses = () => {
             textAlign:"start",
             
             color:"#6e6e6e"
+            
 
         }}
         >
         Select courses
 
         </FormLabel>   
-        <CustomAutocomplete id="Course" options={semesterState} isexpand={"true"} />
+        <CustomAutocomplete SetselectCourse={SetselectCourse} id="Course" options={semesterState} isexpand={"true"} />
     </FormGroup>
         
-            <Btn 
+            <StyledMainBtn
+            type='submit'
+
             sx={{
                 margin: "1rem 0 0 0 !important"
             }}
             >
                 Submit
-            </Btn>
+            </StyledMainBtn>
     </form>
         
 
