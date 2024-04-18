@@ -97,7 +97,6 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
                     sx={{
                       color: theme.palette.bullet["1nd"],
 
-                      // color: theme.palette.primary.main + "!important",
 
                       fontWeight: "bold",
                       fontSize: "1.4rem",
@@ -171,12 +170,11 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
               <img
                 style={{
                   filter: "invert(.6)",
-                  // fill: theme.palette.text.heading,
 
                   transition: ".4s",
                 }}
                 src="images/main course.png"
-                alt=""
+                alt="course.png"
               />
 
               <Typography
@@ -188,7 +186,6 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
               </Typography>
             </Box>
 
-            {/* <CustomAutocomplete options={options} isexpand={!isexpand} /> */}
           </Box>
         </ListItem>
       </List>
