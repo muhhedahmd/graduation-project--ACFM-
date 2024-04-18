@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react'
 import { useFile } from '../Contexts/FileContext'
 
 
-const Dashbboard = () => {
+const Dashbboard = ({page}) => {
   const {state} = useFile()
 
   const theme = useTheme()
@@ -67,7 +67,7 @@ sx={{
 
 
 <Watch/>
-<UploadAndDeleteSection/>
+<UploadAndDeleteSection page={page}/>
 
 </Box>
   

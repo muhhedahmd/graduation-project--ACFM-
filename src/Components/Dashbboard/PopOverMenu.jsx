@@ -2,14 +2,16 @@ import * as React from "react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import {  Button, Divider, Link, List, ListItem } from "@mui/material";
-import { Delete, Download, Edit,  } from "@mui/icons-material";
+import { Delete, Download,   } from "@mui/icons-material";
 import PreviewIcon from '@mui/icons-material/Preview';
 import ListIcon from "@mui/icons-material/List";
 import styled from "@emotion/styled";
 import { UseView } from "../Contexts/viewedFileContext";
+import { useFile } from "../Contexts/FileContext";
 
 
-export default function PopOverMenu({ url, Filename}) {
+export default function PopOverMenu({ url, Filename , fileId}) {
+  const {DeleteFile}=useFile()
   const { setViewFile } = UseView();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -109,19 +111,6 @@ export default function PopOverMenu({ url, Filename}) {
             
 
           />
-          <StyledListItem
-      onClick={()=>   setAnchorEl(null)}
-          
-          >
-            <Edit fontSize=".5rem" />
-            <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}>
-              Edit
-            </Typography>
-          </StyledListItem>
-          <Divider
-            
-
-            />
           
           <StyledListItem
 
@@ -152,6 +141,12 @@ export default function PopOverMenu({ url, Filename}) {
             />
           <StyledListItem
            
+           onClick={()=>{
+         setAnchorEl(null)
+         DeleteFile(fileId)
+            
+              }}
+
           >
           
             <Delete fontSize=".5rem" />

@@ -14,9 +14,11 @@ import Paper from "@mui/material/Paper";
 
 import SearchFiles from "./SearchFiles";
 import PopOverMenu from "./PopOverMenu";
+import { useFile } from "../Contexts/FileContext";
 
 
 function CustomizedTables({state}) {
+  console.log("state", state)
   const [openRowId, setOpenRowId] = useState(null);
 
   return (
@@ -53,7 +55,7 @@ function CustomizedTables({state}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {state?.uploadedFiles?.map((row) => {
+          {state?.map((row) => {
             return (
               <>
                 <TableRow key={row.id}>
@@ -121,7 +123,7 @@ function CustomizedTables({state}) {
                   </TableCell>
 
                   <TableCell align="right">
-                    <PopOverMenu url={row.url} Filename={row.file.name} id={row.id}/>
+                    <PopOverMenu  url={row.url} Filename={row.file.name} fileId={row.id}/>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -184,8 +186,10 @@ function CustomizedTables({state}) {
   );
 }
 
-const FilesTable = ( {NoSearch , Report , state}) => {
+const FilesTable = ( {NoSearch , Report }) => {
+  const {state} = useFile()
   const theme = useTheme();
+  const [searchItems , setSearchItems] = useState(null) 
   return (
     <Box
       sx={{
@@ -199,7 +203,7 @@ const FilesTable = ( {NoSearch , Report , state}) => {
     >
     {
       !NoSearch ? 
-      <SearchFiles />
+      <SearchFiles setSearchItems={setSearchItems } />
       :null
     }
       <Box
@@ -216,7 +220,7 @@ const FilesTable = ( {NoSearch , Report , state}) => {
           borderRadius: "9px",
         }}
       >
-        <CustomizedTables  state={state}/>
+<CustomizedTables state={searchItems && searchItems.length > 0 ? searchItems : state.uploadedFiles} />
       </Box>
     </Box>
   );

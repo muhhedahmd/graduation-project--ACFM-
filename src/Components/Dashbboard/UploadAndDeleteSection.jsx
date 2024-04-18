@@ -1,8 +1,9 @@
 import { useTheme } from "@emotion/react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import UploadSection from "./UploadSection";
 import styled from "@emotion/styled";
+import DownloadAll from "./DownloadAll";
 
 
 const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
@@ -35,7 +36,7 @@ const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
 )
 
 
-const UploadAndDeleteSection = ({Drawer}) => {
+const UploadAndDeleteSection = ({Drawer , page}) => {
   const theme = useTheme();
   return (
     <StyledUploadAndOptionsSectionDrawer
@@ -58,26 +59,7 @@ const UploadAndDeleteSection = ({Drawer}) => {
 
         }}
       >
-        <Button
-          color="primary"
-          variant="contained"
-          sx={{
-            padding: ".2rem .7rem",
-            width: "100%",
-            boxShadow: "none",
-            bgcolor: theme.palette.primary.paper,
-            color: "#fff",
-            textTransform:"capitalize",
-
-            ":hover , :focus": {
-              bgcolor: theme.palette.primary.paper,
-              color: "#fff",
-              boxShadow: "4px 4px 0px #000",
-            },
-          }}
-        >
-          Download All
-        </Button>
+      <DownloadAll page={page}/>
         <Box
           className="last-active"
           sx={{
@@ -90,6 +72,7 @@ const UploadAndDeleteSection = ({Drawer}) => {
           }}
         >
           <Typography variant="caption" component={"p"}>
+          
             Last edit at 2023 / 9 / 10 at 7:21
           </Typography>
         </Box>

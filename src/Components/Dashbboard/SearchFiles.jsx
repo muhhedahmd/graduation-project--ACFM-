@@ -5,13 +5,27 @@ import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import UploadAndDeleteSection from './UploadAndDeleteSection';
 import Watch from './Watch';
+import { useFile } from '../Contexts/FileContext';
 
-const SearchFiles = () => {
+const SearchFiles = ({setSearchItems}) => {
+  const {state}= useFile()
     const theme = useTheme()
   const isSm = useMediaQuery(theme.breakpoints.down('sm'))
 const [open , setOpen] = useState(false)
-
+const [inpVal ,setInpVal] = useState("")
+const handleChange = (e) => {
+  const { value } = e.target;
+  setInpVal(value);
+  const regex = new RegExp(value, "i");
+  const filteredData = state.uploadedFiles.filter((item) => regex.test(item.file.name) || regex.test(item.Description));
+  if (value) {
+    setSearchItems(filteredData);
+  } else {
+    setSearchItems(null);
+  }
+};
   return (
+    
     <Box
     sx={{
         display:"flex",
@@ -55,7 +69,9 @@ borderRadius: "9px",
           width: "100%",
         }}
       >
-        <Input fullWidth type="text" placeholder="Search files" />
+        <Input
+        value={inpVal}
+         onChange={handleChange} fullWidth type="text" placeholder="Search files" />
       </FormControl>
       <Button
 
@@ -78,6 +94,7 @@ borderRadius: "9px",
       </Button>
     </Box>
   </form>
+
   {
     isSm ?
 

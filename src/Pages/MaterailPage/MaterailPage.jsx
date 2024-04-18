@@ -52,7 +52,7 @@ const MaterailPage = ({page}) => {
   >
       {page}
   </Typography>
-      <Dashbboard/>
+      <Dashbboard page={page}/>
       </Box>
 
     </Box>

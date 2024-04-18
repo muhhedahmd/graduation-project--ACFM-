@@ -1,10 +1,26 @@
 import { Close } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { UseView } from './Contexts/viewedFileContext';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 const PDFViewer = ({ pdfData }) => {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
   const { setViewFile } = UseView();
+  const [numPages, setNumPages] = useState(null);
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+
+  const renderPages = () => {
+    const pages = [];
+    for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+      pages.push(<Page key={pageNumber} pageNumber={pageNumber} />);
+    }
+    return pages;
+  };
 
   return (
     <div
@@ -19,18 +35,20 @@ const PDFViewer = ({ pdfData }) => {
         alignItems: 'flex-start',
         backgroundColor: 'rgba(0, 0, 0, 0.5)', 
         zIndex: '99999999999999999999999999999999999999', 
+        overflowX: 'hidden',
       }}
     >
       <div
         style={{
           margin: '1rem 0  2rem 0',
+          width: '100%',
           maxWidth: '90%',
           maxHeight: '95%',
           overflow: 'auto',
           backgroundColor: '#fff', // White background for PDF container
           borderRadius: '8px', // Rounded corners
           boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', // Shadow effect
-          overflowX: 'hidden',
+          overflowX: 'scroll',
         }}
       >
         <Button
@@ -47,15 +65,10 @@ const PDFViewer = ({ pdfData }) => {
         >
           <Close style={{ fontSize: '2rem' }} />
         </Button>
-        <iframe
-          src={pdfData}
-          title="PDF Viewer"
-          style={{
-            width: '50vw',
-            height: 'calc(100vh - 30px)', // Adjusted height to accommodate the close button
-            border: 'none', // Remove border
-          }}
-        />
+        <h1 style={{ textAlign: 'center' }}>PDF Viewer</h1>
+        <Document file={pdfData} onLoadSuccess={onDocumentLoadSuccess}>
+          {numPages && renderPages()}
+        </Document>
       </div>
     </div>
   );
