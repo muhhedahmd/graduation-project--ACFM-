@@ -4,6 +4,8 @@ import React from "react";
 import UploadSection from "./UploadSection";
 import styled from "@emotion/styled";
 import DownloadAll from "./DownloadAll";
+import { useFile } from "../Contexts/FileContext";
+import TimeDisplay from "../../utiles/timedifferance";
 
 
 const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
@@ -37,6 +39,7 @@ const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
 
 
 const UploadAndDeleteSection = ({Drawer , page}) => {
+  const {state} = useFile()
   const theme = useTheme();
   return (
     <StyledUploadAndOptionsSectionDrawer
@@ -71,10 +74,12 @@ const UploadAndDeleteSection = ({Drawer , page}) => {
             bgcolor: theme.palette.text.primary,
           }}
         >
-          <Typography variant="caption" component={"p"}>
-          
-            Last edit at 2023 / 9 / 10 at 7:21
-          </Typography>
+<Typography variant="caption" component={"p"}>
+  {state && state.uploadedFiles.length > 0 && state.uploadedFiles[0].file && state.uploadedFiles[0].file.lastModifiedDate
+    ? <TimeDisplay  lastModifiedDate={(state.uploadedFiles[0].file.lastModifiedDate)}/>
+    : 'No files uploaded yet'}
+</Typography>
+
         </Box>
       </Box>
 

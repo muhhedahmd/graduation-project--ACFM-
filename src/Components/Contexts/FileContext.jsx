@@ -11,6 +11,19 @@ const DEFAULT_STATE = {
 
 const FileContext = createContext(null);
 
+// let currentDate = new Date();
+
+// // Extract individual components
+// let year = currentDate.getFullYear();
+// let month = currentDate.getMonth() + 1; // Month is 0-indexed, so we add 1
+// let day = currentDate.getDate();
+// let hours = currentDate.getHours();
+// let minutes = currentDate.getMinutes();
+// let seconds = currentDate.getSeconds();
+
+// Format the date and time string
+// let formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
 const reducer = (state, action) => {
     
  
@@ -41,13 +54,14 @@ const reducer = (state, action) => {
     }
 }
 
+
 export const FileContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
 
     const uploadFile = (file ,id , Description) => {
         dispatch({
             type: FILE_OPERATION.UPLOAD_FILE,
-            payload: { file:file  , id:id , Description:Description}
+            payload: { file:file   , id:id , Description:Description}
         });
     };
     const DeleteFile = (id ) => {
