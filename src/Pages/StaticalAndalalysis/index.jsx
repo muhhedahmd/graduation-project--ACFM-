@@ -1,6 +1,5 @@
 import React from 'react'
 import StanderdBox from '../../Components/StanderdBox'
-import GenerateReport from '../GenerateReport'
 import AddReport from '../GenerateReport/AddReport'
 import { Box, Typography, useMediaQuery } from '@mui/material'
 import InfoBoxes from '../GenerateReport/InfoBoxes'

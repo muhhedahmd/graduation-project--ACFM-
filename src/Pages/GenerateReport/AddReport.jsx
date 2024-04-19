@@ -1,9 +1,9 @@
 import { Box, Typography, Button,  useMediaQuery } from '@mui/material';
 import { useTheme } from '@emotion/react';
 
+import jsPDF from 'jspdf';
 
-
-const AddReport = ({}) => {
+const AddReport = () => {
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
 
   const theme = useTheme();
@@ -13,7 +13,11 @@ const AddReport = ({}) => {
 
 
 
-  
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.text('Hello, World!', 10, 10);
+    doc.save('example.pdf');
+  };
 
   return (
     <Box
@@ -26,7 +30,10 @@ const AddReport = ({}) => {
     
       }}
     >
+    
+
       <Button
+      onClick={generatePDF}
         component="label"
         role={undefined}
         variant="contained"
