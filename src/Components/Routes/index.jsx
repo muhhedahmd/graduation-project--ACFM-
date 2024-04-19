@@ -9,6 +9,7 @@ import Mangeusers from "../../Pages/Mangeusers";
 import OpenSemester from "../../Pages/OpenSemester/indes";
 import Login from '../../Pages/Login/index'
 import { ROUTE_PATHS } from "./Path";
+import StaticalAndalalysis from "../../Pages/StaticalAndalalysis";
 
 
 export default function AppRouter() {
@@ -34,6 +35,8 @@ export default function AppRouter() {
                 { path: ROUTE_PATHS.CreateUser, element: <CreateUser page="CreateUser" /> },
                 { path: ROUTE_PATHS.ManageUsers, element: <Mangeusers page="Mangeusers" /> },
                 { path: ROUTE_PATHS.OpenSemester, element: <OpenSemester page="OpenSemester" /> },
+                { path: ROUTE_PATHS.FinalExams, element: <StaticalAndalalysis page="Final Exams" /> },
+                { path: ROUTE_PATHS.StudentSurvey, element: <StaticalAndalalysis page="Student Survey" /> },
                 { path: ROUTE_PATHS.Profile, element: <ProfilePage page="profile" /> },
             ]
         },

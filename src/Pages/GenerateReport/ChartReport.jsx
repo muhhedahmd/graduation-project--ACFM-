@@ -26,7 +26,7 @@ export default function TickPlacementBars() {
       series={[
         { data: [35, 44, 24, 34 , 100] },
       ]}
-      height={ isSm? 150:250}
+      height={ isSm? 150:235}
       xAxis={[{ data: ['A', 'B', 'C',  "D", 'F' ], scaleType: 'band' }]}
       margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
     />

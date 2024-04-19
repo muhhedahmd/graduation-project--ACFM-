@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 
 
 
-const AddReport = () => {
+const AddReport = ({}) => {
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
 
   const theme = useTheme();

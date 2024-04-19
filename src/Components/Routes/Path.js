@@ -11,5 +11,9 @@ export const ROUTE_PATHS = {
     CreateUser: "/createuser",
     ManageUsers: "/manageusers",
     OpenSemester: "/opensemester",
+    FinalExams :"/FinalExams",
+
+StudentSurvey:"/StudentSurvey",
+
     Profile: "/profile"
 };
