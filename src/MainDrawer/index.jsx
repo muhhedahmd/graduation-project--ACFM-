@@ -13,6 +13,7 @@ import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
 import { useTheme } from "@emotion/react";
+import CustomAutocomplete from "./AutoComplete";
 
 const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
   const theme = useTheme();
@@ -61,6 +62,7 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
                 color: theme.palette.text.heading,
 
                 fontWeight: "700",
+
               }}
               variant="h6"
               component={"p"}
@@ -188,6 +190,28 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
 
           </Box>
         </ListItem>
+   
+          <Box
+          sx={{
+            scale:`${isexpand ?"0" :"1" }`,
+            height: `${isexpand ?"0" :"auto" }`
+          }}
+          >
+
+        <CustomAutocomplete
+        key={'mainDrawer'}
+
+          id={'mainDrawer'}
+          options={[
+
+          {  label:"MAth1 mc1"},
+            {label:"Physics py12"},
+            {label:"Computer scince", Value:'Math1_mc1'},
+          ]
+          }
+        />
+          </Box>
+
       </List>
 
       <MenuCollapse isexpand={isexpand} />

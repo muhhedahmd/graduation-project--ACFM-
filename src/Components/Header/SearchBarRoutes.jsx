@@ -42,7 +42,7 @@ useEffect(() => {
     animate={{
       transform: `${isFocused ? "translateX(0rem)" : "translateX(17rem)" }`,
       width: `${isFocused ? "30rem" : "20rem" }`,
-
+      
         
     }}
     transition={{ duration: 0.4 , ease:"linear", stiffness:  60}}
@@ -106,6 +106,8 @@ inpVal  ?
       id='search-results'
       aria-labelledby="Search results"
       style={{
+        transformOrigin:" right center",
+
      opacity:"0",
         left: "0%",
     width: "100%",

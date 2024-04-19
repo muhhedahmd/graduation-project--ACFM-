@@ -1,84 +1,88 @@
 import * as React from 'react';
 import { Box, Typography } from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
+import { useFile } from '../Contexts/FileContext';
 
 
-const options = {
-  series: [60],
-  chart: {
-  height: 150,
-  type: 'radialBar',
-  toolbar: {
-    show: true
-  }
-},
-plotOptions: {
-  radialBar: {
-    startAngle: -135,
-    endAngle: 225,
-     hollow: {
-      margin: 0,
-      size: '80%',
-      background: '#fff',
-      image: undefined,
-      imageOffsetX: 0,
-      imageOffsetY: 0,
-      position: 'front',
-      dropShadow: {
-        enabled: true,
-        top: 2,
-        left: 0,
-        blur: 3,
-        opacity: 0.2
-      }
-    },
-    track: {
-      background: '#fff',
-      strokeWidth: '67%',
-      margin: 0, // margin is in pixels
-      dropShadow: {
-        enabled: false,
-        top: -3,
-        left: 0,
-        blur: 4,
-        opacity: .1
-      }
-    },
-
-    dataLabels: {
-      show: true,
-      name: {
-        offsetY: -10,
-        show: true,
-        color: '#888',
-        fontSize: '17px'
-      },
-      value: {
-        formatter: function(val) {
-          return parseInt(val);
-        },
-        color: '#111',
-        fontSize: '36px',
-        show: true,
-      }
-    }
-  }
-},
-fill: {
-  type: 'solid',
-  colors: ['#ff5c00']
-},
-stroke: {
-  lineCap: 'round'
-},
-labels: ['Math 123hc'],
-};
 
 
 
 
 
 export default function Watch() {
+  const {state} = useFile() 
+
+  const options = {
+    series: [state.uploadedFiles.length * 10],
+    chart: {
+    height: 150,
+    type: 'radialBar',
+    toolbar: {
+      show: true
+    }
+  },
+  plotOptions: {
+    radialBar: {
+      startAngle: -135,
+      endAngle: 225,
+       hollow: {
+        margin: 0,
+        size: '80%',
+        background: '#fff',
+        image: undefined,
+        imageOffsetX: 0,
+        imageOffsetY: 0,
+        position: 'front',
+        dropShadow: {
+          enabled: true,
+          top: 2,
+          left: 0,
+          blur: 3,
+          opacity: 0.2
+        }
+      },
+      track: {
+        background: '#fff',
+        strokeWidth: '67%',
+        margin: 0, // margin is in pixels
+        dropShadow: {
+          enabled: false,
+          top: -3,
+          left: 0,
+          blur: 4,
+          opacity: .1
+        }
+      },
+  
+      dataLabels: {
+        show: true,
+        name: {
+          offsetY: -10,
+          show: true,
+          color: '#888',
+          fontSize: '17px'
+        },
+        value: {
+          formatter: function(val) {
+            return parseInt(val);
+          },
+          color: '#111',
+          fontSize: '36px',
+          show: true,
+        }
+      }
+    }
+  },
+  fill: {
+    type: 'solid',
+    colors: ['#ff5c00']
+  },
+  stroke: {
+    lineCap: 'round'
+  },
+  labels: ['Math 123hc'],
+  };
+  
 
   return (
     <Box

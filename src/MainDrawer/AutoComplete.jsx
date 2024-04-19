@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
 
-export default function CustomAutocomplete({ SetselectCourse, SetselectUser, options, id }) {
+export default function CustomAutocomplete({  SetselectCourse, SetselectUser, options, id }) {
   const [filteredOptions, setFilteredOptions] = React.useState([]);
   const [selectedValues, setSelectedValues] = React.useState([]);
 
@@ -40,7 +40,7 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
       case 'Users':
         return `${option.fName || ''} ${option.lName || ''}`;
       default:
-        return option.label || '';
+        return option.label ;
     }
   };
 
@@ -57,7 +57,7 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
         <TextField
           {...params}
           variant="standard"
-          placeholder={id === 'Course' ? 'Select the courses' : 'Select the user'}
+          placeholder={id === 'Course' ? 'Select the courses' : id === 'Users' ?  'Select the user' : 'Select the courses' }
         />
       )}
     />
