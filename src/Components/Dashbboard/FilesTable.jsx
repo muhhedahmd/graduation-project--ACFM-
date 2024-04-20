@@ -218,7 +218,7 @@ const FilesTable = ( {NoSearch , Report  , state }) => {
           borderRadius: "9px",
         }}
       >
-<CustomizedTables state={searchItems ? state :searchItems } />
+<CustomizedTables state={searchItems ? searchItems :state } />
       </Box>
     </Box>
   );

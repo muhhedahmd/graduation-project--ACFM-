@@ -42,7 +42,6 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
           BGrade <= totalPassed &&
           CGrade <= totalPassed &&
           DGrade <= totalPassed &&
-          FGrade >= 0 && // Ensure FGrade is not negative
           !isNaN(totalStudents) &&
           !isNaN(totalEnrolled) &&
           !isNaN(totalPassed) &&
