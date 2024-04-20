@@ -1,7 +1,7 @@
 import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material'
 import React from 'react'
 
-const InfoBoxes = ({title , icon ,value}) => {
+const InfoBoxes = ({title , icon ,value , percent}) => {
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
 
   return (
@@ -16,7 +16,7 @@ const InfoBoxes = ({title , icon ,value}) => {
       width:`${isSm ?"100%" :"20%" }`,
 
 
-    padding: '1rem 0 1rem 1rem',
+    padding: '1rem 1rem 1rem 1rem',
         boxShadow:"4px 2px 4px #dedede",
         bgcolor:"#fff",
     }}
@@ -49,18 +49,38 @@ const InfoBoxes = ({title , icon ,value}) => {
      </Box>
      <Box
      className='Value'
+     sx={{
+      display:"flex",
+      width:"100%",
+      justifyContent:"space-between",
+      alignItems:"center",
+      // padding:" 0 .5rem",
+     }}
      >
      <Typography
         variant='body2'
         component={"p"}
 
         sx={{
-            fontSize:" 1.25rem",
-    fontWeight: "700",
+            fontSize:" 1rem",
+    fontWeight: "500",
         }}
      
      >
      {value}
+
+     </Typography>
+     <Typography
+        variant='body2'
+        component={"p"}
+
+        sx={{
+            fontSize:" .9rem",
+    fontWeight: "600",
+        }}
+     
+     >
+     {(+percent)  ? percent+"%":  "0%"} 
 
      </Typography>
 

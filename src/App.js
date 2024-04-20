@@ -62,7 +62,9 @@ function App() {
 
 <FileContextProvider>
 
+    
     <AppRouter/>
+
 
     {
         viewFile ? 

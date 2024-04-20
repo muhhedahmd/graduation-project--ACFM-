@@ -14,7 +14,6 @@ import Paper from "@mui/material/Paper";
 
 import SearchFiles from "./SearchFiles";
 import PopOverMenu from "./PopOverMenu";
-import { useFile } from "../Contexts/FileContext";
 
 
 function CustomizedTables({state}) {
@@ -186,8 +185,7 @@ function CustomizedTables({state}) {
   );
 }
 
-const FilesTable = ( {NoSearch , Report }) => {
-  const {state} = useFile()
+const FilesTable = ( {NoSearch , Report  , state }) => {
   const theme = useTheme();
   const [searchItems , setSearchItems] = useState(null) 
   return (
@@ -220,7 +218,7 @@ const FilesTable = ( {NoSearch , Report }) => {
           borderRadius: "9px",
         }}
       >
-<CustomizedTables state={searchItems && searchItems.length > 0 ? searchItems : state.uploadedFiles} />
+<CustomizedTables state={searchItems ? state :searchItems } />
       </Box>
     </Box>
   );

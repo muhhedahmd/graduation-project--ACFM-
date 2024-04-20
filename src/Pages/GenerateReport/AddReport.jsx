@@ -1,23 +1,17 @@
 import { Box, Typography, Button,  useMediaQuery } from '@mui/material';
 import { useTheme } from '@emotion/react';
 
-import jsPDF from 'jspdf';
+import { useState } from 'react';
+import ReportDrawer from './ReportDrawer';
 
-const AddReport = () => {
+const AddReport = ({setMainReportState  ,mainReportState}) => {
+  const [ReportDrawerState , setReportDrawerState  ] = useState(false)
+
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
-
   const theme = useTheme();
 
 
-    
 
-
-
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.text('Hello, World!', 10, 10);
-    doc.save('example.pdf');
-  };
 
   return (
     <Box
@@ -33,7 +27,7 @@ const AddReport = () => {
     
 
       <Button
-      onClick={generatePDF}
+      onClick={()=>setReportDrawerState(true)}
         component="label"
         role={undefined}
         variant="contained"
@@ -57,12 +51,10 @@ const AddReport = () => {
 <defs>
 <linearGradient id="paint0_linear_503_577" x1="27.7592" y1="56.1671" x2="0.54054" y2="36.5342" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FF833D" />
-{/* <stop stop-color="#FF833D" stop-opacity="0.24"/> */}
 <stop offset="1" stop-color="#FF833D"/>
 </linearGradient>
 </defs>
 </svg>
-          {/* </SvgIcon> */}
 
 
 
@@ -112,7 +104,9 @@ const AddReport = () => {
           Genrate Report 
         </Typography>
       </Button>
+      
     
+    <ReportDrawer mainReportState={mainReportState}  setMainReportState={setMainReportState}  open={ReportDrawerState} setReportDrawerState={setReportDrawerState}/>
     </Box>
   );
 };

@@ -10,6 +10,7 @@ import OpenSemester from "../../Pages/OpenSemester/indes";
 import Login from '../../Pages/Login/index'
 import { ROUTE_PATHS } from "./Path";
 import StaticalAndalalysis from "../../Pages/StaticalAndalalysis";
+import ReportFileProvider from "../Contexts/ReportFileContext";
 
 
 export default function AppRouter() {
@@ -30,7 +31,12 @@ export default function AppRouter() {
                 { path: ROUTE_PATHS.Attendance, element: <MaterailPage page="Attendance" /> },
                 { path: ROUTE_PATHS.ExamsAndSolutions, element: <MaterailPage page="Exams and Solutions" /> },
                 { path: ROUTE_PATHS.Assignments, element: <MaterailPage page="Assignments" /> },
-                { path: ROUTE_PATHS.GenerateReport, element: <GenerateReport page="GenerateReport" /> },
+                { path: ROUTE_PATHS.GenerateReport, element:<>
+                <ReportFileProvider >
+
+                <GenerateReport page="GenerateReport" />
+                </ReportFileProvider>
+                </>  },
                 { path: ROUTE_PATHS.AdminFiles, element: <MaterailPage page="Adminfiles" /> },
                 { path: ROUTE_PATHS.CreateUser, element: <CreateUser page="CreateUser" /> },
                 { path: ROUTE_PATHS.ManageUsers, element: <Mangeusers page="Mangeusers" /> },

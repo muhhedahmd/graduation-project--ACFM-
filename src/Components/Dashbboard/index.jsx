@@ -45,7 +45,7 @@ height:"100%",
 }}
 >
 
-<FilesTable state={state}/>
+<FilesTable state={state.uploadedFiles}/>
 
 </Box>
 

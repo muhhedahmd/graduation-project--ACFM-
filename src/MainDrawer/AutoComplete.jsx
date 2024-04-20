@@ -34,16 +34,19 @@ export default function CustomAutocomplete({  SetselectCourse, SetselectUser, op
   };
 
   const getOptionLabel = (option) => {
+    if (Array.isArray(option) && option.length === 0) {
+      return ''; // Return an empty string or any default label you prefer
+    }
+  
     switch (id) {
       case 'Course':
         return `${option.courseName} ${option.courseCode}`;
       case 'Users':
         return `${option.fName || ''} ${option.lName || ''}`;
       default:
-        return option.label ;
+        return option.label || '';
     }
   };
-
   return (
     <Autocomplete
       multiple={id === 'Course'}
