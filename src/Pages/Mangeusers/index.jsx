@@ -1,23 +1,31 @@
 import React from 'react'
 import StanderdBox from '../../Components/StanderdBox'
-import {Box} from '@mui/material'
+import {Box, Typography} from '@mui/material'
 import ManageUserHeader from './ManageUserHeader'
+import { useUserContext } from '../../Components/Contexts/UserContext'
 import UsersTable from './USersTable'
-const Mangeusers = () => {
+const Mangeusers = ({page}) => {
+
+  const {state} = useUserContext()
+  console.log(state)
   return (
     <StanderdBox>
       <Box 
       
       className='Main-Holder'
       >
-
+      <Typography
+      align='left'
+      variant='h5'
+      component={"p"}
+      >
+{page} & Courses
+      </Typography>
         <ManageUserHeader/>
       <Box
-      sx={{
-        padding:"0 1rem"
-      }}
+
       >
-        <UsersTable NoSearch={true} />
+  <UsersTable state={state} NoSearch={true}/>
 
       </Box>
 

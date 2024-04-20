@@ -16,7 +16,7 @@ const ManageUserHeader = () => {
       alignItems:"center",
       gap:"3rem",
       width:"100%",
-      padding:"1rem "
+      
     }}
     >
   <form

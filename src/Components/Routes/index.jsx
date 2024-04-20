@@ -37,12 +37,17 @@ export default function AppRouter() {
                 <GenerateReport page="GenerateReport" />
                 </ReportFileProvider>
                 </>  },
-                { path: ROUTE_PATHS.AdminFiles, element: <MaterailPage page="Adminfiles" /> },
-                { path: ROUTE_PATHS.CreateUser, element: <CreateUser page="CreateUser" /> },
-                { path: ROUTE_PATHS.ManageUsers, element: <Mangeusers page="Mangeusers" /> },
+                { path: ROUTE_PATHS.AdminFiles, element: <MaterailPage page="Admin files" /> },
+                { path: ROUTE_PATHS.CreateUser, element: <CreateUser page="Create User" /> },
+                { path: ROUTE_PATHS.ManageUsers, element: <Mangeusers page="Mange users" /> },
                 { path: ROUTE_PATHS.OpenSemester, element: <OpenSemester page="OpenSemester" /> },
-                { path: ROUTE_PATHS.FinalExams, element: <StaticalAndalalysis page="Final Exams" /> },
-                { path: ROUTE_PATHS.StudentSurvey, element: <StaticalAndalalysis page="Student Survey" /> },
+                { path: ROUTE_PATHS.FinalExams, element:  <ReportFileProvider >
+
+<StaticalAndalalysis page="Final Exams" />
+                </ReportFileProvider> },
+                { path: ROUTE_PATHS.StudentSurvey, element: <ReportFileProvider >
+ <StaticalAndalalysis page="Student Survey" />
+                </ReportFileProvider> },
                 { path: ROUTE_PATHS.Profile, element: <ProfilePage page="profile" /> },
             ]
         },

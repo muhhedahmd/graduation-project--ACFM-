@@ -11,7 +11,7 @@ const InfoBoxes = ({title , icon ,value , percent}) => {
         flexDirection:"column",
         gap:".5rem",
         textAlign:"start",
-        height:"70%",
+        height:"6rem",
         borderRadius:"5px",
       width:`${isSm ?"100%" :"20%" }`,
 

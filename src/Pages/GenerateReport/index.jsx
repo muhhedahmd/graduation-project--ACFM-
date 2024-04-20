@@ -41,8 +41,13 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
         className="Holder"
         sx={{
           height: "100vh",
-          width: "100vw",
+          width: "100%",
           margin: "1.5rem 1rem 1rem 1rem ",
+          display:"flex",
+          justifyContent:"flex-start",
+          alignItems:"flex-start",
+          gap:".5rem",
+          flexDirection:"column",
         }}
       >
         <Typography variant="h5" component={"p"} align="left">
@@ -52,7 +57,12 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
         <Box
           sx={{
             height: "95vh",
-            width: "auto",
+            width: "100%",
+            display: "flex",
+            justifyContent:"flex-start",
+            alignItems:"flex-start",
+            flexDirection:"column",
+            gap:"1rem",
           }}
         >
           <Box
@@ -62,7 +72,7 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
               justifyContent: "space-between",
               alignItems: "flex-start",
               width: `${isSm ? "95%" : "100%"}`,
-              maxHeight: "24%",
+              height: "auto",
               overflow: "auto",
               gap: ".5rem",
             }}
@@ -107,8 +117,8 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
               padding: ".5rem",
               boxShadow: "3px 2px 4px #dedede",
               bgcolor: "#fff",
-              margin: "1rem 0 0 0",
               // maxHeight:"49%",
+              margin: `${isSm ? "1rem 0  00 0 " : "0"}`,
               height: `${isSm ? "25%" : "40%"}`,
               display: "flex",
               justifyContent: "center",
@@ -122,13 +132,12 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
             className="Add-Report-wrapper"
             sx={{
               borderRadius: "6px",
-              margin: "1rem 0 ",
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
 
-              height: "31%",
+              height: "38%",
               flexDirection: `${isSm ? "column" : "row"}`,
 
               // padding:".5rem",

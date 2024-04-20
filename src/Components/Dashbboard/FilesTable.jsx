@@ -16,7 +16,7 @@ import SearchFiles from "./SearchFiles";
 import PopOverMenu from "./PopOverMenu";
 
 
-function CustomizedTables({state}) {
+function CustomizedTables({state , colors}) {
   console.log("state", state)
   const [openRowId, setOpenRowId] = useState(null);
 
@@ -30,6 +30,7 @@ function CustomizedTables({state}) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead
           sx={{
+            bgcolor: colors?.bgColor ?colors.bgColor : "#fff"  ,
             borderBottom: "3px solid #ff5c00",
           }}
         >
@@ -185,7 +186,7 @@ function CustomizedTables({state}) {
   );
 }
 
-const FilesTable = ( {NoSearch , Report  , state }) => {
+const FilesTable = ( { padding, NoSearch , Report  , state  , colors}) => {
   const theme = useTheme();
   const [searchItems , setSearchItems] = useState(null) 
   return (
@@ -218,7 +219,7 @@ const FilesTable = ( {NoSearch , Report  , state }) => {
           borderRadius: "9px",
         }}
       >
-<CustomizedTables state={searchItems ? searchItems :state } />
+<CustomizedTables colors={colors} state={searchItems ? searchItems :state } />
       </Box>
     </Box>
   );

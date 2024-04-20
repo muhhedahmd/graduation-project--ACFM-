@@ -58,7 +58,7 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
             },
             { 
               ...reportGradesData, 
-              test: FGrade, 
+
               FGrade: FGrade
             },]
           );
@@ -112,12 +112,12 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
    sx={{
     padding:"1rem 0 0 0",
     display:"flex",
-    justifyContent:"center",
-    alignItems:"flex-start",
+    justifyContent: "flex-start",
+    gap: "3rem",
+        alignItems:"flex-start",
     position:"relative",
     height:`${isSm ? "100%" : "100vh"}`,
     width:"100vw",
-    gap:"1rem",
     flexDirection:"column",
     
    }}
@@ -170,8 +170,7 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
     justifyContent:"center",
     alignItems:`${isSm ? "center" : "flex-start"}`,
     position:"relative",
-    height:"87%",
-    width:"100vw",
+        width:"100vw",
     gap:"2rem",
 
    }}
