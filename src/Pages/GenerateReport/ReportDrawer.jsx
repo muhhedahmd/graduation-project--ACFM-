@@ -12,7 +12,7 @@ import { useReportFiles } from '../../Components/Contexts/ReportFileContext'
 
 const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainReportState}) => {
 
-    const {uploadFile , state} = useReportFiles()
+    const {uploadFile } = useReportFiles()
     const  ReportInfoRef = useRef()
     const  ReportGradesRef = useRef()
     const isSm = useMediaQuery(theme=>theme.breakpoints.down("md"))
