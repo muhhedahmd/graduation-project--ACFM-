@@ -1,4 +1,4 @@
-import { Box, ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import { AuthProvider } from "./Components/Contexts/Authantication";
 import AppRouter from "./Components/Routes";
 import './App.css'

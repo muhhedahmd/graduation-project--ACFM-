@@ -10,7 +10,7 @@ const PDFViewer = ({ pdfData }) => {
 
   const { setViewFile } = UseView();
   const [numPages, setNumPages] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [, setIsLoaded] = useState(false);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
