@@ -42,7 +42,7 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
         sx={{
           height: "100vh",
           width: "100%",
-          margin: "1.5rem 1rem 1rem 1rem ",
+          margin: '.5rem 1rem 0 1rem ',
           display:"flex",
           justifyContent:"flex-start",
           alignItems:"flex-start",
@@ -72,6 +72,7 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
               justifyContent: "space-between",
               alignItems: "flex-start",
               width: `${isSm ? "95%" : "100%"}`,
+              maxHeight:`${isSm ? '19%': "100%"}`,
               height: "auto",
               overflow: "auto",
               gap: ".5rem",

@@ -19,9 +19,8 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import SegmentIcon from "@mui/icons-material/Segment";
 import { StyledListItemCenter } from "./style";
 import MainDrawer from "../../MainDrawer";
-import SearchBarRoutes from "./SearchBarRoutes";
 
-const Header = ({ nosearch , bgcolor }) => {
+const Header = ({  bgcolor }) => {
   const theme = useTheme();
   const isSm = useMediaQuery((theme) => theme.breakpoints.down("lg"));
   const [MenuDrawer, setMenuDrawer] = useState(false);
@@ -74,11 +73,6 @@ const Header = ({ nosearch , bgcolor }) => {
                   </ListItemIcon>
                 </ListItem>
 
-
-                      {!nosearch ? 
-                        <SearchBarRoutes/>
-                :""
-                      }
 
 
                 <ListItem

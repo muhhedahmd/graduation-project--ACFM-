@@ -12,7 +12,6 @@ root.render(
     <App />
 </ViewedFileContextProvider>
   </BrowserRouter>
-  // </React.StrictMode>
 );
 
 

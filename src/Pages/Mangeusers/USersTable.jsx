@@ -11,8 +11,8 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import PopOverMenu from "../../Components/Dashbboard/PopOverMenu";
 import { ArrowRightAltOutlined } from "@mui/icons-material";
+import PopOverMenu from "./PopOverMenu";
 
 function CustomizedTables({ state }) {
   const [openRowId, setOpenRowId] = useState(null);
@@ -86,7 +86,7 @@ function CustomizedTables({ state }) {
         <TableBody sx={{ height: "10vh" }}>
           {state.map((row) => (
             <React.Fragment key={row.id}>
-              <TableRow>
+              <TableRow sx={{p:"0"}}>
                 <TableCell
                   sx={{ pr: "0" }}
                   onClick={() => handleParentCollapse(row.id)}
@@ -159,7 +159,7 @@ function CustomizedTables({ state }) {
                   <PopOverMenu />
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{p:0}}>
                 <TableCell
 
                   style={{ width:"100%" ,p: 0 }}

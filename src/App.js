@@ -7,6 +7,7 @@ import {  SemesterProvider } from "./Components/Contexts/SemesterContext";
 import { UseView } from "./Components/Contexts/viewedFileContext";
 import PDFViewer from "./Components/PDFViewer";
 import { UserProvider } from "./Components/Contexts/UserContext";
+import { AnimatePresence , motion } from "framer-motion";
 
 
 function App() {
@@ -64,12 +65,26 @@ function App() {
 
     
     <AppRouter/>
+<AnimatePresence>
 
 
     {
         viewFile ? 
         <>
-      <Box
+      <motion.div
+      initial={{
+        opacity:0
+      }}
+      animate={{opacity:1
+
+      
+      }}
+      exit={{opacity:0, transition:{duration:0.2}}}
+      transition={{duration:0.5}}
+
+      key='file-viewer'
+    
+      
       className="flex-space-between-center"
       sx={{
         position:"fixed",
@@ -78,11 +93,13 @@ function App() {
       }}
       >
       <PDFViewer pdfData={viewFile} />
-      </Box>
+      </motion.div>
         </>
       :
       null
       }
+</AnimatePresence>
+
 
 </FileContextProvider>
 </SemesterProvider>

@@ -117,10 +117,10 @@ export const StyledCollapse = styled(List)(({theme })=>{
       }
 
 })
-export const StyledMainBtn = styled(Button)(({width = "100%"})=>{
+export const StyledMainBtn = styled(Button)(({width = "100%" , colorProp = "#ff5c00"})=>{
     return {
         width:width,
-        background:"#ff5c00"
+        background:colorProp
         ,':hover':{
         background:"#ff5c00"
 

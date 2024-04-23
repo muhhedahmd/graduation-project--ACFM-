@@ -5,7 +5,7 @@ import { v4 as uuid5 } from "uuid";
 import { useTheme } from "@emotion/react";
 import {StyledFormGroup} from  './Style'
 import AutoCompleteUsers from "./AutoCompleteUsers";
-const Users = ({setSemesterState}) => {
+const CoursesOfSemester = ({setSemesterState}) => {
   const theme = useTheme()
   const [courses, setCourses] = useState({
     Fall: [
@@ -259,4 +259,4 @@ const Users = ({setSemesterState}) => {
   );
 };
 
-export default Users;
+export default CoursesOfSemester;

@@ -32,8 +32,7 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
         const DGrade = parseInt(reportGradesData.DGrade);
         
         // Calculate FGrade
-        const FGrade = totalStudents - totalPassed - (AGrade + BGrade + CGrade + DGrade);
-      
+        const FGrade =  - Math.max(0, totalEnrolled - (AGrade + BGrade + CGrade + DGrade));
         // Validate the input data
         if (
           totalEnrolled <= totalStudents &&
@@ -69,6 +68,7 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
                     doc.text(`${key}: ${mainReportState[0][key]}`, 10, i * 10, { align: 'left', baseline: 'top' })
                   ));
                   
+                  
                   Object.keys(mainReportState[1]).map((key, i) => (
                     doc.text(`${key}: ${mainReportState[1][key]}`, 100, i * 10, { align: 'left', baseline: 'top' })
                   ));
@@ -85,7 +85,6 @@ const ReportDrawer = ({ mainReportState, open , setReportDrawerState , setMainRe
     "report",
   )
 
-    console.log(pdfBlob , pdfFile , state )
 
 
 

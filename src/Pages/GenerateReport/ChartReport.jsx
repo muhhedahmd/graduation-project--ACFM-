@@ -24,8 +24,17 @@ export default function TickPlacementBars({mainReportState}) {
        width:  `${ isSm? "95%":"100%"}` }}>
 
 <BarChart
+
+sx={{
+  'rect':{
+    height:"100%"
+  }
+  ,'.css-1vuxth3-MuiBarElement-root':{
+    fill: '#ff5c00',
+  }
+}}
       series={[
-        { data: [mainReportState[1].AGrade, mainReportState[1].BGrade, mainReportState[1].CGrade, mainReportState[1].DGrade , mainReportState[1].FGrade] },
+        { data: [mainReportState[1].AGrade, mainReportState[1].BGrade, mainReportState[1].CGrade, mainReportState[1].DGrade , -mainReportState[1].FGrade] },
 
       ]
       

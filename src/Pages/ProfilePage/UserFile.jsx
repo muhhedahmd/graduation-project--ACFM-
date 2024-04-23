@@ -39,7 +39,8 @@ const UserFile = () => {
      align='left'
     sx={{
         width:"10rem",
-        alignSelf:"flex-start"
+        alignSelf:"flex-start",
+        color:"#333",
     }}
      variant="subtitle1">
         Course Specific
@@ -73,7 +74,9 @@ const UserFile = () => {
     align='left'
     sx={{
         width:"10rem",
-        alignSelf:"flex-start"
+        alignSelf:"flex-start",
+        color:"#333",
+
     }}
      variant="subtitle1">
     User Resmu
@@ -107,7 +110,9 @@ const UserFile = () => {
      align='left'
     sx={{
         width:"10rem",
-        alignSelf:"flex-start"
+        alignSelf:"flex-start",
+        color:"#333",
+
     }}
      variant="subtitle1">
         Course syllabus

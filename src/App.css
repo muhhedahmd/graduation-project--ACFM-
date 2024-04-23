@@ -137,29 +137,15 @@
 
 }
 
-/* .css-172kpif-MuiResponsiveChart-container {
-  transform: translateX(-8rem) !important;
-  width: 123% !important;
-  height: 244px !important;
-
-} */
-
-/* @media (max-width : 600px) {
-  .css-172kpif-MuiResponsiveChart-container {
-  transform: translateX(-12rem) !important;
-  width: 186% !important;
-  height: 172px !important;
-  }
-} */
 
 .Main-Holder{
   overflow-y: auto;
   padding: 1rem;
   width: 90%;
-  height: 88vh;
+  height: 91vh;
   background: #fff;
   border-radius: 7px;
-  margin: 1.5rem 1rem;
+  margin: .5rem 1rem;
   box-shadow: 3px 3px #dedede;
 }
 

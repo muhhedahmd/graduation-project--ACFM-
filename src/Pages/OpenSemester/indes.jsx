@@ -8,12 +8,18 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect,  useId,  useState } from "react";
-import Users from "./Users";
 import StanderdBox from "../../Components/StanderdBox";
 import { useSemester } from "../../Components/Contexts/SemesterContext";
+import CoursesOfSemester from "./CoursesOfSemester";
+import CourseInfoCard from "./CourseInfoCard";
+import { StyledMainBtn } from "../../MainDrawer/style";
 
 const OpenSemester = ({page}) => {
-  const {  setSemesterData } = useSemester()
+  const { semesterState ,  setSemesterData } = useSemester()
+    
+
+
+
   const currentYear = new Date().getFullYear();
 
 
@@ -25,6 +31,7 @@ const OpenSemester = ({page}) => {
   });
   const [SemesterState , setSemesterState ] = useState({
     Semester:"Fall",
+    Closed:false,
     id:useId,
     courses:[],
     year:currentYear.toString() + '/' + (currentYear + 1).toString()
@@ -67,7 +74,7 @@ const OpenSemester = ({page}) => {
 
 
 
-
+    {!semesterState.length  ? 
         <Box
           sx={{
             width: "100vw",
@@ -173,7 +180,7 @@ flexDirection:"column",
                 flexDirection: "column",
               }}
             >
-              <Users setSemesterState={setSemesterState} />
+              <CoursesOfSemester setSemesterState={setSemesterState} />
 
               <Button
                sx={{
@@ -197,6 +204,125 @@ flexDirection:"column",
           </Box>
 
         </Box>
+      :
+      <Box className="Main-Holder">
+        <Typography
+        variant="h4"
+        align="left"
+        component={"p"}
+        sx={{
+          color:"#222"
+        }}
+        >
+        You are already in Semester
+          {semesterState.map((item)=>{
+          return (<Box
+            sx={{
+              height:"100%",
+              margin:"1rem",
+              flexDirection:"column",
+              display:"flex",
+              justifyContent:"flex-start",
+              alignItems:"flex-start"
+            }}  
+            >
+
+
+              <Typography
+              variant="h6"
+              >
+
+                {item.Semester}
+              </Typography>
+              <Typography
+              variant="h6"
+              
+              >
+
+                {item.year}
+              </Typography>
+              <Typography
+              variant="h6"
+              
+              >
+
+                {item.Closed ? "not Closed"  :
+                <Box>
+
+                <Typography>
+                Are you want to colse
+
+                </Typography>
+                <Box
+                sx={{
+                  display:"flex",
+                  justifyContent:"flex-start",
+                  alignItems:"flex-start",
+                  gap:"1rem",
+                  // flexWrap:"wrap",
+
+                }}
+                >
+
+                <StyledMainBtn
+
+                >
+                    Close
+                </StyledMainBtn>
+                <StyledMainBtn
+                colorProp={
+                  "#f01"
+                }
+          
+                >
+                    Remove
+                </StyledMainBtn>
+                </Box>
+                </Box>
+                }
+              </Typography>
+              
+              <Box
+             sx={{
+              flexWrap:"wrap",
+              width:"100%",
+              gap:"3rem",
+              padding:".5rem",
+              bgcolor:"#fafafa",
+              borderRadius:"6px",
+              margin:".5rem 0 ",
+              flexDirection:"row",
+              display:"flex",
+              justifyContent:"flex-start",
+              alignItems:"flex-start",
+              height:"70%",
+              overflowY: "auto"
+            }}  
+              
+              >
+
+
+
+
+{(item.courses).map((itemx, i) => (
+ <CourseInfoCard
+  key={i}
+
+  
+courseName={itemx.courseName}  courseCode={itemx.courseCode}  creditHours={itemx.creditHours}  program={itemx.program}
+ />
+))}
+              </Box>
+
+
+            </Box>
+            )
+          })
+
+          }
+        </Typography>
+      </Box>
+      }
       
 </StanderdBox>
     

@@ -3,15 +3,18 @@ import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { UseView } from './Contexts/viewedFileContext';
 import { Document, Page, pdfjs } from 'react-pdf';
+import { motion } from 'framer-motion';
 
 const PDFViewer = ({ pdfData }) => {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
   const { setViewFile } = UseView();
   const [numPages, setNumPages] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
+    setIsLoaded(()=>true);
   };
 
   const renderPages = () => {
@@ -23,7 +26,10 @@ const PDFViewer = ({ pdfData }) => {
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
       style={{
         position: 'fixed',
         top: '0',
@@ -51,13 +57,14 @@ const PDFViewer = ({ pdfData }) => {
           overflowX: 'scroll',
         }}
       >
+        <h1 style={{ textAlign: 'center' }}>PDF Viewer</h1>
         <Button
           onClick={() => setViewFile(null)}
           style={{
-            background:"#fff",
+            background:"#fff0",
             position: 'absolute',
-            top: '10px',
-            right: '10px',
+            top: '2rem',
+            right: '5rem',
             zIndex: '100',
             color: '#333',
             cursor: 'pointer',
@@ -65,12 +72,13 @@ const PDFViewer = ({ pdfData }) => {
         >
           <Close style={{ fontSize: '2rem' }} />
         </Button>
-        <h1 style={{ textAlign: 'center' }}>PDF Viewer</h1>
-        <Document file={pdfData} onLoadSuccess={onDocumentLoadSuccess}>
-          {numPages && renderPages()}
-        </Document>
+        {/* {isLoaded && ( */}
+          <Document file={pdfData} onLoadSuccess={onDocumentLoadSuccess}>
+            {numPages && renderPages()}
+          </Document>
+        {/* )} */}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

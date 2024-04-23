@@ -49,7 +49,7 @@ const UploadSection = () => {
     <Box
       sx={{
         width: "100%",
-        height: "13rem",
+      height: "72%",
         position: "relative",
         boxShadow: "3px 3px 4px #dedede",
         margin: "0 8px 5px 3px",
