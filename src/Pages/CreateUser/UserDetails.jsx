@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  FormGroup,
-
-  useMediaQuery,
-} from "@mui/material";
+import { Avatar, Box, Button, FormGroup, useMediaQuery } from "@mui/material";
 import React, { useImperativeHandle, useState } from "react";
 import AccesLevel from "./AccesLevel";
 import styled from "@emotion/styled";
@@ -36,6 +29,7 @@ const UserDetails = forwardRef(
       email: "",
       password: "",
       about: "",
+      PhoneNumber: "",
       img: avtarImg,
     });
 
@@ -71,20 +65,19 @@ const UserDetails = forwardRef(
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-            justifyContent:" flex-start",
-    gap: "2.2em",
-    margin: ".5rem 0",
-    height: "84%", }}
+          justifyContent: " flex-start",
+          gap: "2.2em",
+          margin: ".5rem 0",
+          height: "auto",
+        }}
       >
         <FormGroup
           sx={{
             margin: "0 0 -.8rem 0",
-           
+
             width: "100%",
           }}
         >
-
-    
           <Box
             sx={{
               width: "100%",
@@ -94,12 +87,13 @@ const UserDetails = forwardRef(
               gap: "2rem",
             }}
           >
-
-           
-            <AccesLevel error={validationErrors[0]} setAccessLevel={setAccessLevel} id="Access" />
+            <AccesLevel
+              error={validationErrors[0]}
+              setAccessLevel={setAccessLevel}
+              id="Access"
+            />
 
             <Button
-            
               component="label"
               role={"button"}
               variant="contained"
@@ -111,7 +105,11 @@ const UserDetails = forwardRef(
                       width: "50px",
                       height: "50px",
 
-                      background: `${  validationErrors[6] ? 'linear-gradient(180deg, #f00111, #fffbfb)': 'linear-gradient(180deg, #ff7100, #fffbfb)'}`,
+                      background: `${
+                        validationErrors[6]
+                          ? "linear-gradient(180deg, #f00111, #fffbfb)"
+                          : "linear-gradient(180deg, #ff7100, #fffbfb)"
+                      }`,
                     }}
                   >
                     {avtarImg ? (
@@ -129,7 +127,7 @@ const UserDetails = forwardRef(
               }
               sx={{
                 boxShadow: "none",
-                padding:"0",
+                padding: "0",
                 ":hover , :focus": {
                   bgcolor: "#fff",
                   boxShadow: "none",
@@ -154,132 +152,57 @@ const UserDetails = forwardRef(
             width: "100%",
           }}
         >
-         <SingleUserDetail 
-    id={"fName"}
-    lable={"First Name"}
+          <SingleUserDetail
+            id={"fName"}
+            lable={"First Name"}
+            HandleChange={HandleChange}
+            validationErrors={validationErrors}
+            UserData={UserData}
+          />
+          <SingleUserDetail
+            id={"lName"}
+            lable={"Last Name"}
+            HandleChange={HandleChange}
+            validationErrors={validationErrors}
+            UserData={UserData}
+          />
+        </Box>
+        <Box
+   sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "1rem",
+            flexDirection: `${isSm ? "column" : "row"}`,
+            width: "100%",
+          }}
+        >
 
-
-HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        <SingleUserDetail
+          id={"email"}
+          HandleChange={HandleChange}
+          validationErrors={validationErrors}
+          UserData={UserData}
         />
-          <SingleUserDetail 
-    id={"lName"}
-    lable={"Last Name"}
-
-
-
-HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        <SingleUserDetail
+          id={"PhoneNumber"}
+          HandleChange={HandleChange}
+          validationErrors={validationErrors}
+          UserData={UserData}
         />
         </Box>
-{/* 
-        <FormGroup
-          style={{
-            width: "100%",
-          }}
-        >
-        {validationErrors &&  (
 
-<ErrorMsg errorArray={validationErrors} path={"email"} /> 
-)}
-         
-          <InputLabel
-            error={validationErrors[3]}
-
-            sx={{
-              textAlign: "left",
-              color: "#6e6e6e",
-            }}
-            htmlFor="email"
-          >
-            Email
-          </InputLabel>
-          <Input
-            error={validationErrors[3]}
-
-            className="borderAfter"
-            onChange={(e) => HandleChange(e)}
-            value={UserData.email}
-            id="email"
-            placeholder="Email..."
-            fullWidth
-            color="secondary"
-            variant="standard"
-            sx={{
-              fontSize: ".8rem",
-              paddingTop: "0",
-            }}
-            type="email"
-            InputProps={{
-              classes: {
-                notchedOutline: {
-                  borderWidth: "1px",
-                  borderColor: "yellow !important",
-                },
-              },
-            }}
-          />
-        </FormGroup> */}
-        {/* <FormGroup
-          style={{
-            width: "100%",
-          }}
-        >
-          {validationErrors &&  (
-
-<ErrorMsg errorArray={validationErrors} path={"password"} /> 
-)}
-          <InputLabel
-            error={validationErrors[4]}
-
-            sx={{
-              textAlign: "left",
-              color: "#6e6e6e",
-            }}
-            htmlFor="password"
-          >
-            Password
-          </InputLabel>
-          <Input
-            error={validationErrors[4]}
-
-            className="borderAfter"
-            onChange={(e) => HandleChange(e)}
-            value={UserData.password}
-            id="password"
-            placeholder="Password...."
-            fullWidth
-            color="secondary"
-            variant="standard"
-            sx={{
-              fontSize: ".8rem",
-              paddingTop: "0",
-            }}
-            type="password"
-            InputProps={{
-              classes: {
-                notchedOutline: {
-                  borderWidth: "1px",
-                  borderColor: "yellow !important",
-                },
-              },
-            }}
-          />
-        </FormGroup> */}
-        
-        <SingleUserDetail 
-    id={"email"}
-
-
-HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        <SingleUserDetail
+          id={"password"}
+          HandleChange={HandleChange}
+          validationErrors={validationErrors}
+          UserData={UserData}
         />
-        <SingleUserDetail 
-    id={"password"}
-
-
-HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
-        />
-        <SingleUserDetail 
-    id={"about"}
-HandleChange={HandleChange}  validationErrors={validationErrors}  UserData={UserData}
+        <SingleUserDetail
+          id={"about"}
+          HandleChange={HandleChange}
+          validationErrors={validationErrors}
+          UserData={UserData}
         />
       </form>
     );

@@ -4,11 +4,13 @@ import InfoBoxes from "./InfoBoxes";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import TickPlacementBars from "./ChartReport";
 import AddReport from "./AddReport";
-import FilesTable from "../../Components/Dashbboard/FilesTable";
-import { useReportFiles } from "../../Components/Contexts/ReportFileContext";
+// import FilesTable from "../../Components/Dashbboard/FilesTable";
+// import { useReportFiles } from "../../Components/Contexts/ReportFileContext";
+import UseAuth from "../../Components/Contexts/Authantication";
 
 const GenerateReport = ({ page }) => {
-  const { state } = useReportFiles();
+  const  {Access}= UseAuth()
+  // const { state } = useReportFiles();
   const [mainReportState , setMainReportState ]= useState( 
     [
       {
@@ -147,18 +149,27 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
             <Box
               sx={{
                 // maxHeight:"100%",
-                height: "90%",
+                height: "84%",
                 width: `${isSm ? "98%" : "80%"}`,
               }}
             >
-              <FilesTable
+            {
+              Access === "admin" ? 
+
+            <AddReport  mainReportState={mainReportState} setMainReportState={setMainReportState} />
+:
+
+              <Typography>
+                Send Rplay 
+              </Typography>
+            }
+              {/* <FilesTable
                 state={state?.StaticalFiles}
                 Report={true}
                 NoSearch={true}
-              />
+              /> */}
             </Box>
 
-            <AddReport  mainReportState={mainReportState} setMainReportState={setMainReportState} />
           </Box>
         </Box>
       </Box>

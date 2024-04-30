@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Checkbox,
   FormControl,
@@ -19,82 +20,96 @@ import {
 
 import * as yup from "yup";
 import UseAuth from "../../Components/Contexts/Authantication";
+import axios from "axios";
 const Login = () => {
-
-  const {Login } = UseAuth()
+  const { Login } = UseAuth();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
-    checkBox: false,
+    role: "", // Track the selected role
   });
   const [errors, setErrors] = useState({
     email: "",
-    passwoard: "",
+    password: "",
   });
-  const HandleChange = (e) => {
-    // console.log(e.target.checked)
-    const { name, value, checked } = e.target;
-    setUserData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-        checkBox: checked,
-      };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const url = 'https://optima-software-solutions.com/apis/login.php'; // Replace with your API endpoint
+
+  
+const data = {
+  email: 'test@test.com', 
+  password: 'password',
+};
+const fetchData = async () => {
+  try {
+    const data = {
+      email: 'test@test.com',
+      password: 'password'
+    };
+
+    const response = await axios.post('https://optima-software-solutions.com/apis/login.php', data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':"http://localhost:3000/"
+      }
     });
 
-    console.log(userData);
-  };
+    console.log(JSON.stringify(response.data));
+    // You can set state here if you want to manage the response data in your component
+  } catch (error) {
+    console.error(error);
+  }
+};
 
+fetchData();
+const handleSubmit = (e) => {
+
+  e.preventDefault();
   const schema = yup.object().shape({
-    email: yup.string().email().required("").required(""),
-    passwoard: yup.string().max(16).min(6).required(""),
-
-    // passwoard:yup.string().matches(/(^(?=.*[a-zA-Z]+)(?=.*(\d+){3,})(?=.*(\W+){3,})).*$/g).min(6).max(16).min(6).required(""),
+    email: yup.string().email().required("Email is required"),
+    password: yup.string().min(6).required("Password is required"),
   });
 
-  const handleSubmit = (e) => {
-    schema
-      .validate(
-        {
-          email: userData.email,
-          passwoard: userData.password,
+  schema
+    .validate(userData, { abortEarly: false })
+    .then(
+      async () => {
+      setErrors({ email: "", password: "" });
+     await axios.post(url, data, {
+        headers: {
+          'Content-Type': 'application/json', 
         },
-        { abortEarly: false }
-      )
-      .then((isValid) => {
-        setErrors({
-          email: "",
-          passwoard: "",
-        });
-        Login()
-
- 
-
-        // console.log(isValid);
       })
-      .catch((validationErrors) => {
-        const errorss = {};
-
-        validationErrors.inner.forEach((error) => {
-          errorss[error.path] = error.message;
-          setErrors((prev) => {
-            return {
-              ...prev,
-              ...errorss,
-            };
-          });
+        .then((response) => {
+          console.log('Response:', response.data);
+          Login()
+        })
+        .catch((error) => {
+          console.log('Error:', error.message);
         });
+    })
+    .catch((validationErrors) => {
+      const errorss = {};
+      validationErrors.inner.forEach((error) => {
+        errorss[error.path] = error.message;
       });
+      setErrors(errorss);
+      console.log(errors)
+    });
+};
 
 
-    return e.preventDefault();
-  };
 
   return (
     <SyledLoginHolder>
       <SyledLoginImgHolder>
-
-
         <SyledLoginFlyingBox>
           <Typography
             className="login-title-textlft"
@@ -154,40 +169,80 @@ const Login = () => {
           }}
           action="#"
         >
-          <FormControl
-            color={`${errors.email === "" ? "primary" : "error"}`}
-            fullWidth={true}
-          >
-            <FormLabel htmlFor="email">Email</FormLabel>
+          <FormControl fullWidth={true}>
+            <FormLabel
+              sx={{ textAlign: "start", color: "#222 !important" }}
+              htmlFor="email"
+            >
+              Email
+            </FormLabel>
             <Input
+              className="borderAfter"
               name="email"
-              onChange={(e) => HandleChange(e)}
+              onChange={(e) => handleChange(e)}
               id="email"
               placeholder="Enter Your Email...."
               type="email"
             />
           </FormControl>
-          <FormControl
-            fullWidth
-            color={`${errors.passwoard === "" ? "primary" : "error"}`}
-          >
-            <FormLabel htmlFor="password">Password</FormLabel>
+          <FormControl fullWidth>
+            <FormLabel
+              sx={{ textAlign: "start", color: "#222 !important" }}
+              htmlFor="password"
+            >
+              Password
+            </FormLabel>
             <Input
+              className="borderAfter"
               name="password"
-              onChange={(e) => HandleChange(e)}
+              onChange={(e) => handleChange(e)}
               type="password"
               id="Password"
               placeholder="Enter The Password...."
             />
           </FormControl>
-          <FormControl fullWidth>
-            <FormControlLabel
-              label="Rember me"
-              control={
-                <Checkbox name="checkBox" onChange={(e) => HandleChange(e)} />
-              }
-            />
-          </FormControl>
+          <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <FormControl>
+          <FormControlLabel
+            label="LoginAsTeacher"
+            control={
+              <Checkbox
+              sx={{color:"#FF5C00 !important"}}
+              
+                color="primary"
+                checked={userData.role === "teacher"}
+                onChange={handleChange}
+                name="role"
+                value="teacher"
+              />
+            }
+          />
+        </FormControl>
+
+        <FormControl>
+          <FormControlLabel
+            label="LoginAsAdmin"
+            control={
+              <Checkbox 
+              sx={{color:"#FF5C00 !important"}}
+                color="primary"
+                checked={userData.role === "admin"}
+                onChange={handleChange}
+                name="role"
+                value="admin"
+              />
+            }
+          />
+        </FormControl>
+      </Box>
+
           <FormControl fullWidth>
             <Button
               sx={{

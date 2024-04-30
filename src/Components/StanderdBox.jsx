@@ -24,7 +24,7 @@ const StanderdBox = ({ children }) => {
           }}
         >
           <MainDrawer />
-          {children} {/* Render children inside the Box component */}
+          {children} 
         </Box>
       ) : (
         // Render children directly without MainDrawer if isSm is true

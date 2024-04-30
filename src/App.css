@@ -228,3 +228,11 @@
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.3);
 }
+
+.my-select {
+  border-color: grey; /* Default border color */
+}
+
+.my-select.Mui-focused {
+  border-color: red; /* Red border when focused */
+}

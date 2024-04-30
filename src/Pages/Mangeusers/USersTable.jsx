@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { ArrowRightAltOutlined } from "@mui/icons-material";
 import PopOverMenu from "./PopOverMenu";
+import { useEffect } from "react";
+import axios from "axios";
 
 function CustomizedTables({ state }) {
   const [openRowId, setOpenRowId] = useState(null);
@@ -380,7 +382,24 @@ function CustomizedTables({ state }) {
   );
 }
 
-const UsersTable = ({ state, NoSearch, Report }) => (
+const UsersTable = ({ state, NoSearch, Report }) => {
+ 
+  useEffect(()=>{
+    ( async ()=> {
+      await  axios.get("https://optima-software-solutions.com/apis/usershow.php")
+         .then((response) => {
+             console.log('Response:', response.data);
+         })
+         .catch((error) => {
+             console.error('Error:', error.message);
+             // Handle the error here
+         });
+       })()
+
+   
+  },[])
+return(
+
   <Box sx={{ overflow: "hidden", height: "100%", width: "100%" }}>
     <Box
       sx={{
@@ -393,6 +412,8 @@ const UsersTable = ({ state, NoSearch, Report }) => (
       <CustomizedTables state={state} />
     </Box>
   </Box>
-);
+)
+
+};
 
 export default UsersTable;

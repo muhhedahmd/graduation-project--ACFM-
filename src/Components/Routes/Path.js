@@ -12,6 +12,7 @@ export const ROUTE_PATHS = {
     ManageUsers: "/manageusers",
     OpenSemester: "/opensemester",
     FinalExams :"/FinalExams",
+    AdminDashboard :"/AdminDashboard",
 
 StudentSurvey:"/StudentSurvey",
 

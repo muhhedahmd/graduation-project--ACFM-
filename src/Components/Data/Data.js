@@ -17,6 +17,8 @@ export const MainDrawerData = [
 
     Ttile: "Material",
     nested: ["Lecture Notes" , "Books"],
+    roles: [ "instructor"],
+
   },
   {
     iconPath: (
@@ -41,6 +43,8 @@ export const MainDrawerData = [
         </defs>
       </svg>
     ),
+    roles: [ "instructor"],
+
     Ttile: "Student",
     nested: ["attendance", "Exams And Solutions", "Assignments"],
   },
@@ -59,8 +63,10 @@ export const MainDrawerData = [
         />
       </svg>
     ),
+    roles: ["admin"],
+
     Ttile: "Statistical and analysis",
-    nested: ["Final Exams", "Student Survey"],
+    nested: ["Final Exams", "Student Survey" ],
   },
   {
     iconPath: (
@@ -77,9 +83,11 @@ export const MainDrawerData = [
         />
       </svg>
     ),
+    roles: ["admin"],
+
 
     Ttile: "Admin",
-    nested: ["Generate Report", "Admin Files", "Create User","Open Semester", "Manage Users"],
+    nested: [ "Admin Dashboard", "Generate Report", "Admin Files", "Create User","Open Semester", "Manage Users"],
   },
   {
     iconPath: (
@@ -96,6 +104,8 @@ export const MainDrawerData = [
         />
       </svg>
     ),
+    roles: ["admin", "instructor"],
+
     Ttile: "Settings",
     nested: ["profile", "Log out"],
   },
