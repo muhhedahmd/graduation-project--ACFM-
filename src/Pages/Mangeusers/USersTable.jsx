@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, {  useContext, useMemo, useState } from "react";
 import {
   Box,
-  Collapse,
   Typography,
   Table,
   TableBody,
@@ -11,12 +10,12 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { ArrowRightAltOutlined } from "@mui/icons-material";
 import PopOverMenu from "./PopOverMenu";
 import { useEffect } from "react";
 import axios from "axios";
+import { SearchContext } from ".";
 
-function CustomizedTables({ state }) {
+function CustomizedTables({ state ,  fetchData, }) {
   const [openRowId, setOpenRowId] = useState(null);
   const [childDrawer, setChildDrawer] = useState(null);
 
@@ -28,31 +27,6 @@ function CustomizedTables({ state }) {
     setChildDrawer(childDrawer === courseId ? null : courseId);
   };
 
-  const courseDetails = [
-    {
-      name: "Course Name 1",
-      code: "ABC123",
-      id: "123456",
-      status: "Not Finished",
-      semester: "Spring 2024",
-      byLaw: "Law 123",
-      hasPractical: true,
-      creditHours: 3,
-      courseLevel: "Intermediate",
-    },
-    {
-      name: "Course Name 2",
-      code: "DEF456",
-      id: "789012",
-      status: "Finished",
-      semester: "Fall 2023",
-      byLaw: "Law 456",
-      hasPractical: false,
-      creditHours: 4,
-      courseLevel: "Advanced",
-    },
-  ];
-
   return (
     <TableContainer
       sx={{
@@ -63,6 +37,8 @@ function CustomizedTables({ state }) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead
           sx={{
+            position:"sticky",
+            top:"0",
             bgcolor: "#ff5c00 !important",
             borderBottom: "3px solid #dedede",
           }}
@@ -86,7 +62,7 @@ function CustomizedTables({ state }) {
           </TableRow>
         </TableHead>
         <TableBody sx={{ height: "10vh" }}>
-          {state.map((row) => (
+          {state?.map((row) => (
             <React.Fragment key={row.id}>
               <TableRow sx={{p:"0"}}>
                 <TableCell
@@ -106,7 +82,7 @@ function CustomizedTables({ state }) {
                       maxWidth: "10rem",
                     }}
                   >
-                    {row.fName} {row.lName}
+                    {row.first_name} {row.last_name}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -147,7 +123,7 @@ function CustomizedTables({ state }) {
                       maxWidth: "10rem",
                     }}
                   >
-                    {row.creationDate}
+                    {row?.creationDate}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -155,13 +131,14 @@ function CustomizedTables({ state }) {
                   sx={{ padding: "0" }}
                   align="right"
                 >
-                  {row.AccesLevel}
+                  {row.access}
                 </TableCell>
                 <TableCell align="right">
-                  <PopOverMenu />
+                  <PopOverMenu  fetchData={fetchData} {...row} />
                 </TableCell>
               </TableRow>
-              <TableRow sx={{p:0}}>
+
+              {/* <TableRow sx={{p:0}}>
                 <TableCell
 
                   style={{ width:"100%" ,p: 0 }}
@@ -373,7 +350,7 @@ function CustomizedTables({ state }) {
                     ))}
                   </Collapse>
                 </TableCell>
-              </TableRow>
+              </TableRow> */}
             </React.Fragment>
           ))}
         </TableBody>
@@ -382,23 +359,42 @@ function CustomizedTables({ state }) {
   );
 }
 
-const UsersTable = ({ state, NoSearch, Report }) => {
- 
-  useEffect(()=>{
-    ( async ()=> {
-      await  axios.get("https://optima-software-solutions.com/apis/usershow.php")
-         .then((response) => {
-             console.log('Response:', response.data);
-         })
-         .catch((error) => {
-             console.error('Error:', error.message);
-             // Handle the error here
-         });
-       })()
+const UsersTable = ({ Report    } ) => {
 
-   
-  },[])
-return(
+  const { searchResults } = useContext(SearchContext);
+  const [UserState, setUserState] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://optima-software-solutions.com/apis/usershow.php");
+      return response.data;
+    } catch (error) {
+      console.error('Error:', error.message);
+      return [];
+    }
+  };
+  
+  const applySearchFilter = (data, searchValue) => {
+    if (!searchValue) return data;
+  console.log(data, searchValue)
+    const regex = new RegExp(searchValue, 'ig'); // Case insensitive regex
+    return data.filter((user) => 
+      regex.test(user.first_name) ||
+      regex.test(user.last_name) ||
+      regex.test(user.email)
+    );
+  };
+  
+  useEffect(() => {
+    const fetchDataAndFilter = async () => {
+      const responseData = await fetchData();
+      const filteredData = applySearchFilter(responseData, searchResults);
+      setUserState(filteredData);
+    };
+  
+    fetchDataAndFilter();
+  }, [searchResults]);
+  return(
 
   <Box sx={{ overflow: "hidden", height: "100%", width: "100%" }}>
     <Box
@@ -409,7 +405,8 @@ return(
         borderRadius: "9px",
       }}
     >
-      <CustomizedTables state={state} />
+
+      <CustomizedTables  fetchData={fetchData} state={UserState} />
     </Box>
   </Box>
 )

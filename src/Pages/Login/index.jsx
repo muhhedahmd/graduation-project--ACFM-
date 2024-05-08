@@ -1,11 +1,13 @@
 import {
   Box,
   Button,
-  Checkbox,
+  
   FormControl,
   FormControlLabel,
   FormLabel,
   Input,
+  Radio,
+  RadioGroup,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -22,11 +24,10 @@ import * as yup from "yup";
 import UseAuth from "../../Components/Contexts/Authantication";
 import axios from "axios";
 const Login = () => {
-  const { Login } = UseAuth();
+  const { Login  } = UseAuth();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
-    role: "", // Track the selected role
   });
   const [errors, setErrors] = useState({
     email: "",
@@ -40,71 +41,49 @@ const Login = () => {
       [name]: value,
     }));
   };
-  const url = 'https://optima-software-solutions.com/apis/login.php'; // Replace with your API endpoint
 
   
-const data = {
-  email: 'test@test.com', 
-  password: 'password',
-};
-const fetchData = async () => {
-  try {
-    const data = {
-      email: 'test@test.com',
-      password: 'password'
-    };
 
-    const response = await axios.post('https://optima-software-solutions.com/apis/login.php', data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin':"http://localhost:3000/"
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const schema = yup.object().shape({
+      email: yup.string().email().required("Email is required"),
+      password: yup.string().min(6).required("Password is required"),
+      role: yup.string().required("Role is required"),
     });
-
-    console.log(JSON.stringify(response.data));
-    // You can set state here if you want to manage the response data in your component
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-fetchData();
-const handleSubmit = (e) => {
-
-  e.preventDefault();
-  const schema = yup.object().shape({
-    email: yup.string().email().required("Email is required"),
-    password: yup.string().min(6).required("Password is required"),
-  });
-
-  schema
-    .validate(userData, { abortEarly: false })
-    .then(
-      async () => {
+  
+    try {
+      await schema.validate(userData, { abortEarly: false });
+  
+      // Validation passed, clear any previous errors
       setErrors({ email: "", password: "" });
-     await axios.post(url, data, {
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-      })
-        .then((response) => {
-          console.log('Response:', response.data);
-          Login()
-        })
-        .catch((error) => {
-          console.log('Error:', error.message);
-        });
-    })
-    .catch((validationErrors) => {
+  
+      // Make API request
+      const response = await axios.post(
+        "https://optima-software-solutions.com/apis/login.php",
+        userData,
+        {
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+          },
+        }
+      );
+  
+      console.log("Response:", response.data);
+      // If login successful, handle accordingly
+      Login(response.data);
+    } catch (validationErrors) {
+      // Validation failed, set the errors
       const errorss = {};
-      validationErrors.inner.forEach((error) => {
+      validationErrors?.inner?.forEach((error) => {
         errorss[error.path] = error.message;
       });
       setErrors(errorss);
-      console.log(errors)
-    });
-};
-
+      console.log(errors);
+    }
+  };
+  
 
 
   return (
@@ -139,7 +118,7 @@ const handleSubmit = (e) => {
       <FormHolderAndHeading>
         <StyledLoginHeading className="loginHeading">
           <StyledLogoAndTitle>
-            <img src="/Images/logo-o6u 1.png" alt="logo" />
+            <img src="/Images/logo-o6u1.png" alt="logo" />
 
             <Typography variant="body2" component={"p"}>
               6 October university
@@ -209,38 +188,33 @@ const handleSubmit = (e) => {
           alignItems: "center",
         }}
       >
-        <FormControl>
-          <FormControlLabel
-            label="LoginAsTeacher"
-            control={
-              <Checkbox
-              sx={{color:"#FF5C00 !important"}}
-              
-                color="primary"
-                checked={userData.role === "teacher"}
-                onChange={handleChange}
-                name="role"
-                value="teacher"
-              />
-            }
-          />
-        </FormControl>
+  <FormControl fullWidth component="fieldset">
+      <RadioGroup
+      sx={{
+        width:"100%",
+        display:"flex",
+        justifyContent:"space-between",
+        alignItems:"center"
+      }}
+        aria-label="role"
+        name="role"
+        value={userData.role}
+        onChange={handleChange}
+        row
+      >
+        <FormControlLabel
+          value="teacher"
+          control={<Radio sx={{ color: '#FF5C00 !important' }} />}
+          label="Login as Teacher"
+        />
+        <FormControlLabel
+          value="student"
+          control={<Radio sx={{ color: '#FF5C00 !important' }} />}
+          label="Login as Student"
+        />
+      </RadioGroup>
+    </FormControl>
 
-        <FormControl>
-          <FormControlLabel
-            label="LoginAsAdmin"
-            control={
-              <Checkbox 
-              sx={{color:"#FF5C00 !important"}}
-                color="primary"
-                checked={userData.role === "admin"}
-                onChange={handleChange}
-                name="role"
-                value="admin"
-              />
-            }
-          />
-        </FormControl>
       </Box>
 
           <FormControl fullWidth>

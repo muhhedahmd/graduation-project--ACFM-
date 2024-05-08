@@ -4,6 +4,7 @@ import { Box } from '@mui/material'
 
 import HeaderProfile from './HeaderProfile'
 import ProfileBody from './ProfileBody'
+import UseAuth from '../../Components/Contexts/Authantication'
 
 const ProfilePage = () => {
   return (

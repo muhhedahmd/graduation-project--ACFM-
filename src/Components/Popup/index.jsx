@@ -9,10 +9,14 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useEffect, useImperativeHandle, useState } from "react";
-import { useFile } from "../Contexts/FileContext";
 import { forwardRef } from "react";
+import axios from "axios";
+import UseAuth from "../Contexts/Authantication";
+import { useCourseContext } from "../Contexts/CourseContexts";
 
-const Popup = forwardRef(({ Name, file, fileNameObj } , ref) => {
+const Popup = forwardRef(({ Name, file, fileNameObj  , category , setProgress } , ref) => {
+  const {MainDrawerCourse} = useCourseContext()
+  const {Data} = UseAuth()
   const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
 const [active , setActive] = useState(false)
 
@@ -22,15 +26,14 @@ const [active , setActive] = useState(false)
   }));
 
 
-  const { uploadFile } = useFile();
 
-  const [Data, SetData] = useState({
+  const [FileData, SetFileData] = useState({
     FileName: fileNameObj, // Set file name properly
     Description: "",
   });
 
   useEffect(() => {
-    SetData({
+    SetFileData({
       [Name.split(" ").join("")]: fileNameObj,
       Description: "",
     });
@@ -38,40 +41,64 @@ const [active , setActive] = useState(false)
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    SetData((prev) => {
+    SetFileData((prev) => {
       return {
         ...prev,
         [id]: value,
       };
     });
-    console.log(Data);
+    console.log(FileData);
   };
 
   const Handleclose = () => {
     setActive((prev) => false);
-    SetData({
+    SetFileData({
       [Name.split(" ").join("")]: fileNameObj,
       Description: "",
     });
   };
 
-  const HandleSubmit = (e) => {
-    if (Data[Name.split(" ").join("")]) {
-      const myNewFile = new File([file], Data.FileName, { type: file.type });
-
-
-
-      uploadFile(
-        myNewFile,
-        Math.round(Math.random() * file?.size),
-        Data.Description
-      );
-      console.log(Data?.Description);
-      setActive(false);
-    }
-
+  const HandleSubmit = async (e) => {
     e.preventDefault();
+    Handleclose(); // Call HandleClose after preventing default behavior
+  
+    if (FileData[Name.split(" ").join("")]) {
+      try {
+        const myNewFile = new File([file], FileData.FileName, { type: file.type });
+  
+        // Create a new FormFileData object
+        const formFileData = new FormData();
+  
+        // Append form FileData fields
+        formFileData.append('userId', Data.user.id);
+        formFileData.append('courseId', MainDrawerCourse.courseid );
+        formFileData.append('category', category);
+        formFileData.append('description', FileData.Description); // Assuming FileData.Description is the description field value
+  
+        // Append the file
+        formFileData.append('files[]', myNewFile);
+  
+        const response = await axios.post(
+          'https://optima-software-solutions.com/apis/uploadfile.php',
+          formFileData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-FileData', // Set the correct content type
+            },
+            onUploadProgress: (progressEvent) => {
+              // Calculate upload progress percentage
+              const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+              setProgress(progress);
+            },
+          }
+        );
+        console.log('Response FileData:', response.FileData);
+      } catch (error) {
+        console.error('Error uploading file:', error.message);
+      }
+    }
   };
+  
   return (
     <Box
       className="popup"
@@ -126,7 +153,7 @@ const [active , setActive] = useState(false)
             width: "100%",
           }}
         >
-          <Typography variant="h5" component={"p"}>
+          <Typography variant="h5" component={"div"}>
             File Info
           </Typography>
           <Close onClick={() => Handleclose()} fontSize="medium" />
@@ -176,7 +203,7 @@ const [active , setActive] = useState(false)
               placeholder="File Name"
               required
               id={Name.split(" ").join("")}
-              value={Data[Name.split(" ").join("")] /* Corrected here */}
+              value={FileData[Name.split(" ").join("")] /* Corrected here */}
               style={{
                 width: "100%",
               }}

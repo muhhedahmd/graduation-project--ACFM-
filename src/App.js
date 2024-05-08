@@ -8,6 +8,7 @@ import { UseView } from "./Components/Contexts/viewedFileContext";
 import PDFViewer from "./Components/PDFViewer";
 import { UserProvider } from "./Components/Contexts/UserContext";
 import { AnimatePresence , motion } from "framer-motion";
+import { CourseProvider } from "./Components/Contexts/CourseContexts";
 
 
 function App() {
@@ -62,9 +63,13 @@ function App() {
 <SemesterProvider>
 
 <FileContextProvider>
+<CourseProvider>
+    <FileContextProvider>
 
     
     <AppRouter/>
+    </FileContextProvider>
+</CourseProvider>
 <AnimatePresence>
 
 

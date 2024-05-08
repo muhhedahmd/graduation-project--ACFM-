@@ -1,7 +1,9 @@
 import { Avatar, Box, Typography } from '@mui/material'
 import React from 'react'
+import UseAuth from '../../Components/Contexts/Authantication'
 
 const HeaderProfile = () => {
+    const {Data} = UseAuth()
   return (
    <Box
    sx={{
@@ -51,6 +53,7 @@ backgroundImage: "linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)",
             
         }}
         >
+        <img src={Data?.user?.avatar} alt="" />
 
         </Avatar>
         <Box
@@ -70,7 +73,14 @@ backgroundImage: "linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)",
         variant='subtitle1'
         component={"p"}
         >
-    Dr: {"khaled Elmenshawy"}
+        {
+                Data.user.access === "Instructor" ? "Dr:"
+                                     :         Data.user.access === "Staff" ?"Eng :"
+                                     :""
+        }
+
+
+   {Data.user.first_name+ " " + Data.user.last_name}
 
 
         </Typography>
@@ -82,8 +92,8 @@ backgroundImage: "linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)",
         variant='subtitle1'
         component={"p"}
         >
-    123@o6u.eg.edu
-
+   
+{Data.user.email}
 
         </Typography>
         <Typography
@@ -96,7 +106,7 @@ backgroundImage: "linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)",
         >
 
 
-    Instractor
+        {Data.user.access}
         </Typography>
         </Box>
     </Box>

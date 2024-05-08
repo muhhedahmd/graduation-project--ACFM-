@@ -3,53 +3,83 @@ import React, {  useRef, useState } from 'react';
 import StanderdBox from '../../Components/StanderdBox';
 import { Box,  CssBaseline, Typography, useMediaQuery } from '@mui/material';
 import UserDetails from './UserDetails';
-// import RequiredFiles from './RequiredFiles';
-// // import AssignCourses from './AssignCourses';
-// // import PDFViewer from '../../Components/PDFViewer';
-// import { UseView } from '../../Components/Contexts/viewedFileContext';
-// // import { Close } from '@mui/icons-material';
-// import { AnimatePresence , motion } from 'framer-motion';
-import { useUserContext } from '../../Components/Contexts/UserContext';
-import { v4 as uuidv4 } from 'uuid';
+
 import * as Yup from 'yup';
 import {  StyledMainBtn } from '../../MainDrawer/style';
+import axios from 'axios';
+import { useUserContext } from '../../Components/Contexts/UserContexts';
+
+
 
 const validationSchema = Yup.object().shape({
   AccesLevel: Yup.string().required('Access level is required'),
-  fName: Yup.string().min(4 , "The first name should be more than 4").max(10 ,"The first name should be less than 10").required('First name is required'),
+  fName: Yup.string().min(4, "The first name should be more than 4").max(10, "The first name should be less than 10").required('First name is required'),
   lName: Yup.string().required('Last name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
-  about: Yup.string().required('About is required'),
-  img: Yup.string().required('Image is required'),
+  PhoneNumber: Yup.string().required('Phone number is required'),
+  about: Yup.string(),
+  avtarImg: Yup.mixed().required('Avatar image is required'), // Allow any type of value (string, file, etc.)
+  creation_date: Yup.date().required('Creation date is required'),
+  resumeImg:  Yup.mixed().required('resmue image is required'), 
 });
-
 const CreateUser = ({page}) => {
 
   const [validationErrors, setValidationErrors] = useState([]);
 
 
-  const {setUserData   ,state} = useUserContext()
-  const requiredFilesRef = useRef(null)
+  const {users} = useUserContext()
+
+  // const requiredFilesRef = useRef(null)
   const userDetailsRef= useRef(null);
 
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+  // const currentDate = new Date();
+  // const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
   
   const handleClick = () => {
-    validationSchema.validate(userDetailsRef.current.UserData(), { abortEarly: false })
+    const FindUser = users.some((item) => item.email === userDetailsRef.current.UserData().email);
+
+    if(!FindUser){
+
+      validationSchema.validate(userDetailsRef.current.UserData(), { abortEarly: false })
       .then(validData => {
-        if (userDetailsRef.current.UserData().AccesLevel === "Instructor") {
-          const EveryFilesExisit = Object.values(requiredFilesRef.current.files()).every((item) => item !== null);
-          console.log(EveryFilesExisit);
-          if (EveryFilesExisit) {
-            setUserData({ id: uuidv4(), ...requiredFilesRef.current.files(), creationDate: formattedDate, ...userDetailsRef.current.UserData() });
+        
+          console.log("added", validData);
+        
+          (async ()=>{
+        try {
+          const formData = new FormData();
+          
+          // Append all fields to the FormData object
+          formData.append("access", validData.AccesLevel);
+          formData.append("first_name", validData.fName);
+          formData.append("last_name", validData.lName);
+          formData.append("email", validData.email);
+          formData.append("password", validData.password);
+          formData.append("about", validData.about);
+          formData.append("avatar", validData.avtarImg); 
+          formData.append("phone_number", validData.PhoneNumber);
+          formData.append("creation_date", validData.creation_date);
+          formData.append("resume", validData.resumeImg); 
+          
+          
+          await axios.post("http://optima-software-solutions.com/apis/useradd.php", 
+          formData
+            ,{
+              headers : {
+                "Content-Type": "multipart/form-data", 
+              },
+            }).then((res)=>{console.log(res)
+            }).catch(err=>console.log(err))
+          }catch(err){
+            console.log(err)
           }
-        } else {
-          console.log("added", state); // <-- This line doesn't seem to do anything
-          setUserData({ id: uuidv4(), creationDate: formattedDate, ...userDetailsRef.current.UserData() });
         }
-      })
+      )()
+
+      // setUserData({ id: uuidv4(), creationDate: formattedDate, ...userDetailsRef.current.UserData() });
+        }
+      )
       .catch(errors => {
         // Data is invalid, update validation errors state
         const formattedErrors = [];
@@ -61,13 +91,11 @@ const CreateUser = ({page}) => {
           }
         });
         setValidationErrors(formattedErrors);
+        console.log(formattedErrors)
       });
-    // console.log("USER DATA", state);
+      
+    }
   }
-  
-
-
-// const  {viewFile  ,setViewFile } = UseView()
 
   const [accessLevel, setAccessLevel] = useState('');
 
@@ -81,9 +109,6 @@ const CreateUser = ({page}) => {
       sx={{
         borderBottom:"2px solid #ff5c00",
 
-        // overflow:"hidden",
-        // background:"transparent",
-        // boxShadow:"none",
         overflow:"auto",
         borderRadius: "6px",
         width: "90%",
@@ -121,6 +146,7 @@ const CreateUser = ({page}) => {
             flexDirection: "column",
             gap: ".5rem",
             height: "100%",
+            transition:".3s",
             width: `${isMD ? "100%" : "80%"}`
           }}>
             <UserDetails validationErrors={validationErrors} accessLevel={accessLevel}  setAccessLevel={setAccessLevel} ref={userDetailsRef} />
@@ -128,8 +154,40 @@ const CreateUser = ({page}) => {
             bgcolor:"#ff5c00"
           }} children={""} >Create user</StyledMainBtn>
           </Box>
-        </Box>
+
+          {/* <AnimatePresence>
+
+           {accessLevel === "Instructor" && (
+        <Box className="Addtional-Info"
+           sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            flexDirection: "column",
+            width: `${isMD ? "100%" : "45%"}`,
+            gap: ".5rem",
+            height: "100%",
+          }}>
+
+              <motion.div
+              style={{
+                width:"100%",
+                height:"100%",
+              }}
+              initial={{opacity:0}}
+              animate={{opacity:1}}
+              exit={{opacity:0}}
+              transition={{duration:.4}}
+              >
+
+                <RequiredFiles   requiredFilesRef={requiredFilesRef} />
+
+              </motion.div>
+          </Box>
+            )}
+            </AnimatePresence> */}
       </Box>
+        </Box>
   
     </StanderdBox>
   );
@@ -138,35 +196,4 @@ const CreateUser = ({page}) => {
 
 export default CreateUser;
 
-          // <Box className="Addtional-Info"
-          //  sx={{
-          //   display: "flex",
-          //   justifyContent: "flex-start",
-          //   alignItems: "flex-start",
-          //   flexDirection: "column",
-          //   width: `${isMD ? "100%" : "45%"}`,
-          //   gap: ".5rem",
-          //   height: "100%",
-          // }}>
-
-          //   {/* <AssignCourses /> */}
-          // <AnimatePresence>
-
-          //  {accessLevel === "Instructor" && (
-          //     <motion.div
-          //     style={{
-          //       width:"100%",
-          //       height:"100%",
-          //     }}
-          //     initial={{opacity:0}}
-          //     animate={{opacity:1}}
-          //     exit={{opacity:0}}
-          //     transition={{duration:.4}}
-          //     >
-
-          //       <RequiredFiles   requiredFilesRef={requiredFilesRef} />
-
-          //     </motion.div>
-          //   )}
-          //   </AnimatePresence>
-          // </Box>
+     

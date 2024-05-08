@@ -1,19 +1,10 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
-import {  Button, Divider, Link, List, ListItem } from "@mui/material";
-import { Delete, Download,   } from "@mui/icons-material";
-import PreviewIcon from '@mui/icons-material/Preview';
+import { Button, Checkbox, Divider, FormControlLabel, Link, List, ListItem } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 import styled from "@emotion/styled";
-import { UseView } from "../Contexts/viewedFileContext";
-import { useFile } from "../Contexts/FileContext";
 
-
-export default function PopOverMenu({ url, Filename , fileId}) {
-  const {DeleteFile}=useFile()
-  const { setViewFile } = UseView();
-
+export default function PopOverMenuFilter({filterList, setFilterList}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -25,22 +16,27 @@ export default function PopOverMenu({ url, Filename , fileId}) {
   };
 
 
+  const handleCheck = (id) => {
+    
+    setFilterList((prev)=>{
+      return {...prev ,
+        [id]: !prev[id],
+
+      }
+    });
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  // return{
-      
-      
-      const StyledListItem = styled(ListItem)(({theme})=>{
-          return{
-              
-              cursor:"pointer",
-              transition:".3s",
-              ':hover , :focus':{
-                  color:"#333",
-                }
-        }
-      })
+  const StyledListItem = styled(ListItem)(({ theme }) => ({
+    cursor: "pointer",
+    transition: ".3s",
+    ":hover , :focus": {
+      color: "#333",
+    },
+  }));
+
   return (
     <div>
       <Button
@@ -62,12 +58,7 @@ export default function PopOverMenu({ url, Filename , fileId}) {
         variant="contained"
         onClick={handleClick}
       >
-        <ListIcon
-          sx={{
-            color: "inherit",
-          }}
-          fontSize="medium"
-        />
+        <ListIcon sx={{ color: "inherit" }} fontSize="medium" />
       </Button>
       <Popover
         id={id}
@@ -80,81 +71,76 @@ export default function PopOverMenu({ url, Filename , fileId}) {
         }}
       >
         <List>
-          <StyledListItem
-            
-          
-       
-          >
-      <Link
-      onClick={()=>   setAnchorEl(null)}
-      sx={{
-        width:"max-content",
-        color:"inherit",
-        p:"0",
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        textDecoration:"none"
-        
-      }}
-      
-       download={Filename} href={url}>
-
-
-            <Download fontSize=".5rem" />
-            <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}>
-              Download
-            </Typography>
-      </Link>
-          </StyledListItem>
-          <Divider
-            
-
-          />
-          
-          <StyledListItem
-
-          role="button"
-       
-          onClick={()=>{
-         setAnchorEl(null)
-            
-            setViewFile(url)}}
-           
-          >
-          
-          
-  
-
-            <PreviewIcon  fontSize=".5rem" />
-            <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}
-            
-            
-            >
-              View
-            </Typography>
-      
-          </StyledListItem>
-          <Divider
-            
-
+          <StyledListItem>
+            <FormControlLabel
+              onClick={() => handleCheck("First")}
+              control={
+                <Checkbox
+                  sx={{
+                    padding: "0",
+                    "&.Mui-checked": {
+                      color: "#333",
+                    },
+                  }}
+                  checked={filterList.First}
+                />
+              }
+              label="First Year"
             />
-          <StyledListItem
-           
-           onClick={()=>{
-         setAnchorEl(null)
-         DeleteFile(fileId)
-            
-              }}
-
-          >
-          
-            <Delete fontSize=".5rem" />
-            <Typography sx={{ ml: ".5rem" }} variant="body2" component={"p"}>
-              Delete
-            </Typography>
           </StyledListItem>
-      
+          <StyledListItem>
+            <FormControlLabel
+              onClick={() => handleCheck("Second")}
+              control={
+                <Checkbox
+                  sx={{
+                    padding: "0",
+                    "&.Mui-checked": {
+                      color: "#333",
+                    },
+                  }}
+                  checked={filterList.Second}
+                />
+              }
+              label="Second Year"
+            />
+          </StyledListItem>
+          <StyledListItem>
+            <FormControlLabel
+              onClick={() => handleCheck("Third")}
+              control={
+                <Checkbox
+                  sx={{
+                    padding: "0",
+                    "&.Mui-checked": {
+                      color: "#333",
+                    },
+                  }}
+                  checked={filterList.Third}
+                />
+              }
+              label="Third Year"
+            />
+          </StyledListItem>
+          <StyledListItem>
+            <FormControlLabel
+              onClick={() => handleCheck("Fourth")}
+              control={
+                <Checkbox
+                  sx={{
+                    padding: "0 .2rem 0  0",
+                    "&.Mui-checked": {
+                      color: "#333",
+                    },
+                  }}
+                  checked={filterList.Fourth}
+                />
+              }
+              label="Fourth Year"
+            />
+   
+          </StyledListItem>
+          <Divider />
         </List>
       </Popover>
     </div>

@@ -12,6 +12,10 @@ import { ROUTE_PATHS } from "./Path";
 import StaticalAndalalysis from "../../Pages/StaticalAndalalysis";
 import ReportFileProvider from "../Contexts/ReportFileContext";
 import AdminDashbord from "../../Pages/AdminDashbord";
+import AssignCourses from "../../Pages/AssignCourses";
+import { AcademicYearProvider } from "../Contexts/AcadmicYearContext";
+import { UserProvider } from '../Contexts/UserContexts';
+import { CourseProvider } from "../Contexts/CourseContexts";
 
 export default function AppRouter() {
     const {Access} = UseAuth()
@@ -70,7 +74,11 @@ export default function AppRouter() {
         },
         {
           path: ROUTE_PATHS.CreateUser,
-          element: <CreateUser page="Create User" />,
+          element:
+          <UserProvider>
+
+          <CreateUser page="Create User" />,
+          </UserProvider>
         },
         {
           path: ROUTE_PATHS.ManageUsers,
@@ -78,7 +86,15 @@ export default function AppRouter() {
         },
         {
           path: ROUTE_PATHS.OpenSemester,
-          element: <OpenSemester page="OpenSemester" />,
+
+          element: 
+          <CourseProvider>
+
+          <AcademicYearProvider>
+
+          <OpenSemester page="OpenSemester" />,
+          </AcademicYearProvider>
+          </CourseProvider>
         },
         {
           path: ROUTE_PATHS.FinalExams,
@@ -98,6 +114,15 @@ export default function AppRouter() {
         },
         { path: ROUTE_PATHS.Profile, element: <ProfilePage page="profile" /> },
         { path: ROUTE_PATHS.AdminDashboard, element: <AdminDashbord page="Admin Dashboard" /> },
+      
+        { path: ROUTE_PATHS.AssignCourses, element: 
+        <CourseProvider>
+
+        <UserProvider>
+        <AssignCourses page="Assign Courses" /> 
+        </UserProvider>
+        </CourseProvider>
+        },
       ],
     },
     {

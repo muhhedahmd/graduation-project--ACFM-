@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useCourseContext } from '../Components/Contexts/CourseContexts';
 
-export default function CustomAutocomplete({  SetselectCourse, SetselectUser, options, id }) {
-  const [filteredOptions, setFilteredOptions] = React.useState([]);
-  const [selectedValues, setSelectedValues] = React.useState([]);
+export default function CustomAutocomplete({ SetselectCourse, SetselectUser, options, id }) {
+  const { SelectedCourse } = useCourseContext();
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [loading, setLoading] = useState(true); // Initially, set loading to true
 
-  React.useEffect(() => {
-    // Update filtered options based on the provided options and id
-    switch (id) {
-      case 'Course':
-        const allCourses = options.reduce((acc, curr) => {
-          return acc.concat(curr.courses);
-        }, []);
-        setFilteredOptions(allCourses);
-        break;
-      case 'Users':
-        setFilteredOptions(options.filter(option => option.fName && option.lName));
-        break;
-      default:
-        setFilteredOptions(Array.isArray(options) ? options : []);
-        break;
+  useEffect(() => {
+    // Check if options are available
+    if (options.length > 0) {
+      setLoading(false); // If options are available, set loading to false
+      switch (id) {
+        case 'Course':
+          setFilteredOptions(options.filter(option => option.coursename && option.academicyear));
+          break;
+        case 'Users':
+          setFilteredOptions(options.filter(option => option.first_name && option.last_name));
+          break;
+        default:
+          setFilteredOptions(options.filter(option => option.coursename));
+          break;
+      }
     }
   }, [options, id]);
 
@@ -30,23 +34,31 @@ export default function CustomAutocomplete({  SetselectCourse, SetselectUser, op
       SetselectCourse(newValue);
     } else if (id === 'Users') {
       SetselectUser(newValue);
+    } else if (id === 'mainDrawerOFMainDrawerCourses') {
+      SelectedCourse(newValue);
     }
   };
 
   const getOptionLabel = (option) => {
     if (Array.isArray(option) && option.length === 0) {
-      return ''; // Return an empty string or any default label you prefer
+      return '';
     }
-  
+
     switch (id) {
       case 'Course':
-        return `${option.courseName} ${option.courseCode}`;
+        return `${option.coursename} ${option.academicyear}`;
       case 'Users':
-        return `${option.fName || ''} ${option.lName || ''}`;
+        return `${option.first_name || ''} ${option.last_name || ''}`;
       default:
-        return option.label || '';
+        return option.coursename || '';
     }
   };
+
+  // Render loading indicator while fetching options
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   return (
     <Autocomplete
       multiple={id === 'Course'}
@@ -60,7 +72,7 @@ export default function CustomAutocomplete({  SetselectCourse, SetselectUser, op
         <TextField
           {...params}
           variant="standard"
-          placeholder={id === 'Course' ? 'Select the courses' : id === 'Users' ?  'Select the user' : 'Select the courses' }
+          placeholder={id === 'Course' ? 'Select the courses' : id === 'Users' ? 'Select the user' : 'Select the courses'}
         />
       )}
     />

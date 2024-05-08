@@ -1,8 +1,10 @@
 import { Box,Typography, useMediaQuery } from '@mui/material'
 import React from 'react'
 import InfoSection from './InfoSection'
+import UseAuth from '../../Components/Contexts/Authantication'
 
 const ProfileInfo = () => {
+  const {Data} = UseAuth()
   const   AssignedCourse = ["math1 " , "math2" , "math3" , "physics2" ] 
   const isMd = useMediaQuery((theme)=> theme.breakpoints.down('md'))
   return (
@@ -41,14 +43,14 @@ const ProfileInfo = () => {
     </Typography>
 
     
-    <InfoSection Title={"First Name :"} info={"Khaled"} />
-    <InfoSection Title={"Secound Name :"} info={"Mohamed"} />
-    <InfoSection Title={"Email :"} info={"123@gmail.com"} />
-    <InfoSection Title={"Password :"} info={"*****"} />
-    <InfoSection Title={"Access :"} info={"Instractor"} />
+    <InfoSection Title={"First Name :"} info={Data.user.first_name} />
+    <InfoSection Title={"Secound Name :"} info={Data.user.last_name} />
+    <InfoSection Title={"Email :"} info={Data.user.email} />
+    <InfoSection Title={"Access :"} info={Data.user.access} />
+    <InfoSection Title={"Phone number :"} info={Data.user.phone_number} />
     
     <InfoSection Title={"Courses :"} info={AssignedCourse} />
-    <InfoSection Title={"About :"} info={"loremmponwniwpn knoeniwqio inpnip"} />
+    <InfoSection Title={"About :"} info={Data.user.about} />
 
 
 

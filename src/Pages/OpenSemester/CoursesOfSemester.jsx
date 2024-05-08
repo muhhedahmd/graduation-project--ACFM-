@@ -1,131 +1,82 @@
-import React, { useState } from "react";
-import { Box, Button, Checkbox, FormControlLabel, SvgIcon, Typography } from "@mui/material";
-import { Clear } from "@mui/icons-material";
-import { v4 as uuid5 } from "uuid";
+import React, {  useState } from "react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
+import { Clear,  } from "@mui/icons-material";
+// import { v4 as uuid5 } from "uuid";
 import { useTheme } from "@emotion/react";
-import {StyledFormGroup} from  './Style'
+import { StyledFormGroup } from "./Style";
 import AutoCompleteUsers from "./AutoCompleteUsers";
-const CoursesOfSemester = ({setSemesterState}) => {
-  const theme = useTheme()
-  const [courses, setCourses] = useState({
-    Fall: [
-      {
-        checked: false,
-        id: uuid5(),
-        courseName: "Math 1",
-        courseCode: "MATH101",
-        byLaw: "Required",
-        level: "100",
-        creditHours: 3,
-        semester: "Fall",
-        program: "Computer Science",
-        schedule: "Mon, Wed, Fri 9:00 AM - 10:30 AM",
-        room: "Room 101",
-      },
-      {
-        checked: false,
-        id: uuid5(),
-        courseName: "Physics 1",
-        courseCode: "PHY101",
-        byLaw: "Required",
-        level: "100",
-        creditHours: 3,
-        semester: "Fall",
-        program: "Computer Science",
-        schedule: "Tue, Thu 11:00 AM - 12:30 PM",
-        room: "Room 102",
-      },
-    ],
-    Spring: [
-      {
-        checked: false,
-        id: uuid5(),
-        courseName: "Advanced Programming",
-        courseCode: "COMP301",
-        byLaw: "Elective",
-        level: "300",
-        creditHours: 4,
-        semester: "Spring",
-        program: "Computer Science",
-        schedule: "Mon, Wed, Fri 9:00 AM - 10:30 AM",
-        room: "Room 201",
-      },
-      {
-        checked: false,
-        id: uuid5(),
-        courseName: "Advanced Software Engineering",
-        courseCode: "COMP401",
-        byLaw: "Elective",
-        level: "400",
-        creditHours: 4,
-        semester: "Spring",
-        program: "Computer Science",
-        schedule: "Tue, Thu 11:00 AM - 12:30 PM",
-        room: "Room 202",
-      },
-    ],
-    Summer: [
-      {
-        checked: false,
-        id: uuid5(),
-        courseName: "Database Management Systems",
-        courseCode: "COMP201",
-        byLaw: "Elective",
-        level: "200",
-        creditHours: 3,
-        semester: "Summer",
-        program: "Computer Science",
-        instructor: "Dr. White",
-        schedule: "Mon, Wed, Fri 9:00 AM - 10:30 AM",
-        room: "Room 301",
-      },
-      {
-        checked: false,
-        id: uuid5(),
-        courseName: "Network Security",
-        courseCode: "COMP501",
-        byLaw: "Elective",
-        level: "500",
-        creditHours: 4,
-        semester: "Summer",
-        program: "Computer Science",
-        instructor: "Dr. Black",
-        schedule: "Tue, Thu 11:00 AM - 12:30 PM",
-        room: "Room 302",
-      },
-    ],
-  });
-  const [isClear  ,SetIsClear]  =useState(false)
+// import axios from "axios";
+import { processedCourses } from "../../Components/Semsterdata";
+import PopOverMenuFilter from "../../Components/Dashbboard/PopOverMenu";
 
-  const handleCheck = (e) => {
-    const courseId = e.target.id; // Get the ID of the clicked checkbox
+const CoursesOfSemester = ({  setCheckedCourses, setSemesterState  , filterList   , setFilterList}) => {
 
-    setCourses((prevCourses) => {
-        const updatedCourses = Object.entries(prevCourses).map(([semester, courses]) => ({
-            [semester]: courses.map((course) =>
-                course.id === courseId ? { ...course, checked: !course.checked } : course
-            )
-        }));
+    const transformedCourses = {
+    Fall: [],
+    Spring: [],
+    Summer: [],
+  };
 
-        const updatedState = updatedCourses.reduce((acc, cur) => {
-            const [semester, courses] = Object.entries(cur)[0];
-            acc[semester] = courses;
-            return acc;
-        }, {});
+  const transformCourses = (courses) => {
+    
+      
+    courses.forEach((course) => {
+      const { semester } = course;
 
-        const flattenedCourses = Object.values(updatedState).flat();
-
-        const filteredCourses = flattenedCourses.filter((course) => course.checked);
-
-        setSemesterState((prev) => ({
-            ...prev,
-            courses: filteredCourses
-        }));
-
-        return updatedState;
+      switch (semester.toLowerCase()) {
+        case "fall":
+          transformedCourses.Fall.push({ ...course, checked: false });
+          break;
+        case "spring":
+          transformedCourses.Spring.push({ ...course, checked: false });
+          break;
+        case "summer":
+          transformedCourses.Summer.push({ ...course, checked: false });
+          break;
+        default:
+                    break;
+      }
     });
-};
+    console.log(transformedCourses)
+    return transformedCourses;
+  };
 
+  const [courses, setCourses] = useState(transformCourses(processedCourses));
+  const [isClear, SetIsClear] = useState(false);
+  const theme = useTheme();
+  const handleCheck = (id) => {
+    setCourses((prevCourses) => {
+      const updatedCourses = Object.keys(prevCourses).reduce((acc, semester) => {
+        acc[semester] = prevCourses[semester].map((course) =>
+          course.id === id
+            ? { ...course, checked: !course.checked }
+            : course
+        );
+        return acc;
+      }, {});
+
+      const flattenedCourses = Object.values(updatedCourses).flat();
+
+      const filteredCourses = flattenedCourses.filter((course) => course.checked);
+
+      // Update checkedCourses state with the filtered courses
+      setCheckedCourses(filteredCourses);
+
+      setSemesterState((prev) => ({
+        ...prev,
+        courses: filteredCourses,
+      }));
+
+      return updatedCourses;
+    });
+  
+  };
 
   return (
     <Box
@@ -141,7 +92,7 @@ const CoursesOfSemester = ({setSemesterState}) => {
         bgcolor: "#fff",
         boxShadow: "3px 3px 3px #dedede",
         padding: "1rem",
-        overflow:"auto"
+        overflow: "auto",
       }}
       margin={"1rem  0 0 0"}
       className="HolderUsers&Courses"
@@ -155,105 +106,119 @@ const CoursesOfSemester = ({setSemesterState}) => {
           gap: "1rem",
         }}
       >
-<AutoCompleteUsers setSemesterState={setSemesterState} isClear={isClear} SetIsClear={SetIsClear}  />
-        <Button onClick={()=>SetIsClear(true)} sx={{ padding: "1rem 0 " }}>
-          <SvgIcon color={theme.palette.primary.paper}>
-            <Clear onClick={()=>SetIsClear(true)} sx={{ color: theme.palette.primary.paper }} />
-          </SvgIcon>
+        <AutoCompleteUsers
+          setSemesterState={setSemesterState}
+          isClear={isClear}
+          SetIsClear={SetIsClear}
+        />
+        <Box
+        sx={{
+          display:"flex",
+          justifyContent:"flex-start",
+          alignItems:"center"
+        }}
+        >
+
+        <Button  
+        sx={{ minWidth:0 }}>
+            <Clear
+              onClick={() => SetIsClear(true)}
+              sx={{ color: theme.palette.primary.paper }}
+            />
         </Button>
+        <Button 
+          
+        
+         onClick={() => SetIsClear(true)} sx={{  }}>
+<PopOverMenuFilter filterList={filterList} setFilterList={setFilterList} />
+        </Button>
+        </Box>
       </Box>
       <StyledFormGroup
         sx={{
-          // margin: ".5rem 0 0 0 ",
-          overflow:"auto",
+          overflow: "auto",
 
-          // overflow: "visible !important",
           width: "100% !important",
         }}
       >
-  {
-          Object.keys(courses).map((itemC) => (
-            <Box
-              key={`course-${itemC}`}
-              component="div"
-              id={itemC.id}
-              sx={{
-                maxWidth: "auto",
-                width: "98%",
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-                flexDirection: "column",
-                flexWrap: "nowrap",
-                gap: ".5rem",
-              }}
-            >
-              <Typography variant="subtitle1" component={"p"}>
-                {itemC}
-              </Typography>
-              {courses[itemC].map((item) => (
-                  <FormControlLabel
-                    key={item.id}
-                    id={item.id}
-                    checked={item.checked}
-                    onClick={(e) => handleCheck(e, setCourses)}
+        {Object.keys(courses).map((itemC) => (
+          <Box
+            key={`course-${itemC}`}
+            component="div"
+            sx={{
+              maxWidth: "auto",
+              width: "98%",
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              flexDirection: "column",
+              flexWrap: "nowrap",
+              gap: ".5rem",
+            }}
+          >
+            <Typography variant="subtitle1" component={"p"}>
+              {itemC}
+            </Typography>
+            {courses[itemC].map((item) => (
+              <FormControlLabel
+                key={item.id}
+                id={item.id}
+                checked={item.checked}
+                onClick={(e) => handleCheck(item.id)}
+                sx={{
+                  width: "97%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  padding: ".5rem .5rem .5rem 0",
+                  gap: "1rem",
+                  color: item.checked ? theme.palette.primary.paper : "#333",
+                  transition: ".3s",
+                  borderRadius: "6px",
+                  margin: "0",
+                }}
+                control={
+                  <Box
+                    className="item-holder-course"
                     sx={{
-                      width: "97%",
+                      margin: "0",
                       display: "flex",
                       justifyContent: "flex-start",
                       alignItems: "center",
-                      padding: ".5rem .5rem .5rem 0",
-                      gap: "1rem",
-                      color: item.checked ? theme.palette.primary.paper : "#333",
-                      transition: ".3s",
-                      borderRadius: "6px",
-                      margin:"0"
+                      gap: ".5rem",
+                      flexWrap: "nowrap",
+                      width: "max-content",
                     }}
-                    control={
-                      <Box
-                      className="item-holder-course"
-                        sx={{
-
-                          margin:"0",
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: ".5rem",
-                          flexWrap: "nowrap",
-                          width: "max-content",
-                        }}
-                      >
-                        <Checkbox
-                          id={item.id}
-                          style={{
-                            color: theme.palette.primary.paper,
-                            padding: "0",
-                            '&.Mui-checked': {
-                              color: theme.palette.primary.paper,
-                            }
-                          }}
-                          checked={item.checked}
-                        />
-                        <Typography
-                          id={item.id}
-                          sx={{
-                            width: "max-content",
-                            minWidth: "max-content",
-                            cursor: "pointer",
-                          }}
-                          variant="subtitle2"
-                          onClick={(e) => handleCheck(e, setCourses)}
-                        >
-                          {item.courseName} {item.courseCode}
-                        </Typography>
-                      </Box>
-                    }
-                  />
-                
-              ))}
-            </Box>
-          ))
-  }      
+                  >
+                    <Checkbox
+                      id={item.id}
+                      style={{
+                        color: theme.palette.primary.paper,
+                        padding: "0",
+                        "&.MuiChecked": {
+                          color: theme.palette.primary.paper,
+                        },
+                      }}
+                      checked={item.checked}
+                    />
+                    <Typography
+                      id={item.id}
+                      sx={{
+                        width: "max-content",
+                        minWidth: "max-content",
+                        cursor: "pointer",
+                      }}
+                      variant="subtitle2"
+                      onClick={(e) => handleCheck(item.id)}
+                    >
+                      {item.courseTitle} {item.abbreviation}
+                    </Typography>
+                  </Box>
+                }
+              />
+            ))}
+          </Box>
+        ))}
       </StyledFormGroup>
     </Box>
   );

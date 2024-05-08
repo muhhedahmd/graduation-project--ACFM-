@@ -16,9 +16,13 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+const currentDate = new Date();
+const formattedDate = currentDate.toISOString().split('T')[0]; 
+
 const UserDetails = forwardRef(
   ({ validationErrors, profile, setAccessLevel, accessLevel }, ref) => {
     const [avtarImg, setAvatarImg] = useState(null);
+    const [ResmImg, setResmuIng] = useState(null);
 
     const isSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -30,7 +34,9 @@ const UserDetails = forwardRef(
       password: "",
       about: "",
       PhoneNumber: "",
-      img: avtarImg,
+      avtarImg: avtarImg,
+      creation_date: formattedDate,
+      resumeImg: ResmImg,
     });
 
     useImperativeHandle(
@@ -41,12 +47,13 @@ const UserDetails = forwardRef(
       [UserData]
     );
 
-    const handleChangeAvtar = (e) => {
+    const handleChangeAvtar = (e ,setState , obj ) => {
       const selectedFile = e.target.files[0];
       if (e.target.files[0]) {
         if (selectedFile.type.startsWith("image/")) {
-          setAvatarImg(URL.createObjectURL(selectedFile));
-          SetUserData({ ...UserData, img: URL.createObjectURL(selectedFile) });
+          console.log(selectedFile)
+          setState(URL.createObjectURL(selectedFile));
+          SetUserData({ ...UserData, [obj]: selectedFile});
         }
       }
     };
@@ -56,6 +63,8 @@ const UserDetails = forwardRef(
       SetUserData((prev) => {
         return { ...prev, [id]: value, AccesLevel: accessLevel };
       });
+
+      console.log(UserData)
     };
 
     return (
@@ -136,7 +145,58 @@ const UserDetails = forwardRef(
             >
               <VisuallyHiddenInput
                 type="file"
-                onChange={(e) => handleChangeAvtar(e)}
+                onChange={(e) => handleChangeAvtar(e , setAvatarImg , 'avtarImg')}
+              />
+            </Button>
+          </Box>
+        </FormGroup>
+        <FormGroup
+          sx={{
+            margin: "0 0 -.8rem 0",
+
+            width: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "2rem",
+            }}
+          >
+        
+
+            <Button
+              component="label"
+              role={"button"}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={
+                <>    
+
+
+                    <img  
+                    style={{
+                      width:"60px",
+                      height:"60px"
+                    }}
+                    src={ResmImg} alt="resumeImg" />
+                </>
+              }
+              sx={{
+                boxShadow: "none",
+                padding: "0",
+                ":hover , :focus": {
+                  bgcolor: "#fff",
+                  boxShadow: "none",
+                },
+              }}
+            >
+              <VisuallyHiddenInput
+                type="file"
+                onChange={(e) => handleChangeAvtar(e , setResmuIng ,'resumeImg')}
               />
             </Button>
           </Box>
@@ -204,6 +264,7 @@ const UserDetails = forwardRef(
           validationErrors={validationErrors}
           UserData={UserData}
         />
+       
       </form>
     );
   }

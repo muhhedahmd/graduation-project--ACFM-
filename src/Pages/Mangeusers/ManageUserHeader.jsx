@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { createContext, forwardRef, useEffect, useState } from 'react'
 import {Box, Button, FormGroup, Input, SvgIcon} from '@mui/material'
 
-import { Sort } from '@mui/icons-material'
-import { useTheme } from '@emotion/react'
+
 import { Link } from 'react-router-dom'
 import Btn from '../../Components/Btn'
+import { useImperativeHandle } from 'react'
 
-const ManageUserHeader = () => {
-  const theme = useTheme()
+
+const ManageUserHeader = ( {setSearchResults} ) => {
+  const [ InpVal,  setInpVal] = useState()
+  useEffect(()=>{
+    setSearchResults(InpVal)
+  },[InpVal, setSearchResults])
+
   return (
     <Box
     sx={{
@@ -27,6 +32,7 @@ const ManageUserHeader = () => {
     <FormGroup>
   
     <Input
+    onChange={(e)=>setInpVal(e.target.value)}
     type='text'
     id='Search'
     label="Search"
@@ -54,30 +60,7 @@ const ManageUserHeader = () => {
     </Link>  
   </Btn>
 
-  <Button
-  // color=''
-  sx={{
-    padding:".7rem",
-  color:`${theme?.palette?.primary?.paper}`
 
-  }}
-
-  startIcon={
-    <SvgIcon>
-        <Sort
-        fontSize='1.7rem !important'
-        sx={{
-        fontSize:'2rem !important',
-
-          color:`${theme?.palette?.primary?.paper}`
-        }}
-
-        />
-    </SvgIcon>
-  }
-  >
-
-  </Button>
 
 
 
@@ -85,5 +68,4 @@ const ManageUserHeader = () => {
 
   )
 }
-
 export default ManageUserHeader

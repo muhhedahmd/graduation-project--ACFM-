@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const AccessLevel = function AccessLevel({ error,  setAccessLevel ,  initialValue,  }) {
+const AccessLevel = function AccessLevel({ error,   setAccessLevel ,    initialValue,  }) {
   const [value, setValue] = useState(initialValue || '');
 
   const handleChange = (event) => {
@@ -29,12 +29,10 @@ const AccessLevel = function AccessLevel({ error,  setAccessLevel ,  initialValu
           onChange={handleChange}
           label=""
         >
-          <MenuItem value="">
-          </MenuItem>
+  
           <MenuItem value={"Admin"}>Admin</MenuItem>
           <MenuItem value={"Instructor"}>Instructor</MenuItem>
           <MenuItem value={"Staff"}>Staff</MenuItem>
-          <MenuItem value={"Staff Management"}>Staff Management</MenuItem>
         </Select>
       </FormControl>
     </div>

@@ -6,23 +6,27 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import Bullets from "./Bullets";
 import { Close } from "@mui/icons-material";
 import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
 import { useTheme } from "@emotion/react";
-import CustomAutocomplete from "./AutoComplete";
 
-const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
+import { useCourseContext } from '../Components/Contexts/CourseContexts';
+import Asynchronous from "./MainDrawerAysnc";
+const MainDrawer = memo(({ isMD, area, setMenuDrawer }) => {
+  const {courses}  = useCourseContext()
   const theme = useTheme();
   const [isexpand, setIsexpand] = useState(false);
   const handleClouseDrawer = () => {
     setIsexpand((prev) => !prev);
     
   };
+  console.log(courses)
   return (
+
     <StyledMainDrawer isMD={isMD} area={area} isexpand={isexpand}>
       <Bullets />
       <List>
@@ -46,7 +50,7 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
               style={{
                 maxWidth: "2.2rem",
               }}
-              src="Images/logo-o6u 1.png"
+              src="Images/logo-o6u1.png"
               alt=""
             />
 
@@ -175,7 +179,7 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
 
                   transition: ".4s",
                 }}
-                src="images/main course.png"
+                src="Images/maincourse.png"
                 alt="course.png"
               />
 
@@ -198,25 +202,16 @@ const MainDrawer = ({ isMD, area, setMenuDrawer }) => {
           }}
           >
 
-        <CustomAutocomplete
-        key={'mainDrawer'}
 
-          id={'mainDrawer'}
-          options={[
-
-          {  label:"MAth1 mc1"},
-            {label:"Physics py12"},
-            {label:"Computer scince", Value:'Math1_mc1'},
-          ]
-          }
-        />
+        <Asynchronous/>
           </Box>
 
       </List>
 
       <MenuCollapse isexpand={isexpand} />
     </StyledMainDrawer>
+
   );
-};
+})
 
 export default MainDrawer;

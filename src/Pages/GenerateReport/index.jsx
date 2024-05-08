@@ -146,7 +146,8 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
               // padding:".5rem",
             }}
           >
-            <Box
+            <AddReport  mainReportState={mainReportState} setMainReportState={setMainReportState} />
+            {/* <Box
               sx={{
                 // maxHeight:"100%",
                 height: "84%",
@@ -156,7 +157,6 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
             {
               Access === "admin" ? 
 
-            <AddReport  mainReportState={mainReportState} setMainReportState={setMainReportState} />
 :
 
               <Typography>
@@ -167,8 +167,8 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
                 state={state?.StaticalFiles}
                 Report={true}
                 NoSearch={true}
-              /> */}
-            </Box>
+              /> 
+            </Box> */}
 
           </Box>
         </Box>

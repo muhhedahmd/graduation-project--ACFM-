@@ -3,40 +3,42 @@ import {
   Box,
   Button,
   FormControlLabel,
-  
   Radio,
   Typography,
 } from "@mui/material";
-import React, { useEffect,  useId,  useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import StanderdBox from "../../Components/StanderdBox";
 import { useSemester } from "../../Components/Contexts/SemesterContext";
 import CoursesOfSemester from "./CoursesOfSemester";
-import CourseInfoCard from "./CourseInfoCard";
-import { StyledMainBtn } from "../../MainDrawer/style";
+import AcadmicYear from "./AcadmicYear";
+import CreateAcadmicYear from "./CreateAcadmicYear";
+import { useCourseContext } from "../../Components/Contexts/CourseContexts";
+import axios from "axios";
 
-const OpenSemester = ({page}) => {
-  const { semesterState ,  setSemesterData } = useSemester()
-    
+const OpenSemester = ({ page }) => {
+    const  {addCourse}= useCourseContext()
+  const [filterList, setFilterList] = useState({
+    First: false,
+    Second: false,
+    Third: false,
+    Fourth: false,
+  });
+  
+  const [ChecedCourses , setCheckedCourses] = useState([])
+  const [AcadmicYearState, setAcadmicYearState] = useState("");
 
 
 
-  const currentYear = new Date().getFullYear();
 
 
- 
   const [Semester, setSemester] = useState({
     Fall: true,
     Spring: false,
     Saummer: false,
   });
-  const [SemesterState , setSemesterState ] = useState({
-    Semester:"Fall",
-    Closed:false,
-    id:useId,
-    courses:[],
-    year:currentYear.toString() + '/' + (currentYear + 1).toString()
-
-  })
+  const [SemesterState, setSemesterState] = useState({
+    Semester: "Fall",
+  });
   const handleChange = (e, item, state, setState, onlyOne) => {
     const { checked } = e.target;
 
@@ -47,8 +49,6 @@ const OpenSemester = ({page}) => {
       }
       setState(updatedState);
       setSemesterState((prev) => ({ ...prev, Semester: item }));
-
-
     } else {
       const updatedState = {
         ...state,
@@ -66,15 +66,32 @@ const OpenSemester = ({page}) => {
     setFormattedDate(formatted);
   }, []);
 
+  const HandleClick = ()=>{
 
+    console.log(SemesterState , AcadmicYearState , ChecedCourses)
+
+    ChecedCourses.map((item)=>
+
+      (async()=>{
+        await axios.post("https://optima-software-solutions.com/apis/courseadd.php" ,
+          {
+            "coursename": item.courseTitle,
+            "academicyear": AcadmicYearState,
+            "semester": SemesterState.Semester
+        }
+        )
+          .then((res)=> console.log(res))
+          .catch((res)=> console.log(res))
+      })()
+
+    
+    )
+  
+
+  }
   const theme = useTheme();
   return (
-
-<StanderdBox>
-
-
-
-    {!semesterState.length  ? 
+    <StanderdBox>
         <Box
           sx={{
             width: "100vw",
@@ -82,18 +99,13 @@ const OpenSemester = ({page}) => {
             justifyContent: "flex-start",
             alignItems: "flex-start",
             height: "calc(100vh - 7vh)",
-flexDirection:"column",
+            flexDirection: "column",
             overflow: "hidden",
           }}
         >
-        <Typography
-        padding={"0 1rem"}
-        variant="h5"
-        component={"p"}
-        >
-
-        {page}
-        </Typography>
+          <Typography padding={"0 1rem"} variant="h5" component={"p"}>
+            {page}
+          </Typography>
           <Box
             sx={{
               width: "100%",
@@ -118,9 +130,19 @@ flexDirection:"column",
                 justifyContent: "center",
                 margin: "0rem 0 0 0 ",
                 gap: "3rem",
-                overflow:"auto"
+                overflow: "auto",
               }}
             >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  pb: ".7rem",
+                }}
+              >
+                <AcadmicYear setAcadmicYearState={setAcadmicYearState} />
+              </Box>
               {Object.keys(Semester).map((ksem) => {
                 return (
                   <FormControlLabel
@@ -131,7 +153,6 @@ flexDirection:"column",
                       flexDirection: "row-reverse",
                       justifyContent: "flex-start",
                       alignItems: "center",
-                  
                     }}
                     key={ksem}
                     control={
@@ -154,9 +175,6 @@ flexDirection:"column",
                           sx={{
                             fontSize: ".9rem",
                             color: theme.palette.primary.paper,
-                            "&.Mui-checked": {
-                              color: theme.palette.primary.paper,
-                            },
                           }}
                         />
 
@@ -170,164 +188,52 @@ flexDirection:"column",
                 );
               })}
             </Box>
+
             <Box
-            
               sx={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                flexDirection: "column",
+                flexDirection: "row",
+                gap: "1rem",
+
+                overflow: "scroll",
               }}
             >
-              <CoursesOfSemester setSemesterState={setSemesterState} />
+              <CreateAcadmicYear />
 
-              <Button
-               sx={{
-        padding:".5rem  0 .5rem 0 ",
-        margin:"1rem 0 ",
-        width:"100%",
-        bgcolor: theme.palette.primary.paper,
-                        ":hover": {
-                          bgcolor: theme.palette.primary.paper,
-                        },
-    }}
-    
-            onClick={()=>setSemesterData(SemesterState)}
-                width="100%"
-            
+              <Box
+                sx={{
+                  width: "100%",
+                }}
               >
+                <CoursesOfSemester
+         setCheckedCourses={setCheckedCourses}
+                 filterList={filterList} setFilterList={setFilterList} setSemesterState={setSemesterState} />
 
-                Submit
-              </Button>
+                <Button
+                  sx={{
+                    padding: ".5rem  0 .5rem 0 ",
+                    margin: "1rem 0 ",
+                    width: "100%",
+                    bgcolor: theme.palette.primary.paper,
+                    ":hover": {
+                      bgcolor: theme.palette.primary.paper,
+                    },
+                  }}
+                  onClick={ HandleClick}
+                  width="100%"
+                >
+                  Submit
+                </Button>
+              </Box>
             </Box>
           </Box>
-
         </Box>
-      :
-      <Box className="Main-Holder">
-        <Typography
-        variant="h4"
-        align="left"
-        component={"p"}
-        sx={{
-          color:"#222"
-        }}
-        >
-        You are already in Semester
-          {semesterState.map((item)=>{
-          return (<Box
-            sx={{
-              height:"100%",
-              margin:"1rem",
-              flexDirection:"column",
-              display:"flex",
-              justifyContent:"flex-start",
-              alignItems:"flex-start"
-            }}  
-            >
 
-
-              <Typography
-              variant="h6"
-              >
-
-                {item.Semester}
-              </Typography>
-              <Typography
-              variant="h6"
-              
-              >
-
-                {item.year}
-              </Typography>
-              <Typography
-              variant="h6"
-              
-              >
-
-                {item.Closed ? "not Closed"  :
-                <Box>
-
-                <Typography>
-                Are you want to colse
-
-                </Typography>
-                <Box
-                sx={{
-                  display:"flex",
-                  justifyContent:"flex-start",
-                  alignItems:"flex-start",
-                  gap:"1rem",
-                  // flexWrap:"wrap",
-
-                }}
-                >
-
-                <StyledMainBtn
-
-                >
-                    Close
-                </StyledMainBtn>
-                <StyledMainBtn
-                colorProp={
-                  "#f01"
-                }
-          
-                >
-                    Remove
-                </StyledMainBtn>
-                </Box>
-                </Box>
-                }
-              </Typography>
-              
-              <Box
-             sx={{
-              flexWrap:"wrap",
-              width:"100%",
-              gap:"3rem",
-              padding:".5rem",
-              bgcolor:"#fafafa",
-              borderRadius:"6px",
-              margin:".5rem 0 ",
-              flexDirection:"row",
-              display:"flex",
-              justifyContent:"flex-start",
-              alignItems:"flex-start",
-              height:"70%",
-              overflowY: "auto"
-            }}  
-              
-              >
-
-
-
-
-{(item.courses).map((itemx, i) => (
- <CourseInfoCard
-  key={i}
-
-  
-courseName={itemx.courseName}  courseCode={itemx.courseCode}  creditHours={itemx.creditHours}  program={itemx.program}
- />
-))}
-              </Box>
-
-
-            </Box>
-            )
-          })
-
-          }
-        </Typography>
-      </Box>
-      }
-      
-</StanderdBox>
-    
+    </StanderdBox>
   );
 };
 
 export default OpenSemester;
-

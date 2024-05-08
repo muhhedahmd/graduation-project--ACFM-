@@ -46,7 +46,7 @@ const UploadAndDeleteSection = ({Drawer , page}) => {
     Drawer={Drawer}
     
     >
-      <UploadSection/>
+      <UploadSection category={page}/>
 
       <Box
         className="Download"

@@ -87,7 +87,7 @@ export const MainDrawerData = [
 
 
     Ttile: "Admin",
-    nested: [ "Admin Dashboard", "Generate Report", "Admin Files", "Create User","Open Semester", "Manage Users"],
+    nested: [ "Admin Dashboard", "Generate Report", "Admin Files", "Create User","Open Semester", "Manage Users" , "Assign Courses"],
   },
   {
     iconPath: (

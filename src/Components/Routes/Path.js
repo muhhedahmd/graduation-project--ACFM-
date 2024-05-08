@@ -15,6 +15,7 @@ export const ROUTE_PATHS = {
     AdminDashboard :"/AdminDashboard",
 
 StudentSurvey:"/StudentSurvey",
+AssignCourses:"/AssignCourses",
 
     Profile: "/profile"
 };
