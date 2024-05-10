@@ -92,7 +92,6 @@ export default function AsynchronousAutoComplete({isClear, SetIsClear , setSemes
     const [inpVal, setInpVal] = useState("");
 
     const handleSearchClick = (courseId) => {
-        console.log(courseId);
         setLinksState(null)
     };
 

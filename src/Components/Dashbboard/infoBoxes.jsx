@@ -62,3 +62,4 @@ const InfoBoxes = () => {
 };
 
 export default InfoBoxes;
+

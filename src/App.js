@@ -2,17 +2,21 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { AuthProvider } from "./Components/Contexts/Authantication";
 import AppRouter from "./Components/Routes";
 import './App.css'
-import { FileContextProvider } from "./Components/Contexts/FileContext";
+// import { FileContextProvider } from "./Components/Contexts/FileContext";
 import {  SemesterProvider } from "./Components/Contexts/SemesterContext";
 import { UseView } from "./Components/Contexts/viewedFileContext";
 import PDFViewer from "./Components/PDFViewer";
 import { UserProvider } from "./Components/Contexts/UserContext";
 import { AnimatePresence , motion } from "framer-motion";
 import { CourseProvider } from "./Components/Contexts/CourseContexts";
+import { FileContextProvider } from "./Components/Contexts/FileCourseContext";
+import { ImageProvider, useImage } from "./Components/Contexts/ImageViewrContex";
+import ImageViewer from "./Components/ImageViewer";
 
 
 function App() {
   const  {viewFile   } = UseView()
+  const { showImage, setShowImage} = useImage()
 
   
   const theme =createTheme({
@@ -62,15 +66,15 @@ function App() {
 
 <SemesterProvider>
 
-<FileContextProvider>
 <CourseProvider>
-    <FileContextProvider>
 
-    
-    <AppRouter/>
-    </FileContextProvider>
+          <AppRouter/>
+        
+
 </CourseProvider>
 <AnimatePresence>
+
+<FileContextProvider>
 
 
     {
@@ -103,10 +107,40 @@ function App() {
       :
       null
       }
+
+    {
+      showImage ? 
+        <AnimatePresence>
+
+      <motion.div
+      initial={{
+        opacity:0
+      }}
+      animate={{opacity:1
+      }}
+      exit={{opacity:0}}
+      transition={{duration:0.5}}
+      key='Image-file-viewer'
+      className="flex-space-between-center"
+      sx={{
+        position:"fixed",
+        justifyContent:"center",
+        gap:"3rem"
+      }}
+      >
+      <ImageViewer/>
+      </motion.div>
+        </AnimatePresence>
+      :
+      null
+      }
+
+
+
+    </FileContextProvider>
 </AnimatePresence>
 
 
-</FileContextProvider>
 </SemesterProvider>
 </UserProvider>
 

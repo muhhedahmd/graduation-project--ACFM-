@@ -1,4 +1,4 @@
-import { Box,  Collapse, Typography } from "@mui/material";
+import { Box, Collapse, Typography } from "@mui/material";
 
 import React, { useState } from "react";
 import { useTheme } from "@emotion/react";
@@ -11,15 +11,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-
 import SearchFiles from "./SearchFiles";
-import PopOverMenu from "./PopOverMenu";
+import UseAuth from "../Contexts/Authantication";
+import { useCourseContext } from "../Contexts/CourseContexts";
+import PopFile from "./PopFile";
 
-
-function CustomizedTables({state , colors}) {
-  console.log("state", state)
+function CustomizedTables({ state, colors }) {
+  const { Data } = UseAuth();
+  const { MainDrawerCourse } = useCourseContext();
+  console.log("state", MainDrawerCourse);
   const [openRowId, setOpenRowId] = useState(null);
-
+  console.log(state)
   return (
     <TableContainer
       sx={{
@@ -30,7 +32,7 @@ function CustomizedTables({state , colors}) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead
           sx={{
-            bgcolor: colors?.bgColor ?colors.bgColor : "#fff"  ,
+            bgcolor: colors?.bgColor ? colors.bgColor : "#fff",
             borderBottom: "3px solid #ff5c00",
           }}
         >
@@ -55,13 +57,16 @@ function CustomizedTables({state , colors}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {state?.map((row) => {
+
+          {state&& state?.map((row) => {
             return (
               <>
                 <TableRow key={row.id}>
                   <TableCell
                     onClick={() =>
-                      setOpenRowId(openRowId === row.id ? null : row.id)
+                      setOpenRowId(
+                        openRowId === row.id ? null : row.id
+                      )
                     }
                     component="th"
                     scope="row"
@@ -77,22 +82,15 @@ function CustomizedTables({state , colors}) {
                         maxWidth: "10rem",
                       }}
                     >
-                      {row.file.name}
+                      testPdf.pdf
                     </Typography>
                   </TableCell>
+
                   <TableCell
                     onClick={() =>
-                      setOpenRowId(openRowId === row.id ? null : row.id)
-                    }
-                    align="right"
-                  >
-                    {`${row.file.lastModifiedDate.getDate()} / ${
-                      row.file.lastModifiedDate.getMonth() + 1
-                    } / ${row.file.lastModifiedDate.getFullYear()}`}
-                  </TableCell>
-                  <TableCell
-                    onClick={() =>
-                      setOpenRowId(openRowId === row.id ? null : row.id)
+                      setOpenRowId(
+                        openRowId === row.id ? null : row.id
+                      )
                     }
                     align="right"
                   >
@@ -107,23 +105,28 @@ function CustomizedTables({state , colors}) {
                         maxWidth: "10rem",
                       }}
                     >
-                      Dr: khaled
+                      Dr: {Data.user.first_name}
+                      {Data?.user?.last_name}
                     </Typography>
                   </TableCell>
-                 
-
 
                   <TableCell
                     onClick={() =>
-                      setOpenRowId(openRowId === row.id ? null : row.id)
+                      setOpenRowId(
+                        openRowId === row?.id ? null : row?.id
+                      )
                     }
                     align="right"
                   >
-                    Fall
+                    Dr: {Data.user.first_name}
+                    {Data?.user?.last_name}
                   </TableCell>
 
+                  <TableCell align="right">{MainDrawerCourse?.semester === "1"  ?"fall" : MainDrawerCourse?.semester === "2" ? "Spring": "summer"} </TableCell>
+
                   <TableCell align="right">
-                    <PopOverMenu  url={row.url} Filename={row.file.name} fileId={row.id}/>
+                  <PopFile url={row.filename} Filename={'pdfjs.pdf'} fileId={row.id}/>
+
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -132,7 +135,7 @@ function CustomizedTables({state , colors}) {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openRowId === row.id}
+                      in={openRowId === row?.id}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -161,7 +164,16 @@ function CustomizedTables({state , colors}) {
                             variant="subtitle2"
                             component="div"
                           >
-                            name : {row.file.name}
+                            name : Pdftest{row.filenfilename}.pdf{"ss".substring(10,)}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              width: "max-content",
+                            }}
+                            variant="subtitle2"
+                            component="a"
+                          >
+                            Url : {row.filename}
                           </Typography>
                           <Typography
                             sx={{
@@ -170,7 +182,7 @@ function CustomizedTables({state , colors}) {
                             variant="subtitle2"
                             component="div"
                           >
-                            Description : {row.Description}
+                            Description : {row.description}
                           </Typography>
                         </Box>
                       </Box>
@@ -179,47 +191,39 @@ function CustomizedTables({state , colors}) {
                 </TableRow>
               </>
             );
-          })}
+          })} 
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
 
-const FilesTable = ( { padding, NoSearch , Report  , state  , colors}) => {
+const FilesTable = ({ NoSearch, Report, colors ,state}) => {
   const theme = useTheme();
-  const [searchItems , setSearchItems] = useState(null) 
+  const [searchItems, setSearchItems] = useState(null);
   return (
     <Box
       sx={{
         overflow: "hidden",
         height: "100%",
-        // height: 100%;
-    width: "100%"
-
-        //   p:"1rem"
+        width: "100%",
       }}
     >
-    {
-      !NoSearch ? 
-      <SearchFiles setSearchItems={setSearchItems } />
-      :null
-    }
+      {!NoSearch ? <SearchFiles  setSearchItems={setSearchItems} /> : null}
       <Box
         sx={{
           boxShadow: "rgb(222, 222, 222) 3px 3px 4px",
           background: theme.palette.background.paper,
 
-          height: `${Report ?"99%" : "88%" }`,
-          width: `${Report ?"97%" : "auto" }`,
-          
-          // height: ;
-    // width: 
-          // overflowY: "scroll",
+          height: `${Report ? "99%" : "88%"}`,
+          width: `${Report ? "97%" : "auto"}`,
           borderRadius: "9px",
         }}
       >
-<CustomizedTables colors={colors} state={searchItems ? searchItems :state } />
+        <CustomizedTables
+          colors={colors}
+          state={searchItems ? searchItems : state}
+        />
       </Box>
     </Box>
   );

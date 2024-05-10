@@ -4,6 +4,8 @@ import React from 'react'
 import Header from '../../Components/Header'
 import MainDrawer from '../../MainDrawer'
 import Dashbboard from '../../Components/Dashbboard'
+import { FileContextProvider } from '../../Components/Contexts/FileCourseContext'
+import { UserProvider } from '../../Components/Contexts/UserContexts'
 
 const MaterailPage = ({page}) => {
   const isSm = useMediaQuery((theme)=>theme.breakpoints.down("lg"))
@@ -16,7 +18,10 @@ const MaterailPage = ({page}) => {
       height:"100vh",
     }}
     >
+    <UserProvider>
+
     <Header/>
+    </UserProvider>
     <Box 
     className='Main'
     sx={{
@@ -52,7 +57,10 @@ const MaterailPage = ({page}) => {
   >
       {page}
   </Typography>
+  <FileContextProvider>
+
       <Dashbboard page={page}/>
+  </FileContextProvider>
       </Box>
 
     </Box>

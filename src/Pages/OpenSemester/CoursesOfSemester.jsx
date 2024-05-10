@@ -43,7 +43,6 @@ const CoursesOfSemester = ({  setCheckedCourses, setSemesterState  , filterList 
                     break;
       }
     });
-    console.log(transformedCourses)
     return transformedCourses;
   };
 

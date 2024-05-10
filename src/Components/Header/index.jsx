@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   CssBaseline,
@@ -19,9 +20,14 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import SegmentIcon from "@mui/icons-material/Segment";
 import { StyledListItemCenter } from "./style";
 import MainDrawer from "../../MainDrawer";
+import UseAuth from "../Contexts/Authantication";
+import { useUserContext } from "../Contexts/UserContexts";
 
 const Header = ({  bgcolor }) => {
-  const theme = useTheme();
+  const {users} = useUserContext()
+  const {Data} = UseAuth()
+  const AvatarImg = users.find((item)=>item.id === Data?.user?.id ? item?.avatar : null)?.avatar || ""
+    const theme = useTheme();
   const isSm = useMediaQuery((theme) => theme.breakpoints.down("lg"));
   const [MenuDrawer, setMenuDrawer] = useState(false);
   const HandleDrawer = () => {
@@ -63,13 +69,16 @@ const Header = ({  bgcolor }) => {
                   }}
                 >
                   <ListItemIcon>
+                  <Avatar>
+
                     <img
                       style={{
                         maxWidth: "2.2rem",
                       }}
-                      src="Images/logo-o6u 1.png"
-                      alt=""
+                      src={AvatarImg}
+                      alt="Profile"
                     />
+                  </Avatar>
                   </ListItemIcon>
                 </ListItem>
 
@@ -107,15 +116,33 @@ const Header = ({  bgcolor }) => {
                           alignItems: "center",
                         }}
                       >
-                        <AccountCircleOutlinedIcon
-                          sx={{
-                            fontSize: "2rem",
-                            color: theme.palette.icons.default,
-                          }}
-                        />
+                       <ListItemIcon>
+                       
+                       <Avatar
+  src={AvatarImg}
+  alt="Profile Image"
+  style={{
+    width: "2.5rem", // Adjust the width as needed
+    height: "2.5rem", // Adjust the height as needed
+    border: "2px solid #fff", // Add a border with white color
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", // Add a subtle shadow
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center"
+ 
+  }}
+/>
+                  </ListItemIcon>
                       </Box>
                       <Typography variant="body2" component={"p"}>
-                        Dr:Name
+                      {
+                Data.user.access === "Instructor" ? "Dr:"
+                                     :         Data.user.access === "Staff" ?"Eng :"
+                                     :""
+        }
+
+
+   {Data.user.first_name+ " " + Data.user.last_name}
                       </Typography>
                     </ListItem>
                     <ListItem
@@ -146,13 +173,16 @@ const Header = ({  bgcolor }) => {
                   </Button>
 
                   <ListItemIcon>
+                  <Avatar>
+
                     <img
                       style={{
                         maxWidth: "2.2rem",
                       }}
-                      src="Images/logo-o6u 1.png"
+                      src={AvatarImg}
                       alt=""
                     />
+                  </Avatar>
                   </ListItemIcon>
                 </StyledListItemCenter>
 

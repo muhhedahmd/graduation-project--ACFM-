@@ -3,10 +3,8 @@ import axios from 'axios';
 import qs from 'qs';
 import UseAuth from './Authantication';
 
-// Step 1: Create the context
 const CourseContext = createContext();
 
-// Step 2: Define action types
 const SET_COURSES = 'SET_COURSES';
 const ADD_COURSE = 'ADD_COURSE';
 const DELETE_COURSE = 'DELETE_COURSE';
@@ -35,10 +33,8 @@ export const useCourseContext = () => useContext(CourseContext);
 // Step 5: Create the context provider
 export const CourseProvider = ({ children }) => {
   const {Data} = UseAuth()
-
   const [courses, dispatch] = useReducer(courseReducer, []);
 
-  // Fetch courses data on component mount
   
   const fetchCourses = async () => {
     try {
@@ -53,7 +49,6 @@ export const CourseProvider = ({ children }) => {
     fetchCourses();
   }, []);
 
-  // Function to add a new course
   const addCourse = async (newCourse) => {
     console.log(newCourse)
     try {
@@ -91,6 +86,8 @@ export const CourseProvider = ({ children }) => {
 
   const SelectedCourse =  (course) => SetMainDrawerCourse(course)
   console.log(courses)
+
+  
   return (
     <CourseContext.Provider value={{ courses, SelectedCourse , MainDrawerCourse  , addCourse, deleteCourse, editCourse }}>
       {children}

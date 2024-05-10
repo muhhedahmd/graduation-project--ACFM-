@@ -11,7 +11,7 @@ const ProfileBody = () => {
         p:"1rem",
         pt:"3rem",
        display:"flex",
-       justifyContent:"space-around",
+       justifyContent:"flex-start",
        flexWrap:"wrap",
        width:"100%",
        alignItems:"flex-start",

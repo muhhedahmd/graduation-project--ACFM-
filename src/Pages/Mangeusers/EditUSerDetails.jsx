@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, FormGroup, useMediaQuery } from "@mui/material";
+import { Avatar, Box, Button, FormGroup, Typography, useMediaQuery } from "@mui/material";
 import React, {
   useEffect,
   useImperativeHandle,
@@ -32,6 +32,10 @@ const EditUSerDetails = ({
   first_name,
   last_name,
   setOpenDrawer,
+  phone_number,
+   creation_date,
+   resume
+   ,avatar
 }) => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -51,6 +55,9 @@ const EditUSerDetails = ({
     PhoneNumber: "",
     img: avtarImg,
   });
+  useEffect(()=>{
+    setAvatarImg(avatar)
+  },[])
   useEffect(() => {
     SetUserData(() => {
       return {
@@ -59,11 +66,13 @@ const EditUSerDetails = ({
         lName: last_name,
         email: email,
         about: about,
-        PhoneNumber: "",
-        img: avtarImg,
+        PhoneNumber:phone_number ,
+        creation_date: creation_date,
+        "resume" :resume,
+         img: avatar,
       };
     });
-  }, [about, accessLevel, avtarImg, email, first_name, last_name]);
+  }, [about, accessLevel, avatar,  creation_date, email, first_name, last_name, phone_number, resume]);
 
   const handleChangeAvtar = (e) => {
     const selectedFile = e.target.files[0];
@@ -91,9 +100,11 @@ const EditUSerDetails = ({
       about: UserData.about,
       access: accessLevel,
       phone_number: UserData.PhoneNumber,
-      user_img: UserData.img,
-    };
+      "resume": UserData.resumeImg ,
+      "avatar": UserData.avtarImg, 
 
+    };
+  
     (async () => {
       setLoading(true);
       try {
@@ -152,12 +163,9 @@ const EditUSerDetails = ({
             gap: "2rem",
           }}
         >
-          <AccessLevel
-            initialValue={access}
-            setAccessLevel={setAccessLevel}
-            error={false}
-            id="Access"
-          />
+          <Typography>
+            Access : {UserData.AccesLevel}
+          </Typography>
 
           <Button
             component="label"

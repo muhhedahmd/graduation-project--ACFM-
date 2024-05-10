@@ -49,7 +49,7 @@ const ProfileInfo = () => {
     <InfoSection Title={"Access :"} info={Data.user.access} />
     <InfoSection Title={"Phone number :"} info={Data.user.phone_number} />
     
-    <InfoSection Title={"Courses :"} info={AssignedCourse} />
+    {/* <InfoSection Title={"Courses :"} info={AssignedCourse} /> */}
     <InfoSection Title={"About :"} info={Data.user.about} />
 
 

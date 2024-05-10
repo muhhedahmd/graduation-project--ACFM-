@@ -1,4 +1,4 @@
-import React, {  useContext, useMemo, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Typography,
@@ -9,15 +9,20 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Collapse,
+  List,
+  ListItem,
 } from "@mui/material";
 import PopOverMenu from "./PopOverMenu";
-import { useEffect } from "react";
-import axios from "axios";
 import { SearchContext } from ".";
+import { useImage } from "../../Components/Contexts/ImageViewrContex";
+import axios from "axios";
 
-function CustomizedTables({ state ,  fetchData, }) {
+function CustomizedTables({ state, fetchData }) {
+  const { showImage, setShowImage} = useImage()
   const [openRowId, setOpenRowId] = useState(null);
   const [childDrawer, setChildDrawer] = useState(null);
+  const [openImageIds, setOpenImageIds] = useState([]);
 
   const handleParentCollapse = (rowId) => {
     setOpenRowId(openRowId === rowId ? null : rowId);
@@ -25,6 +30,16 @@ function CustomizedTables({ state ,  fetchData, }) {
 
   const handleChildCollapse = (courseId) => {
     setChildDrawer(childDrawer === courseId ? null : courseId);
+  };
+
+  const handleShowImage = (userId) => {
+    setOpenImageIds((prevIds) => {
+      if (prevIds.includes(userId)) {
+        return prevIds.filter((id) => id !== userId);
+      } else {
+        return [...prevIds, userId];
+      }
+    });
   };
 
   return (
@@ -48,10 +63,10 @@ function CustomizedTables({ state ,  fetchData, }) {
               Name
             </TableCell>
             <TableCell className="usersCell" align="right">
-              Last Active
+              Phone number
             </TableCell>
             <TableCell className="usersCell" align="right">
-              Create Date
+              Creation date
             </TableCell>
             <TableCell className="usersCell" align="right">
               Role
@@ -105,7 +120,7 @@ function CustomizedTables({ state ,  fetchData, }) {
                   sx={{ padding: "0" }}
                   align="right"
                 >
-                  2021/2/10 at 5pm
+                  {row.phone_number}
                 </TableCell>
                 <TableCell
                   onClick={() => handleParentCollapse(row.id)}
@@ -123,7 +138,7 @@ function CustomizedTables({ state ,  fetchData, }) {
                       maxWidth: "10rem",
                     }}
                   >
-                    {row?.creationDate}
+                    {row?.creation_date}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -138,219 +153,54 @@ function CustomizedTables({ state ,  fetchData, }) {
                 </TableCell>
               </TableRow>
 
-              {/* <TableRow sx={{p:0}}>
+              <TableRow sx={{p:0}}>
                 <TableCell
 
                   style={{ width:"100%" ,p: 0 }}
                   colSpan={5}
                 >
-                  <Collapse
-                     sx={{
-                        width:"100%"
-                      }}
-                    in={openRowId === row.id}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    {courseDetails.map((course) => (
-                      <Box
-                        key={course.id}
-                        sx={{
-                          width:"100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          padding: "0",
-                          borderBottom: "1px solid #c6c3c3",
-
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            padding: "1rem",
-                            backgroundColor: "#f5f5f5",
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Typography
-                            variant="body1"
-                            gutterBottom
-                            component="div"
-                          >
-                            Additional Details
-                            {course.name} - {course.code}
-                          </Typography>
-                          <ArrowRightAltOutlined
-                            onClick={() => handleChildCollapse(course.id)}
-                          />
-                        </Box>
-                        <Collapse
-                      sx={{
-                        width:"100%"
-                      }}
-                          in={childDrawer === course.id}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              backgroundColor: "#f5f5f5",
-                              borderTop: "1px solid #c6c3c3",
-                              width:"100%",
-                              padding: "1rem",
-                              justifyContent: "space-between",
-                              alignItems: "flex-start",
-                            }}
-                          >
-                            <Box  sx={{
-                              display:"flex",
-                              flexDirection:"column"
-                            }}>
-                              <Typography
-                                sx={{
-                                  fontSize: ".9rem",
-                                  fontWeight: "bold",
-                                }}
-                                variant="body1"
-                                gutterBottom
-                                component="div"
-                              >
-                                Name: {course.name}
-                              </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: ".9rem",
-                                fontWeight: "bold",
-                              }}
-                              variant="body1"
-                              gutterBottom
-                              component="div"
-                            >
-                              Code: {course.code}
-                            </Typography>
-                            </Box>
-
-                            <Box  sx={{
-                              display:"flex",
-                              flexDirection:"column"
-                            }}>
-                              <Typography
-                                sx={{
-                                  fontSize: ".9rem",
-                                  fontWeight: "bold",
-                                }}
-                                variant="body1"
-                                gutterBottom
-                                component="div"
-                              >
-                                status: {course.status}
-                              </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: ".9rem",
-                                fontWeight: "bold",
-                              }}
-                              variant="body1"
-                              gutterBottom
-                              component="div"
-                            >
-                              semester: {course.semester}
-                            </Typography>
-                            </Box>
-                            <Box  sx={{
-                              display:"flex",
-                              flexDirection:"column"
-                            }}>
-                              <Typography
-                                sx={{
-                                  fontSize: ".9rem",
-                                  fontWeight: "bold",
-                                }}
-                                variant="body1"
-                                gutterBottom
-                                component="div"
-                              >
-                                by Law: {course.byLaw}
-                              </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: ".9rem",
-                                fontWeight: "bold",
-                              }}
-                              variant="body1"
-                              gutterBottom
-                              component="div"
-                            >
-                              hasPractical: {course.hasPractical? "Yes": "No"}
-                            </Typography>
-                            </Box>
-                            <Box  sx={{
-                              display:"flex",
-                              flexDirection:"column"
-                            }}>
-                              <Typography
-                                sx={{
-                                  fontSize: ".9rem",
-                                  fontWeight: "bold",
-                                }}
-                                variant="body1"
-                                gutterBottom
-                                component="div"
-                              >
-                                Course Level: {course.courseLevel}
-                              </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: ".9rem",
-                                fontWeight: "bold",
-                              }}
-                              variant="body1"
-                              gutterBottom
-                              component="div"
-                            >
-                              Credit Hours: {course.creditHours}
-                            </Typography>
-                            </Box>
-                            <Box  sx={{
-                              display:"flex",
-                              flexDirection:"column"
-                            }}>
-                              <Typography
-                                sx={{
-                                  fontSize: ".9rem",
-                                  fontWeight: "bold",
-                                }}
-                                variant="body1"
-                                gutterBottom
-                                component="div"
-                              >
-                                Assigned: Dr:khaled
-                              </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: ".9rem",
-                                fontWeight: "bold",
-                              }}
-                              variant="body1"
-                              gutterBottom
-                              component="div"
-                            >
-                                Assigned: mohamed
-                            </Typography>
-                            </Box>
-                 
-                          </Box>
-                        </Collapse>
-                      </Box>
-                    ))}
-                  </Collapse>
+                <Collapse
+                  sx={{
+                    width: "100%"
+                  }}
+                  in={openRowId === row.id}
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <List
+                  sx={{
+                    padding:"0"
+                  }}
+                   disablePadding>
+                    <ListItem
+                    disablePadding
+                    sx={{
+                      padding:"0"
+                    }}
+                    >
+                      Profile Image : 
+                      <button onClick={() => {
+                        console.log(showImage)
+                        setShowImage(row.avatar)}}>Show</button>
+                      
+                    </ListItem>
+                    <ListItem
+                    disablePadding
+                    sx={{
+                      padding:"0"
+                    }}
+                    >
+                      Resmu Image : 
+                      <button onClick={() => {
+                        console.log(showImage)
+                        setShowImage(row.resume)}}>Show</button>
+                      
+                    </ListItem>
+                  </List>
+                </Collapse>
                 </TableCell>
-              </TableRow> */}
+                
+              </TableRow>
             </React.Fragment>
           ))}
         </TableBody>
@@ -359,8 +209,7 @@ function CustomizedTables({ state ,  fetchData, }) {
   );
 }
 
-const UsersTable = ({ Report    } ) => {
-
+const UsersTable = ({ Report }) => {
   const { searchResults } = useContext(SearchContext);
   const [UserState, setUserState] = useState([]);
 
@@ -373,10 +222,9 @@ const UsersTable = ({ Report    } ) => {
       return [];
     }
   };
-  
+
   const applySearchFilter = (data, searchValue) => {
     if (!searchValue) return data;
-  console.log(data, searchValue)
     const regex = new RegExp(searchValue, 'ig'); // Case insensitive regex
     return data.filter((user) => 
       regex.test(user.first_name) ||
@@ -394,23 +242,22 @@ const UsersTable = ({ Report    } ) => {
   
     fetchDataAndFilter();
   }, [searchResults]);
-  return(
 
-  <Box sx={{ overflow: "hidden", height: "100%", width: "100%" }}>
-    <Box
-      sx={{
-        boxShadow: "rgb(222, 222, 222) 3px 3px 4px",
-        height: `${Report ? "99%" : "87%"}`,
-        width: `${Report ? "97%" : "auto"}`,
-        borderRadius: "9px",
-      }}
-    >
+  return (
+    <Box sx={{ overflow: "hidden", height: "100%", width: "100%" }}>
+      <Box
+        sx={{
+          boxShadow: "rgb(222, 222, 222) 3px 3px 4px",
+          height: `${Report ? "99%" : "87%"}`,
+          width: `${Report ? "97%" : "auto"}`,
+          borderRadius: "9px",
+        }}
+      >
 
-      <CustomizedTables  fetchData={fetchData} state={UserState} />
+          <CustomizedTables  fetchData={fetchData} state={UserState} />
+      </Box>
     </Box>
-  </Box>
-)
-
+  );
 };
 
 export default UsersTable;

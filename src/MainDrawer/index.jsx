@@ -14,20 +14,20 @@ import SegmentIcon from "@mui/icons-material/Segment";
 import MenuCollapse from "./MenuCollapse";
 import { useTheme } from "@emotion/react";
 
-import { useCourseContext } from '../Components/Contexts/CourseContexts';
 import Asynchronous from "./MainDrawerAysnc";
-const MainDrawer = memo(({ isMD, area, setMenuDrawer }) => {
-  const {courses}  = useCourseContext()
+// import { useMenuCollapseContext } from "../Components/Contexts/MenuCollapseContext";
+const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
   const theme = useTheme();
   const [isexpand, setIsexpand] = useState(false);
   const handleClouseDrawer = () => {
     setIsexpand((prev) => !prev);
     
   };
-  console.log(courses)
+
+
   return (
 
-    <StyledMainDrawer isMD={isMD} area={area} isexpand={isexpand}>
+    <StyledMainDrawer ismd={ismd} area={area} isexpand={isexpand}>
       <Bullets />
       <List>
         <ListItem

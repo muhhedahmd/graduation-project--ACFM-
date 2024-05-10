@@ -5,10 +5,10 @@ import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import UploadAndDeleteSection from './UploadAndDeleteSection';
 import Watch from './Watch';
-import { useFile } from '../Contexts/FileContext';
+import { useFileContext } from '../Contexts/FileCourseContext';
 
-const SearchFiles = ({setSearchItems}) => {
-  const {state}= useFile()
+const SearchFiles = ({setSearchItems }) => {
+  const {state} = useFileContext()
     const theme = useTheme()
   const isSm = useMediaQuery(theme.breakpoints.down('sm'))
 const [open , setOpen] = useState(false)
@@ -17,11 +17,12 @@ const handleChange = (e) => {
   const { value } = e.target;
   setInpVal(value);
   const regex = new RegExp(value, "i");
-  const filteredData = state.uploadedFiles.filter((item) => regex.test(item.file.name) || regex.test(item.Description));
+  const filteredData = state?.uploadedFiles?.filter((item) => regex.test(item.filename) || regex.test(item.description));
   if (value) {
     setSearchItems(filteredData);
+    // console.log("filteredData",filteredData)
   } else {
-    setSearchItems(null);
+    setSearchItems(state.uploadedFiles);
   }
 };
   return (

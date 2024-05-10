@@ -1,11 +1,9 @@
 import { useTheme } from "@emotion/react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import UploadSection from "./UploadSection";
 import styled from "@emotion/styled";
 import DownloadAll from "./DownloadAll";
-import { useFile } from "../Contexts/FileContext";
-import TimeDisplay from "../../utiles/timedifferance";
 
 
 const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
@@ -38,8 +36,8 @@ const StyledUploadAndOptionsSectionDrawer = styled(Box)(({Drawer})=>{
 )
 
 
-const UploadAndDeleteSection = ({Drawer , page}) => {
-  const {state} = useFile()
+const UploadAndDeleteSection = ({Drawer , FileState , page}) => {
+  // const {state} = useFile()
   const theme = useTheme();
   return (
     <StyledUploadAndOptionsSectionDrawer
@@ -62,7 +60,7 @@ const UploadAndDeleteSection = ({Drawer , page}) => {
 
         }}
       >
-      <DownloadAll page={page}/>
+      <DownloadAll FileState={FileState} page={page}/>
         <Box
           className="last-active"
           sx={{
@@ -74,11 +72,8 @@ const UploadAndDeleteSection = ({Drawer , page}) => {
             bgcolor: theme.palette.text.primary,
           }}
         >
-<Typography variant="caption" component={"p"}>
-  {state && state.uploadedFiles.length > 0 && state.uploadedFiles[0].file && state.uploadedFiles[0].file.lastModifiedDate
-    ? <TimeDisplay  lastModifiedDate={(state.uploadedFiles[0].file.lastModifiedDate)}/>
-    : 'No files uploaded yet'}
-</Typography>
+      <DownloadAll AllFiles={true} FileState={FileState} page={page}/>
+
 
         </Box>
       </Box>

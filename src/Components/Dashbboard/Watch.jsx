@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Box, Typography } from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
-import { useFile } from '../Contexts/FileContext';
 
 
 
@@ -9,11 +8,12 @@ import { useFile } from '../Contexts/FileContext';
 
 
 
-export default function Watch() {
-  const {state} = useFile() 
-
+export default function Watch({FileState}) {
+  const FileStateLen = FileState ? FileState.length : 0
+  
   const options = {
-    series: [state.uploadedFiles.length * 10],
+    series: [FileStateLen * 10],
+
     chart: {
     height: 150,
     type: 'radialBar',

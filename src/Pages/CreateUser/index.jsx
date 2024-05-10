@@ -30,12 +30,9 @@ const CreateUser = ({page}) => {
 
   const {users} = useUserContext()
 
-  // const requiredFilesRef = useRef(null)
   const userDetailsRef= useRef(null);
 
-  // const currentDate = new Date();
-  // const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-  
+
   const handleClick = () => {
     const FindUser = users.some((item) => item.email === userDetailsRef.current.UserData().email);
 
@@ -81,10 +78,8 @@ const CreateUser = ({page}) => {
         }
       )
       .catch(errors => {
-        // Data is invalid, update validation errors state
         const formattedErrors = [];
         errors?.inner?.forEach(err => {
-          // Check if the field already exists in formattedErrors
           const existingError = formattedErrors.find(error => error.field === err.path);
           if (!existingError) {
             formattedErrors.push({ field: err.path, message: err.message });
@@ -155,37 +150,6 @@ const CreateUser = ({page}) => {
           }} children={""} >Create user</StyledMainBtn>
           </Box>
 
-          {/* <AnimatePresence>
-
-           {accessLevel === "Instructor" && (
-        <Box className="Addtional-Info"
-           sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            flexDirection: "column",
-            width: `${isMD ? "100%" : "45%"}`,
-            gap: ".5rem",
-            height: "100%",
-          }}>
-
-              <motion.div
-              style={{
-                width:"100%",
-                height:"100%",
-              }}
-              initial={{opacity:0}}
-              animate={{opacity:1}}
-              exit={{opacity:0}}
-              transition={{duration:.4}}
-              >
-
-                <RequiredFiles   requiredFilesRef={requiredFilesRef} />
-
-              </motion.div>
-          </Box>
-            )}
-            </AnimatePresence> */}
       </Box>
         </Box>
   

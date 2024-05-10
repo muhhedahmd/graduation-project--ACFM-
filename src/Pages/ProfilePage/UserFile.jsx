@@ -12,13 +12,14 @@ const UserFile = () => {
         alignItems:"flex-start"
         ,gap:"2rem",
         flexDirection:"column",
+        width:"50%"
 
     }}
     
 
    
     >
-    <Typography 
+    {/* <Typography 
     role='button'
     sx={{
         color:"#333"
@@ -137,7 +138,7 @@ const UserFile = () => {
         </WrapperFlexBox>
     
     </WrapperFlexBox>
-
+ */}
 
 
     </Box>

@@ -13,9 +13,9 @@ const DELETE_ACADEMIC_YEAR = 'DELETE_ACADEMIC_YEAR';
 const academicYearReducer = (state, action) => {
   switch (action.type) {
     case SET_ACADEMIC_YEARS:
-      return action.payload;
+      return [...action.payload];
     case ADD_ACADEMIC_YEAR:
-      return [...state, action.payload];
+      return [...state,  action.payload];
     case DELETE_ACADEMIC_YEAR:
       return state.filter(year => year.id !== action.payload);
     default:
@@ -29,7 +29,7 @@ export const useAcademicYear = () => useContext(AcademicYearContext);
 // Step 5: Create the context provider
 export const AcademicYearProvider = ({ children }) => {
   const [academicYears, dispatch] = useReducer(academicYearReducer, []);
-console.log(academicYears)
+
   // Fetch academic years data on component mount
   const fetchAcademicYears = async () => {
     try {
@@ -43,7 +43,6 @@ console.log(academicYears)
     fetchAcademicYears();
   }, []);
 
-  // Function to add a new academic year
   const addAcademicYear = async (newYear) => {
     try {
       const res = await axios.post("http://optima-software-solutions.com/apis/academicyearsadd.php", { name: newYear });
@@ -55,7 +54,6 @@ console.log(academicYears)
     }
   };
 
-  // Function to delete an academic year
   const deleteAcademicYear = async (id) => {
     try {
       await axios.delete(`http://optima-software-solutions.com/apis/academicyearsdelete.php?id=${id}`);

@@ -1,10 +1,9 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext,  useReducer, useState } from "react";
 
 export const FILE_OPERATION = {
   UPLOAD_FILE: "UPLOAD_FILE",
-  DELETE_FILE: "DELETE_FILE",
-  FETCH_FILES: "FETCH_FILES",
+  SET_FILES: "SET_FILES",
 };
 
 const DEFAULT_STATE = {
@@ -16,98 +15,84 @@ const FileContext = createContext(null);
 const reducer = (state, action) => {
   switch (action.type) {
     case FILE_OPERATION.UPLOAD_FILE:
-      const { file, id, description, userId, courseId, category } = action.payload;
-      const formData = new FormData();
-      formData.append('userId', userId);
-      formData.append('courseId', courseId);
-      formData.append('category', category);
-      formData.append('description', description);
-      formData.append('file', file);
-
-      (async () => {
-        try {
-          const response = await axios.post(
-            'https://optima-software-solutions.com/apis/uploadfile.php',
-            formData,
-            { headers: { 'Content-Type': 'multipart/form-data' } }
-          );
-          console.log(response.data); 
-        } catch (error) {
-          console.error('Error:', error.response.data); 
-        }
-      })();
-
-      const blob = new Blob([file], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-
       return {
         ...state,
         uploadedFiles: [
-          ...state.uploadedFiles,
-          { file, id, url, description }
+         { ...state.uploadedFiles },
+         {...action.payload}
+         
         ],
       };
-
-    case FILE_OPERATION.DELETE_FILE:
+    case FILE_OPERATION.SET_FILES:
       return {
         ...state,
-        uploadedFiles: state.uploadedFiles.filter(item => item.id !== action.payload.id),
+        uploadedFiles: action.payload,
       };
-
-    case FILE_OPERATION.FETCH_FILES:
-      return {
-        ...state,
-        uploadedFiles: action.payload.files,
-      };
-
     default:
       return state;
   }
 };
 
-export const FileContexsstProvider = ({ children }) => {
+export const FileContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
+  const [progressContext ,setProgressContext] = useState()
 
-  const uploadFile = (file, id, description, userId, courseId, category) => {
-    dispatch({
-      type: FILE_OPERATION.UPLOAD_FILE,
-      payload: { file, id, description, userId, courseId, category },
-    });
+  const FetchFilesOFCatagory = async (userid , courseid , category) => {
+   console.log(userid , courseid , category)
+    try {
+      const res = await axios.post(`https://optima-software-solutions.com/apis/filesshow.php`, {
+        
+          userid: userid,
+          courseid: courseid,
+          category: category
+        
+        
+      });
+      dispatch({ type: FILE_OPERATION.SET_FILES, payload: res.data });
+} catch (error) {
+      console.error('Error fetching files:', error);
+    }
   };
 
-  const deleteFile = (id) => {
-    dispatch({
-      type: FILE_OPERATION.DELETE_FILE,
-      payload: { id },
-    });
+
+  const uploadFile = async (file, description, userId, courseId, category) => {
+    console.log(file, description, userId, courseId, category)
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('courseId', courseId);
+    formData.append('category', category);
+    formData.append('description', description);
+    formData.append('files[]', file);
+    try {
+     const res = await axios.post(
+        'https://optima-software-solutions.com/apis/uploadfile.php',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+       { onUploadProgress: (progressEvent) => {
+                  const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                  setProgressContext(progress)
+                },}
+      );
+      dispatch({
+        type: FILE_OPERATION.UPLOAD_FILE,
+        payload: { file, description },
+      });
+      alert("Uploaded Successfully")
+      console.log(state)
+      FetchFilesOFCatagory(userId , courseId, category)
+    } catch (error) {
+      console.error('Error uploading file:', error.response.data); 
+    }
   };
 
-  useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        const { userId, courseId, category } = DEFAULT_STATE;
-        const response = await axios.post(
-          'https://optima-software-solutions.com/apis/filesshow.php',
-          { userId, courseId, category }
-        );
-        dispatch({
-          type: FILE_OPERATION.FETCH_FILES,
-          payload: { files: response.data },
-        });
-      } catch (error) {
-        console.error('Error fetching files:', error);
-      }
-    };
-    fetchFiles();
-  }, []);
 
   return (
-    <FileContext.Provider value={{ uploadFile, deleteFile, state }}>
+    <FileContext.Provider value={{ progressContext, uploadFile, FetchFilesOFCatagory, state }}>
       {children}
     </FileContext.Provider>
   );
 };
 
-export const useFileContexts = () => {
+export const useFileContext = () => {
   return useContext(FileContext);
 };

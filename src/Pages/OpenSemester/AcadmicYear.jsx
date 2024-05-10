@@ -3,7 +3,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import axios from 'axios';
 import { useAcademicYear } from '../../Components/Contexts/AcadmicYearContext';
 
 const AcadmicYear = function({ initialValue, setAcadmicYearState }) {
@@ -21,11 +20,12 @@ const {
     academicYears.push(`${year - 1}-${year}`);
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event ) => {
     const selectedValue = event.target.value;
     setValue(selectedValue);
-    setAcadmicYearState(selectedValue);
-    console.log(selectedValue);
+    const x = academicYears.filter((item)=>item.name === selectedValue )
+    setAcadmicYearState(x);
+
   };
 
   return (

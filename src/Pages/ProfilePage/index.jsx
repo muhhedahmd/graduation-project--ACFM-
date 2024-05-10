@@ -4,7 +4,6 @@ import { Box } from '@mui/material'
 
 import HeaderProfile from './HeaderProfile'
 import ProfileBody from './ProfileBody'
-import UseAuth from '../../Components/Contexts/Authantication'
 
 const ProfilePage = () => {
   return (
@@ -20,7 +19,9 @@ const ProfilePage = () => {
       className='Main-Holder'
       sx={{
         padding:"0",
-        overflow:"auto"
+        overflow:"auto",
+        justifyContent:"flex-start",
+        alignItems:"flex-start"
       }}
     
     >

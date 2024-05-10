@@ -1,9 +1,13 @@
 import { Avatar, Box, Typography } from '@mui/material'
 import React from 'react'
 import UseAuth from '../../Components/Contexts/Authantication'
+import { useUserContext } from '../../Components/Contexts/UserContexts'
 
 const HeaderProfile = () => {
     const {Data} = UseAuth()
+    const {users} = useUserContext()
+    const AvatarImg = users.find((item)=>item.id === Data?.user?.id ? item?.avatar : null)?.avatar || ""
+
   return (
    <Box
    sx={{
@@ -53,7 +57,7 @@ backgroundImage: "linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)",
             
         }}
         >
-        <img src={Data?.user?.avatar} alt="" />
+        <img src={AvatarImg} alt="profile" />
 
         </Avatar>
         <Box

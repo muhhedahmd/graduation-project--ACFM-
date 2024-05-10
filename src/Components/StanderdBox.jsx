@@ -2,6 +2,7 @@ import { Box, useMediaQuery } from '@mui/material'
 import React from 'react'
 import Header from './Header'
 import MainDrawer from '../MainDrawer'
+import { UserProvider } from './Contexts/UserContexts'
 
 const StanderdBox = ({ children }) => {
   const isSm = useMediaQuery((theme) => theme.breakpoints.down("md"))
@@ -13,7 +14,10 @@ const StanderdBox = ({ children }) => {
         width: "100vw"
       }}
     >
+    <UserProvider>
+
       <Header />
+    </UserProvider>
       {!isSm ? (
         <Box
           sx={{

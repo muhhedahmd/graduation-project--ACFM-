@@ -16,6 +16,7 @@ import AssignCourses from "../../Pages/AssignCourses";
 import { AcademicYearProvider } from "../Contexts/AcadmicYearContext";
 import { UserProvider } from '../Contexts/UserContexts';
 import { CourseProvider } from "../Contexts/CourseContexts";
+import { FileContextProvider } from "../Contexts/FileCourseContext";
 
 export default function AppRouter() {
     const {Access} = UseAuth()
@@ -24,9 +25,9 @@ export default function AppRouter() {
   return useRoutes([
     {
       path: ROUTE_PATHS.Login,
-      element: isAuthenticated  && Access === "admin"? (
+      element: isAuthenticated  && Access === "Admin"? (
           <Navigate to={ROUTE_PATHS.AdminDashboard} />
-      ) : isAuthenticated  && Access !== "admin" ?
+      ) : isAuthenticated  && Access !== "Admin" ?
         <Navigate to={ROUTE_PATHS.LectureNotes} /> : 
         
         <Login />
@@ -40,15 +41,32 @@ export default function AppRouter() {
         <Navigate to={ROUTE_PATHS.Login} />
       ),
       children: [
-        { index: true, element: <MaterailPage /> },
+        { index: true, element:
+  <FileContextProvider>
+
+          <MaterailPage /> 
+  </FileContextProvider>          
+          },
         {
           path: ROUTE_PATHS.LectureNotes,
           element: <MaterailPage page={"lecture notes"} />,
         },
-        { path: ROUTE_PATHS.Books, element: <MaterailPage page={"books"} /> },
+        { path: ROUTE_PATHS.Books, element:
+  <FileContextProvider>
+
+          
+          <MaterailPage page={"books"} />
+  </FileContextProvider>
+           },
         {
           path: ROUTE_PATHS.Attendance,
-          element: <MaterailPage page="Attendance" />,
+
+          element:
+  <FileContextProvider>
+
+          
+          <MaterailPage page="Attendance" />,
+  </FileContextProvider>
         },
         {
           path: ROUTE_PATHS.ExamsAndSolutions,
@@ -70,7 +88,12 @@ export default function AppRouter() {
         },
         {
           path: ROUTE_PATHS.AdminFiles,
-          element: <MaterailPage page="Admin files" />,
+          element:
+  <FileContextProvider>
+
+  
+          <MaterailPage page="Admin files" />,
+  </FileContextProvider>  
         },
         {
           path: ROUTE_PATHS.CreateUser,
@@ -112,15 +135,24 @@ export default function AppRouter() {
             </ReportFileProvider>
           ),
         },
-        { path: ROUTE_PATHS.Profile, element: <ProfilePage page="profile" /> },
+        { path: ROUTE_PATHS.Profile, element: 
+        <UserProvider>
+
+        <ProfilePage page="profile" />
+        </UserProvider>
+        
+      },
         { path: ROUTE_PATHS.AdminDashboard, element: <AdminDashbord page="Admin Dashboard" /> },
       
         { path: ROUTE_PATHS.AssignCourses, element: 
         <CourseProvider>
+<AcademicYearProvider>
 
         <UserProvider>
         <AssignCourses page="Assign Courses" /> 
         </UserProvider>
+</AcademicYearProvider>
+
         </CourseProvider>
         },
       ],

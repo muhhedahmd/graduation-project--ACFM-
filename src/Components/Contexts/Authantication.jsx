@@ -9,10 +9,12 @@ export const AuthProvider = ({children})=>{
     const [isAuthenticated , setIsAuthenticated] =  useState(false)
     const Login = (UserData)=>{
         setIsAuthenticated(true)
-        // SetAcsess("instructor")
+
+        // SetAcsess("Instructor")
         setData(UserData)
-        SetAcsess("admin")
-            }
+        SetAcsess(UserData.user.access)
+        console.log( "(UserData , Data)", UserData , Data)
+    }
     const LogOut = ()=>{
         setIsAuthenticated(false)
     }

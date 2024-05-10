@@ -27,10 +27,6 @@ const OpenSemester = ({ page }) => {
   const [ChecedCourses , setCheckedCourses] = useState([])
   const [AcadmicYearState, setAcadmicYearState] = useState("");
 
-
-
-
-
   const [Semester, setSemester] = useState({
     Fall: true,
     Spring: false,
@@ -68,16 +64,16 @@ const OpenSemester = ({ page }) => {
 
   const HandleClick = ()=>{
 
-    console.log(SemesterState , AcadmicYearState , ChecedCourses)
-
+    const SemsterNum =  SemesterState.Semester === "Fall" ? "1" :SemesterState.Semester === "Spring"?  "2" : "3"
+    // console.log(SemsterNum , AcadmicYearState[0].id , ChecedCourses)
     ChecedCourses.map((item)=>
 
       (async()=>{
         await axios.post("https://optima-software-solutions.com/apis/courseadd.php" ,
           {
             "coursename": item.courseTitle,
-            "academicyear": AcadmicYearState,
-            "semester": SemesterState.Semester
+            "academicyear": AcadmicYearState[0].id ,
+            "semester":  SemsterNum
         }
         )
           .then((res)=> console.log(res))

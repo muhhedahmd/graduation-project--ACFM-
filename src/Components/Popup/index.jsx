@@ -13,8 +13,10 @@ import { forwardRef } from "react";
 import axios from "axios";
 import UseAuth from "../Contexts/Authantication";
 import { useCourseContext } from "../Contexts/CourseContexts";
+import { useFileContext } from "../Contexts/FileCourseContext";
 
 const Popup = forwardRef(({ Name, file, fileNameObj  , category , setProgress } , ref) => {
+  const {uploadFile ,progressContext} = useFileContext()
   const {MainDrawerCourse} = useCourseContext()
   const {Data} = UseAuth()
   const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
@@ -59,43 +61,14 @@ const [active , setActive] = useState(false)
   };
 
   const HandleSubmit = async (e) => {
+
+    console.log( Data.user.id, MainDrawerCourse?.courseid)
     e.preventDefault();
-    Handleclose(); // Call HandleClose after preventing default behavior
+    Handleclose(); 
   
     if (FileData[Name.split(" ").join("")]) {
-      try {
-        const myNewFile = new File([file], FileData.FileName, { type: file.type });
-  
-        // Create a new FormFileData object
-        const formFileData = new FormData();
-  
-        // Append form FileData fields
-        formFileData.append('userId', Data.user.id);
-        formFileData.append('courseId', MainDrawerCourse.courseid );
-        formFileData.append('category', category);
-        formFileData.append('description', FileData.Description); // Assuming FileData.Description is the description field value
-  
-        // Append the file
-        formFileData.append('files[]', myNewFile);
-  
-        const response = await axios.post(
-          'https://optima-software-solutions.com/apis/uploadfile.php',
-          formFileData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-FileData', // Set the correct content type
-            },
-            onUploadProgress: (progressEvent) => {
-              // Calculate upload progress percentage
-              const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-              setProgress(progress);
-            },
-          }
-        );
-        console.log('Response FileData:', response.FileData);
-      } catch (error) {
-        console.error('Error uploading file:', error.message);
-      }
+      uploadFile(file, FileData.Description, Data.user.id, MainDrawerCourse?.courseid, category)
+      setProgress(progressContext)
     }
   };
   

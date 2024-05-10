@@ -9,36 +9,8 @@ const SET_SEMESTER_DATA = 'SET_SEMESTER_DATA';
 const semesterReducer = (state, action) => {
     switch (action.type) {
       case SET_SEMESTER_DATA:
-  console.log('reducer', state);
-  const { Semester, year, courses } = action.payload;
-
-  // Check if the semester and year combination already exists in the state
-  const existingIndex = state.findIndex(entry => entry.Semester === Semester && entry.year === year);
-
-  if (existingIndex !== -1) {
-    // If the semester and year combination already exists, update the courses
-    return state.map((entry, index) => {
-      if (index === existingIndex) {
-        // Update the courses for the existing semester and year
-        return {
-          ...entry,
-          courses: courses
-        };
-      }
-      return entry;
-    });
-  } else {
-    // If it's a new semester and year combination, add it to the state
-    return [
-      ...state,
-      {
-        Semester: Semester,
-        year: year,
-        courses: courses
-      }
-    ];
-  }
-        
+ 
+    return state       
       default:
         return state;
     }
@@ -46,13 +18,11 @@ const semesterReducer = (state, action) => {
   
 
 // Step 4: Create the custom hook
-export const useSemester = () => useContext(SemesterContext);
+export const useCourseOperation = () => useContext(SemesterContext);
 
-// Step 5: Create the context provider
 export const SemesterProvider = ({ children }) => {
   const [semesterState, dispatch] = useReducer(semesterReducer, []);
 
-  // Function to update semester data
   const setSemesterData = (newSemesterData) => {
     dispatch({ type: SET_SEMESTER_DATA, payload: newSemesterData });
   };

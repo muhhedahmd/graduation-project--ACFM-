@@ -3,8 +3,8 @@ import { Box, Button, List } from "@mui/material";
 
 
 
-export const StyledMainDrawer = styled(Box)(({theme , isexpand  , isMD , area})=>{
-    if(isMD || area === 'Menudrawer'){
+export const StyledMainDrawer = styled(Box)(({theme , isexpand  , ismd , area})=>{
+    if(ismd || area === 'Menudrawer'){
         return {
             position:'relative',
             zIndex:10,

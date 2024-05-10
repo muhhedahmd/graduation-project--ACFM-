@@ -71,7 +71,6 @@ const Login = () => {
       );
   
       console.log("Response:", response.data);
-      // If login successful, handle accordingly
       Login(response.data);
     } catch (validationErrors) {
       // Validation failed, set the errors
@@ -205,12 +204,12 @@ const Login = () => {
         <FormControlLabel
           value="teacher"
           control={<Radio sx={{ color: '#FF5C00 !important' }} />}
-          label="Login as Teacher"
+          label="Login as Admin"
         />
         <FormControlLabel
           value="student"
           control={<Radio sx={{ color: '#FF5C00 !important' }} />}
-          label="Login as Student"
+          label="Login as teaching Staff"
         />
       </RadioGroup>
     </FormControl>

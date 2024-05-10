@@ -4,7 +4,9 @@ import { Autocomplete } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useCourseContext } from '../Components/Contexts/CourseContexts';
 
-export default function CustomAutocomplete({ SetselectCourse, SetselectUser, options, id }) {
+export default function CustomAutocomplete({ SetselectCourse, SetselectUser, options, id  }) {
+
+
   const { SelectedCourse } = useCourseContext();
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedValues, setSelectedValues] = useState([]);
@@ -12,7 +14,7 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
 
   useEffect(() => {
     // Check if options are available
-    if (options.length > 0) {
+    if (options?.length > 0) {
       setLoading(false); // If options are available, set loading to false
       switch (id) {
         case 'Course':
