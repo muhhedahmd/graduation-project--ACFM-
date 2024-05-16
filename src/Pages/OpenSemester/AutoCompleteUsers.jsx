@@ -116,16 +116,20 @@ export default function AsynchronousAutoComplete({isClear, SetIsClear , setSemes
             setLinksState(null);
             return;
         }
+        else {
+
+        
 
         const filteredCourses = courses.reduce((acc, course, index) => {
             const regex = new RegExp(inpVal, "i");
-            if (regex.test(course.courseName) || regex.test(course.courseCode)) {
+            if (regex.test(course?.courseName) || regex?.test(course?.courseCode)) {
                 return { ...acc, [index]: { courseName: course.courseName, courseId: course.courseCode } };
             }
             return acc;
         }, {});
 
         setLinksState(filteredCourses);
+    }
     }, [inpVal]);
 
     return (

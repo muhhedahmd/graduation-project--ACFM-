@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
   PhoneNumber: Yup.string().required('Phone number is required'),
   about: Yup.string(),
-  avtarImg: Yup.mixed().required('Avatar image is required'), // Allow any type of value (string, file, etc.)
+  avtarImg: Yup.mixed().required('Avatar image is required'), 
   creation_date: Yup.date().required('Creation date is required'),
   resumeImg:  Yup.mixed().required('resmue image is required'), 
 });
@@ -66,8 +66,12 @@ const CreateUser = ({page}) => {
               headers : {
                 "Content-Type": "multipart/form-data", 
               },
-            }).then((res)=>{console.log(res)
-            }).catch(err=>console.log(err))
+            }).then((res)=>{
+              alert('user Is Created')
+              console.log(res)
+            }).catch(err=>{
+              
+              console.log(err)})
           }catch(err){
             console.log(err)
           }
@@ -89,6 +93,9 @@ const CreateUser = ({page}) => {
         console.log(formattedErrors)
       });
       
+    }
+    else {
+      alert('this user Already exisit by same email')
     }
   }
 

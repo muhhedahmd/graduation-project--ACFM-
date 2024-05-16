@@ -5,7 +5,6 @@ import UseAuth from '../../Components/Contexts/Authantication'
 
 const ProfileInfo = () => {
   const {Data} = UseAuth()
-  const   AssignedCourse = ["math1 " , "math2" , "math3" , "physics2" ] 
   const isMd = useMediaQuery((theme)=> theme.breakpoints.down('md'))
   return (
     <Box

@@ -17,7 +17,7 @@ export const MainDrawerData = [
 
     Ttile: "Material",
     nested: ["Lecture Notes" , "Books"],
-    roles: [ "Instructor"],
+    roles: [ "Instructor" , "Admin"],
 
   },
   {
@@ -43,7 +43,7 @@ export const MainDrawerData = [
         </defs>
       </svg>
     ),
-    roles: [ "Instructor"],
+    roles: [ "Admin","Instructor" ,"Staff"],
 
     Ttile: "Student",
     nested: ["attendance", "Exams And Solutions", "Assignments"],
@@ -63,7 +63,7 @@ export const MainDrawerData = [
         />
       </svg>
     ),
-    roles: ["Admin"],
+    roles: ["Admin" , "Instructor"],
 
     Ttile: "Statistical and analysis",
     nested: ["Final Exams", "Student Survey" ],
@@ -104,9 +104,9 @@ export const MainDrawerData = [
         />
       </svg>
     ),
-    roles: ["Admin", "Instructor"],
+    roles: ["Admin", "Instructor" , "Staff"],
 
     Ttile: "Settings",
-    nested: ["profile", "Log out"],
+    nested: ["profile", "Log out" , ],
   },
 ];

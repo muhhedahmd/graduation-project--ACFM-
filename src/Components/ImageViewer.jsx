@@ -52,7 +52,7 @@ const ImageViewer = () => {
           <Close style={{ fontSize: '2rem' }} />
         </Button>
 
-        <img src={showImage} alt='Image{ProfileImage}'/>
+        <img src={showImage} alt={`Image}`}/>
       </div>
     </motion.div>
   );

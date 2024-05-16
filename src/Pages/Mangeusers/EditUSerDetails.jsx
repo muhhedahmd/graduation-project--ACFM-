@@ -1,12 +1,9 @@
 import { Avatar, Box, Button, FormGroup, Typography, useMediaQuery } from "@mui/material";
 import React, {
   useEffect,
-  useImperativeHandle,
-  useMemo,
   useState,
 } from "react";
 import styled from "@emotion/styled";
-import AccessLevel from "../CreateUser/AccesLevel";
 import SingleUserDetail from "./singleEditUser";
 import { StyledMainBtn } from "../../MainDrawer/style";
 import axios from "axios";
@@ -31,7 +28,6 @@ const EditUSerDetails = ({
   id,
   first_name,
   last_name,
-  setOpenDrawer,
   phone_number,
    creation_date,
    resume
@@ -40,7 +36,7 @@ const EditUSerDetails = ({
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const [accessLevel, setAccessLevel] = useState(access);
+  const [accessLevel, ] = useState(access);
 
   const [avtarImg, setAvatarImg] = useState(null);
 
@@ -57,7 +53,7 @@ const EditUSerDetails = ({
   });
   useEffect(()=>{
     setAvatarImg(avatar)
-  },[])
+  },[avatar])
   useEffect(() => {
     SetUserData(() => {
       return {
@@ -68,7 +64,7 @@ const EditUSerDetails = ({
         about: about,
         PhoneNumber:phone_number ,
         creation_date: creation_date,
-        "resume" :resume,
+        resume :resume,
          img: avatar,
       };
     });

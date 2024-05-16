@@ -3,10 +3,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const SemsterOptions = ({setsemsterOption , semsterOption}) => {
+const CourseOptions = ({  values ,  setCourseOption , CourseOption}) => {
 
   const handleChange = (event) => {
-    setsemsterOption(event.target.value)
+    setCourseOption(event.target.value)
   };
 
 
@@ -14,9 +14,10 @@ const SemsterOptions = ({setsemsterOption , semsterOption}) => {
   return (
     <div>
       <FormControl variant="standard" sx={{  
+
         position:"absolute",
-        top:"1rem",
-        right:"1rem",
+        top:"0rem",
+        right:"5rem",
         zIndex:"1000",    
     
          minWidth: 120 }}>
@@ -24,24 +25,26 @@ const SemsterOptions = ({setsemsterOption , semsterOption}) => {
         // error={error}
         sx={{ color: '#333 !important' }} // Label text color
 
-         id="demo-simple-select-standard-label">Semster</InputLabel>
+         id="demo-simple-select-standard-label">Course</InputLabel>
         <Select
 
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={semsterOption}
+          value={CourseOption}
           onChange={handleChange}
-          label="Semster"
+          label="Courses"
         >
-          <MenuItem value="Fall">
-          </MenuItem>
-          <MenuItem value={"Fall"}>Fall</MenuItem>
-          <MenuItem value={"Spring"}>Spring</MenuItem>
-          <MenuItem value={"Summer"}>Summer</MenuItem>
+        
+            {
+                values && values.length > 0 &&                values?.map((course ,i )=>{
+          return (<MenuItem key={i} value={course}>{course}</MenuItem>)
+
+            })}
+          
         </Select>
       </FormControl>
     </div>
   );
 }
 
-export default SemsterOptions;
+export default CourseOptions;

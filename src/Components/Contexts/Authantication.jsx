@@ -10,7 +10,6 @@ export const AuthProvider = ({children})=>{
     const Login = (UserData)=>{
         setIsAuthenticated(true)
 
-        // SetAcsess("Instructor")
         setData(UserData)
         SetAcsess(UserData.user.access)
         console.log( "(UserData , Data)", UserData , Data)

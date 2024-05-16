@@ -57,7 +57,11 @@ backgroundImage: "linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)",
             
         }}
         >
-        <img src={AvatarImg} alt="profile" />
+        <img src={AvatarImg}
+        style={{
+            maxWidth:"100%"
+        }}
+         alt="profile" />
 
         </Avatar>
         <Box

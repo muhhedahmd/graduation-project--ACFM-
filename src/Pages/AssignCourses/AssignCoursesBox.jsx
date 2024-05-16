@@ -1,9 +1,7 @@
 import {
   Box,
-  Divider,
   FormGroup,
   FormLabel,
-  ListItem,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -12,66 +10,53 @@ import { StyledMainBtn } from "../../MainDrawer/style";
 import { useUserContext } from "../../Components/Contexts/UserContexts";
 import { useCourseContext } from "../../Components/Contexts/CourseContexts";
 import axios from "axios";
-import { useAcademicYear } from "../../Components/Contexts/AcadmicYearContext";
 import {AnimatePresence, motion} from 'framer-motion'
+import { Button } from "react-bootstrap";
 const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
 
   const { users } = useUserContext();
-  const { courses } = useCourseContext();
-  // console.log(courses);
+  const { courses  ,fetchAllCourses } = useCourseContext();
 
-  const { academicYears } = useAcademicYear();
 
 
   const [selectUser, SetselectUser] = useState([]);
   const [selectCourse, SetselectCourse] = useState([]);
   const [msg, setMsg] = useState();
-  const handleFormSubmit = (event) => {
-    console.log(selectCourse, selectUser);
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    selectCourse.map((course) =>
-      (async () => {
-        try {
-          const res = await axios.post(
-            "https://optima-software-solutions.com/apis/usercourses.php",
-            {
-              userId: selectUser.id,
-              courseId: course.courseid,
-            }
-          );
-          // setMsg(res.data)
-          // console.log(msg)
-          console.log(res);
-        } catch (err) {
-          console.log(err);
-        }
-      })()
-    );
-    // if (selectCourse?.length && selectUser?.id) {
-    //     const userId = String(selectUser.id);
-
-    //     try {
-    //         for (const course of selectCourse) {
-    //             await axios.post("https://optima-software-solutions.com/apis/usercourses.php", {
-    //                 'userId': userId,
-    //                 'courseId': course.courseid
-    //             }).then((res) => setMsg(res.data))
-    //               .catch((err) => setMsg(err.response.data));
-    //         }
-    //     } catch (error) {
-    //         console.error('Error while posting user courses:', error);
-    //         setMsg('Error while posting user courses')
-    //     }
-    // } else {
-    //     setMsg("Choose the user and course/s");
-    // }
+  
+    try {
+      const promises = selectCourse.map((course) =>
+        axios.post(
+          "https://optima-software-solutions.com/apis/usercourses.php",
+          {
+            userId: selectUser.id,
+            courseId: course.courseid,
+          }
+        )
+      );
+  
+      const responses = await Promise.all(promises);
+  
+      // Check if all responses were successful
+      const isSuccess = responses.every((res) => res.status === 200);
+  
+      if (isSuccess) {
+        alert("All courses were successfully added.")
+      } else {
+        alert("Some courses could not be added. Please try again later.")
+        // setMsg("Some courses could not be added. Please try again later.");
+      }
+    } catch (error) {
+      setMsg("An error occurred while adding courses. Please try again later.");
+      console.error(error);
+    }
   };
   const [CompMsg, setCompMsg] = useState("");
   const HandleComplete = (academicyear_id, semester_id) => {
     (async () => {
       try {
-        const res = await axios.post(
+          await axios.post(
           "https://optima-software-solutions.com/apis/completesemester.php",
           {
             academicyear_id: academicyear_id,
@@ -85,14 +70,22 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
       }
     })();
   };
-  const HandleDelete = (id)=>{
-    (async()=>{
-      await axios.post(`https://optima-software-solutions.com/apis/coursedelete.php?courseid=${id}`)
-      .then((res)=>console.log(res.data))
-      .catch((err)=>console.log(err.data))
-      
-    })()
-  } 
+
+  const HandleDelete =(courseId)=>{
+    
+  
+        (async()=>{
+          await axios.delete(`https://optima-software-solutions.com/apis/coursedelete.php?courseid=${courseId}`)
+              .then((res)=>{
+        fetchAllCourses()
+                console.log(res.data)
+
+              })
+              .catch((err)=>{console.log(err)})
+        })()
+
+
+  }
 
   return (
     <Box
@@ -101,13 +94,23 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
         transition: ".3s",
       }}
     >
+        {msg&&
       <Typography
         sx={{
           color: "#f01",
         }}
       >
-        {msg}
       </Typography>
+        }
+      {CompMsg&& 
+      <Typography
+        sx={{
+          color: "#f01",
+        }}
+      >
+        {CompMsg}
+      </Typography>
+      }
       <form
         onSubmit={handleFormSubmit}
         style={{
@@ -244,15 +247,15 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
                       Status:{" "}
                       {Course.iscompleted }
                     </Typography>
-                    <StyledMainBtn
+                    <Button
                     width={
                       "50%"
                     }
-                    onClick={HandleDelete(Course.courseid)}
+                    onClick={()=>HandleDelete(Course.courseid)}
                     colorProp={"#f03"}
                     >
                       Delete
-                    </StyledMainBtn>
+                    </Button>
                   </Box>
                       <Box>
 

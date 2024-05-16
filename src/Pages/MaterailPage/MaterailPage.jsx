@@ -6,6 +6,7 @@ import MainDrawer from '../../MainDrawer'
 import Dashbboard from '../../Components/Dashbboard'
 import { FileContextProvider } from '../../Components/Contexts/FileCourseContext'
 import { UserProvider } from '../../Components/Contexts/UserContexts'
+import { AcademicYearProvider } from '../../Components/Contexts/AcadmicYearContext'
 
 const MaterailPage = ({page}) => {
   const isSm = useMediaQuery((theme)=>theme.breakpoints.down("lg"))
@@ -57,10 +58,14 @@ const MaterailPage = ({page}) => {
   >
       {page}
   </Typography>
+ 
+  <AcademicYearProvider>
+
   <FileContextProvider>
 
       <Dashbboard page={page}/>
   </FileContextProvider>
+  </AcademicYearProvider>
       </Box>
 
     </Box>

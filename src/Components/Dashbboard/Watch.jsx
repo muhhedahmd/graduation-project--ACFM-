@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box, Typography } from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
+import { useCourseContext } from '../Contexts/CourseContexts';
 
 
 
@@ -8,7 +9,10 @@ import ReactApexChart from 'react-apexcharts';
 
 
 
-export default function Watch({FileState}) {
+export default function Watch({FileState , page}) {
+  const { MainDrawerCourse } = useCourseContext();
+
+
   const FileStateLen = FileState ? FileState.length : 0
   
   const options = {
@@ -80,7 +84,7 @@ export default function Watch({FileState}) {
   stroke: {
     lineCap: 'round'
   },
-  labels: ['Math 123hc'],
+  labels: [MainDrawerCourse?.coursename ? MainDrawerCourse?.coursename  :'' ],
   };
   
 
@@ -105,7 +109,7 @@ export default function Watch({FileState}) {
 <Typography
 textAlign={"left"}
 
->Course Progress</Typography>
+>{page} Progress</Typography>
       <div
       style={{
         alignSelf:"center"

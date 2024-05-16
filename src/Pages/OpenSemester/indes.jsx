@@ -6,22 +6,24 @@ import {
   Radio,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useId, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import StanderdBox from "../../Components/StanderdBox";
-import { useSemester } from "../../Components/Contexts/SemesterContext";
 import CoursesOfSemester from "./CoursesOfSemester";
 import AcadmicYear from "./AcadmicYear";
 import CreateAcadmicYear from "./CreateAcadmicYear";
-import { useCourseContext } from "../../Components/Contexts/CourseContexts";
 import axios from "axios";
 
 const OpenSemester = ({ page }) => {
-    const  {addCourse}= useCourseContext()
   const [filterList, setFilterList] = useState({
-    First: false,
-    Second: false,
-    Third: false,
-    Fourth: false,
+    'First fall': false,
+    'First Spring': false,
+    'Second Fall': false,
+    'Second Spring': false,
+    'Third Fall': false,
+    'Third Spring': false,
+    'Fourth Fall': false,
+    'Fourth Spring': false,
   });
   
   const [ChecedCourses , setCheckedCourses] = useState([])
@@ -64,24 +66,83 @@ const OpenSemester = ({ page }) => {
 
   const HandleClick = ()=>{
 
-    const SemsterNum =  SemesterState.Semester === "Fall" ? "1" :SemesterState.Semester === "Spring"?  "2" : "3"
-    // console.log(SemsterNum , AcadmicYearState[0].id , ChecedCourses)
-    ChecedCourses.map((item)=>
-
-      (async()=>{
-        await axios.post("https://optima-software-solutions.com/apis/courseadd.php" ,
-          {
-            "coursename": item.courseTitle,
-            "academicyear": AcadmicYearState[0].id ,
-            "semester":  SemsterNum
+    const SemsterNum =
+    SemesterState.Semester === "Fall"
+      ? "1"
+      : SemesterState.Semester === "Spring"
+      ? "2"
+      : "3";
+  
+  const postRequests = ChecedCourses.map(async (item) => {
+    try {
+      const response = await axios.post(
+        "https://optima-software-solutions.com/apis/courseadd.php",
+        {
+          coursename: item.courseTitle,
+          academicyear: AcadmicYearState[0].id,
+          semester: SemsterNum,
+          abbreviation: item.abbreviation,
+          bylaw: item.byLaw,
+          general: item.General,
+          lecture:
+            item.teachingHours.lecture === 3
+              ? 30
+              : item.teachingHours.lecture === 2
+              ? 20
+              : item.teachingHours.lecture === 4
+              ? 40
+              : "",
+          classwork:
+            item.teachingHours.lecture === 3
+              ? 60
+              : item.teachingHours.lecture === 2
+              ? 40
+              : item.teachingHours.lecture === 4
+              ? 80
+              : "",
+          final:
+            item.teachingHours.lecture === 3 && item.gradeDistribution.practical === 0
+              ? 90
+              : item.teachingHours.lecture === 3 && item.gradeDistribution.practical > 0
+              ? 70
+              : item.teachingHours.lecture === 4 && item.gradeDistribution.practical === 0
+              ? 100
+              : item.teachingHours.lecture === 4 && item.gradeDistribution.practical > 0
+              ? 80
+              : 40,
+          practical: item.gradeDistribution.practical ? "Has practical" : "no practical",
+          teaching_hours_lecture:
+            item.teachingHours.lecture === 3
+              ? 150
+              : item.teachingHours.lecture === 2
+              ? 100
+              : item.teachingHours.lecture === 4
+              ? 200
+              : "",
+          teaching_hours_practical: "Teaching Hours Practical",
+          teaching_hours_training: "Teaching Hours Training",
+          level: item.level,
+          credit_hour: item.teachingHours.lecture,
         }
-        )
-          .then((res)=> console.log(res))
-          .catch((res)=> console.log(res))
-      })()
-
-    
-    )
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  });
+  
+  // Wait for all requests to complete
+  Promise.all(postRequests)
+    .then((responses) => {
+      // If all requests are successful, show an alert
+      alert("All courses have been added.");
+      console.log(responses);
+    })
+    .catch((error) => {
+      // If any request fails, log the error
+      console.error("Error adding courses:", error);
+    });
+  
   
 
   }
@@ -170,7 +231,7 @@ const OpenSemester = ({ page }) => {
                           }
                           sx={{
                             fontSize: ".9rem",
-                            color: theme.palette.primary.paper,
+                            color: "#ff5c00 !important",
                           }}
                         />
 
@@ -205,6 +266,7 @@ const OpenSemester = ({ page }) => {
                 }}
               >
                 <CoursesOfSemester
+                ChecedCourses={ChecedCourses}
          setCheckedCourses={setCheckedCourses}
                  filterList={filterList} setFilterList={setFilterList} setSemesterState={setSemesterState} />
 

@@ -5,7 +5,6 @@ import uploadIcon from "./file-add.svg";
 import { useTheme } from '@emotion/react';
 import Popup from '../Popup';
 import WarningPopup from '../WarningPopup';
-import LinearWithValueLabel from '../ProgreessBar';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -21,7 +20,7 @@ const VisuallyHiddenInput = styled("input")({
 
 const UploadSection = ({category}) => {
   const ref = useRef(null)
-  const [progress ,setProgress] = useState(false)
+  // const [progress ,setProgress] = useState(false)
 
   const [file, setFile] = useState(null);
   const [isInvalid , setIsInValid] = useState(false)
@@ -104,15 +103,8 @@ const UploadSection = ({category}) => {
         </Typography>
       </Button>
      
-    <Popup setProgress={setProgress}  category={category} ref={ref}  fileNameObj={file?.name}  file={file}  Name={"File Name"}/>
+    <Popup  category={category} ref={ref}  fileNameObj={file?.name}  file={file}  Name={"File Name"}/>
     <WarningPopup isInvalid={isInvalid} setIsInvalid={setIsInValid}/>
-{ console.log(parseInt(progress))}
-    {
-      parseInt(progress) !== 100  ?
-      
-    <LinearWithValueLabel value={progress} />
-      :""
-    }
     </Box>
   );
 };

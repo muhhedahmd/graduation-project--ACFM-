@@ -60,7 +60,7 @@ const UploadAndDeleteSection = ({Drawer , FileState , page}) => {
 
         }}
       >
-      <DownloadAll FileState={FileState} page={page}/>
+      <DownloadAll title={ `Download ${page} Files`} FileState={FileState} page={page}/>
         <Box
           className="last-active"
           sx={{
@@ -69,10 +69,9 @@ const UploadAndDeleteSection = ({Drawer , FileState , page}) => {
             borderRadius: "4px",
             fontSize: ".8rem",
             color: "#fff",
-            bgcolor: theme.palette.text.primary,
           }}
         >
-      <DownloadAll AllFiles={true} FileState={FileState} page={page}/>
+      <DownloadAll title={ "Download All Course File"} AllFiles={true} FileState={FileState} page={page}/>
 
 
         </Box>

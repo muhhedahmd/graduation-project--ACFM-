@@ -10,28 +10,28 @@ import OpenSemester from "../../Pages/OpenSemester/indes";
 import Login from "../../Pages/Login/index";
 import { ROUTE_PATHS } from "./Path";
 import StaticalAndalalysis from "../../Pages/StaticalAndalalysis";
-import ReportFileProvider from "../Contexts/ReportFileContext";
 import AdminDashbord from "../../Pages/AdminDashbord";
 import AssignCourses from "../../Pages/AssignCourses";
 import { AcademicYearProvider } from "../Contexts/AcadmicYearContext";
-import { UserProvider } from '../Contexts/UserContexts';
+import { UserProvider } from "../Contexts/UserContexts";
 import { CourseProvider } from "../Contexts/CourseContexts";
 import { FileContextProvider } from "../Contexts/FileCourseContext";
 
 export default function AppRouter() {
-    const {Access} = UseAuth()
+  const { Access } = UseAuth();
   const { isAuthenticated } = UseAuth();
 
   return useRoutes([
     {
       path: ROUTE_PATHS.Login,
-      element: isAuthenticated  && Access === "Admin"? (
+      element:
+        isAuthenticated && Access === "Admin" ? (
           <Navigate to={ROUTE_PATHS.AdminDashboard} />
-      ) : isAuthenticated  && Access !== "Admin" ?
-        <Navigate to={ROUTE_PATHS.LectureNotes} /> : 
-        
-        <Login />
-      
+        ) : isAuthenticated && Access !== "Admin" ? (
+          <Navigate to={ROUTE_PATHS.LectureNotes} />
+        ) : (
+          <Login />
+        ),
     },
     {
       path: ROUTE_PATHS.Home,
@@ -41,32 +41,34 @@ export default function AppRouter() {
         <Navigate to={ROUTE_PATHS.Login} />
       ),
       children: [
-        { index: true, element:
-  <FileContextProvider>
-
-          <MaterailPage /> 
-  </FileContextProvider>          
-          },
+        {
+          index: true,
+          element: (
+            <FileContextProvider>
+              <MaterailPage />
+            </FileContextProvider>
+          ),
+        },
         {
           path: ROUTE_PATHS.LectureNotes,
           element: <MaterailPage page={"lecture notes"} />,
         },
-        { path: ROUTE_PATHS.Books, element:
-  <FileContextProvider>
-
-          
-          <MaterailPage page={"books"} />
-  </FileContextProvider>
-           },
+        {
+          path: ROUTE_PATHS.Books,
+          element: (
+            <FileContextProvider>
+              <MaterailPage page={"books"} />
+            </FileContextProvider>
+          ),
+        },
         {
           path: ROUTE_PATHS.Attendance,
 
-          element:
-  <FileContextProvider>
-
-          
-          <MaterailPage page="Attendance" />,
-  </FileContextProvider>
+          element: (
+            <FileContextProvider>
+              <MaterailPage page="Attendance" />,
+            </FileContextProvider>
+          ),
         },
         {
           path: ROUTE_PATHS.ExamsAndSolutions,
@@ -80,80 +82,111 @@ export default function AppRouter() {
           path: ROUTE_PATHS.GenerateReport,
           element: (
             <>
-              <ReportFileProvider>
+              {/* <ReportFileProvider> */}
+              <UserProvider>
+              <CourseProvider>
+                <AcademicYearProvider>
                 <GenerateReport page="GenerateReport" />
-              </ReportFileProvider>
+                </AcademicYearProvider>
+              </CourseProvider>
+            </UserProvider>
+              {/* </ReportFileProvider> */}
             </>
           ),
         },
         {
           path: ROUTE_PATHS.AdminFiles,
-          element:
-  <FileContextProvider>
-
-  
-          <MaterailPage page="Admin files" />,
-  </FileContextProvider>  
+          element: (
+            <FileContextProvider>
+              <MaterailPage page="Admin files" />,
+            </FileContextProvider>
+          ),
         },
         {
           path: ROUTE_PATHS.CreateUser,
-          element:
-          <UserProvider>
-
-          <CreateUser page="Create User" />,
-          </UserProvider>
+          element: (
+            <UserProvider>
+              <CreateUser page="Create User" />,
+            </UserProvider>
+          ),
         },
         {
           path: ROUTE_PATHS.ManageUsers,
-          element: <Mangeusers page="Mange users" />,
+          element: (
+            <UserProvider>
+              <CourseProvider>
+                <AcademicYearProvider>
+                  <Mangeusers page="Mange users" />
+                </AcademicYearProvider>
+              </CourseProvider>
+            </UserProvider>
+          ),
         },
         {
           path: ROUTE_PATHS.OpenSemester,
 
-          element: 
-          <CourseProvider>
-
-          <AcademicYearProvider>
-
-          <OpenSemester page="OpenSemester" />,
-          </AcademicYearProvider>
-          </CourseProvider>
+          element: (
+            <CourseProvider>
+              <AcademicYearProvider>
+                <OpenSemester page="OpenSemester" />,
+              </AcademicYearProvider>
+            </CourseProvider>
+          ),
         },
         {
           path: ROUTE_PATHS.FinalExams,
           element: (
-            <ReportFileProvider>
-              <StaticalAndalalysis page="Final Exams" />
-            </ReportFileProvider>
+            <CourseProvider>
+              <AcademicYearProvider>
+                <UserProvider>
+                  <StaticalAndalalysis page="Final Exams" />
+                </UserProvider>
+              </AcademicYearProvider>
+            </CourseProvider>
           ),
         },
         {
           path: ROUTE_PATHS.StudentSurvey,
           element: (
-            <ReportFileProvider>
-              <StaticalAndalalysis page="Student Survey" />
-            </ReportFileProvider>
+            <CourseProvider>
+              <AcademicYearProvider>
+                <UserProvider>
+                  <StaticalAndalalysis page="Student Survey" />
+                </UserProvider>
+              </AcademicYearProvider>
+            </CourseProvider>
           ),
         },
-        { path: ROUTE_PATHS.Profile, element: 
-        <UserProvider>
+        {
+          path: ROUTE_PATHS.Profile,
+          element: (
+            <UserProvider>
+              <ProfilePage page="profile" />
+            </UserProvider>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.AdminDashboard,
+          element: (
+            <AcademicYearProvider>
+              <UserProvider>
+                <AdminDashbord page="Admin Dashboard" />
+              </UserProvider>
+            </AcademicYearProvider>
+          ),
+        },
 
-        <ProfilePage page="profile" />
-        </UserProvider>
-        
-      },
-        { path: ROUTE_PATHS.AdminDashboard, element: <AdminDashbord page="Admin Dashboard" /> },
-      
-        { path: ROUTE_PATHS.AssignCourses, element: 
-        <CourseProvider>
-<AcademicYearProvider>
-
-        <UserProvider>
-        <AssignCourses page="Assign Courses" /> 
-        </UserProvider>
-</AcademicYearProvider>
-
-        </CourseProvider>
+        {
+          path: ROUTE_PATHS.AssignCourses,
+          element: (
+            <CourseProvider>
+              <AcademicYearProvider>
+                <UserProvider>
+                  <AssignCourses page="Assign Courses" />
+                </UserProvider>
+              </AcademicYearProvider>
+            </CourseProvider>
+          ),
         },
       ],
     },

@@ -175,14 +175,16 @@ const UserDetails = forwardRef(
               tabIndex={-1}
               startIcon={
                 <>    
-
-
+                
+              
+                {ResmImg&& 
                     <img  
                     style={{
                       width:"60px",
                       height:"60px"
                     }}
                     src={ResmImg} alt="resumeImg" />
+                }
                 </>
               }
               sx={{
@@ -194,6 +196,7 @@ const UserDetails = forwardRef(
                 },
               }}
             >
+           {ResmImg? "Change the resmu ": 'Add Resmu'}
               <VisuallyHiddenInput
                 type="file"
                 onChange={(e) => handleChangeAvtar(e , setResmuIng ,'resumeImg')}

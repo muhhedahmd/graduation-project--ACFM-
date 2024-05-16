@@ -10,13 +10,12 @@ import {
 } from "@mui/material";
 import React, { useEffect, useImperativeHandle, useState } from "react";
 import { forwardRef } from "react";
-import axios from "axios";
 import UseAuth from "../Contexts/Authantication";
 import { useCourseContext } from "../Contexts/CourseContexts";
 import { useFileContext } from "../Contexts/FileCourseContext";
 
-const Popup = forwardRef(({ Name, file, fileNameObj  , category , setProgress } , ref) => {
-  const {uploadFile ,progressContext} = useFileContext()
+const Popup = forwardRef(({ Name, file, fileNameObj  , category  } , ref) => {
+  const {uploadFile } = useFileContext()
   const {MainDrawerCourse} = useCourseContext()
   const {Data} = UseAuth()
   const isSm = useMediaQuery((theme)=>theme.breakpoints.down("md"))
@@ -68,7 +67,7 @@ const [active , setActive] = useState(false)
   
     if (FileData[Name.split(" ").join("")]) {
       uploadFile(file, FileData.Description, Data.user.id, MainDrawerCourse?.courseid, category)
-      setProgress(progressContext)
+      // setProgress(progressContext)
     }
   };
   

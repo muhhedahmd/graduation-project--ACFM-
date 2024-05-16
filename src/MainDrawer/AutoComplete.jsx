@@ -21,7 +21,7 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
           setFilteredOptions(options.filter(option => option.coursename && option.academicyear));
           break;
         case 'Users':
-          setFilteredOptions(options.filter(option => option.first_name && option.last_name));
+          setFilteredOptions(options.filter(option => option.first_name && option.last_name && option.email));
           break;
         default:
           setFilteredOptions(options.filter(option => option.coursename));
@@ -50,7 +50,7 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
       case 'Course':
         return `${option.coursename} ${option.academicyear}`;
       case 'Users':
-        return `${option.first_name || ''} ${option.last_name || ''}`;
+        return `${option.first_name || ''} ${option.last_name || ''} ${option.email || ''}`;
       default:
         return option.coursename || '';
     }

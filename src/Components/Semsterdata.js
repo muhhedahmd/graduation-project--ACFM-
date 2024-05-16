@@ -679,4 +679,6 @@ function processCourses(courses) {
 }
 
 export const processedCourses = processCourses(LawoneCourses);
+
+console.log(processCourses)
 // console.log(processedCourses);

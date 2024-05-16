@@ -3,12 +3,15 @@ import { createContext, useContext,  useReducer, useState } from "react";
 
 export const FILE_OPERATION = {
   UPLOAD_FILE: "UPLOAD_FILE",
+  UPLOAD_FILE_ANOTHER_USER: "UPLOAD_FILE_ANOTHER_USER",
   SET_FILES: "SET_FILES",
 };
 
 const DEFAULT_STATE = {
-  uploadedFiles: [],
+  uploadedFiles: [], 
+
 };
+
 
 const FileContext = createContext(null);
 
@@ -18,15 +21,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         uploadedFiles: [
-         { ...state.uploadedFiles },
-         {...action.payload}
-         
-        ],
+      
+          action.payload 
+        ]
       };
     case FILE_OPERATION.SET_FILES:
       return {
         ...state,
-        uploadedFiles: action.payload,
+        uploadedFiles: [
+      
+          ...action.payload 
+        ]
       };
     default:
       return state;
@@ -35,6 +40,7 @@ const reducer = (state, action) => {
 
 export const FileContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
+  
   const [progressContext ,setProgressContext] = useState()
 
   const FetchFilesOFCatagory = async (userid , courseid , category) => {
@@ -46,7 +52,6 @@ export const FileContextProvider = ({ children }) => {
           courseid: courseid,
           category: category
         
-        
       });
       dispatch({ type: FILE_OPERATION.SET_FILES, payload: res.data });
 } catch (error) {
@@ -55,8 +60,27 @@ export const FileContextProvider = ({ children }) => {
   };
 
 
+  const FetchAlldilesofCourses = async (users, courseid, category) => {
+    try {
+      const promises = users.map(async (item) => {
+        const res = await axios.post(`https://optima-software-solutions.com/apis/filesshow.php`, {
+          userid: item.id,
+          courseid: courseid,
+          category: category
+        });
+      
+        return res.data; // Assuming res.data is an array of nested objects
+      });
+      const results = await Promise.all(promises);
+      const flattenedData = results.reduce((acc, curr) => acc.concat(curr), []); // Fl
+      console.log(flattenedData)
+      dispatch({ type: FILE_OPERATION.SET_FILES, payload: flattenedData });
+    } catch (error) {
+      console.log('Error fetching files:', error);
+    }
+  }    
+  
   const uploadFile = async (file, description, userId, courseId, category) => {
-    console.log(file, description, userId, courseId, category)
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('courseId', courseId);
@@ -64,30 +88,32 @@ export const FileContextProvider = ({ children }) => {
     formData.append('description', description);
     formData.append('files[]', file);
     try {
-     const res = await axios.post(
+      await axios.post(
         'https://optima-software-solutions.com/apis/uploadfile.php',
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } },
-       { onUploadProgress: (progressEvent) => {
-                  const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-                  setProgressContext(progress)
-                },}
+        { 
+          headers: { 'Content-Type': 'multipart/form-data' },
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+            setProgressContext(progress);
+          }
+        }
       );
+      console.log("progressContext" , progressContext)
       dispatch({
         type: FILE_OPERATION.UPLOAD_FILE,
         payload: { file, description },
       });
-      alert("Uploaded Successfully")
-      console.log(state)
-      FetchFilesOFCatagory(userId , courseId, category)
+      alert("Uploaded Successfully");
+      console.log(state);
+      FetchFilesOFCatagory(userId, courseId, category);
+  
     } catch (error) {
       console.error('Error uploading file:', error.response.data); 
     }
   };
-
-
   return (
-    <FileContext.Provider value={{ progressContext, uploadFile, FetchFilesOFCatagory, state }}>
+    <FileContext.Provider value={{  FetchAlldilesofCourses, progressContext, uploadFile, FetchFilesOFCatagory, state }}>
       {children}
     </FileContext.Provider>
   );

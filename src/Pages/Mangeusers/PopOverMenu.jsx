@@ -27,6 +27,7 @@ export default function PopOverMenu(props) {
         }
       );
       props.fetchData();
+      alert('user is removed sucessfully')
     } catch (error) {
       console.error('Error:', error.response.data);
       // Handle errors here if needed

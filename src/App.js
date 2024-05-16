@@ -10,13 +10,14 @@ import { UserProvider } from "./Components/Contexts/UserContext";
 import { AnimatePresence , motion } from "framer-motion";
 import { CourseProvider } from "./Components/Contexts/CourseContexts";
 import { FileContextProvider } from "./Components/Contexts/FileCourseContext";
-import { ImageProvider, useImage } from "./Components/Contexts/ImageViewrContex";
+import { useImage } from "./Components/Contexts/ImageViewrContex";
 import ImageViewer from "./Components/ImageViewer";
+import { AcademicYearProvider } from "./Components/Contexts/AcadmicYearContext";
 
 
 function App() {
   const  {viewFile   } = UseView()
-  const { showImage, setShowImage} = useImage()
+  const { showImage} = useImage()
 
   
   const theme =createTheme({
@@ -57,7 +58,8 @@ function App() {
   return (
     <div
     style={{
-      overflow:"hidden"
+      overflow:"hidden",
+      maxHeight:"100vh",
     }}
      className="App">
     <ThemeProvider theme={theme}>
@@ -67,8 +69,10 @@ function App() {
 <SemesterProvider>
 
 <CourseProvider>
+<AcademicYearProvider>
 
           <AppRouter/>
+</AcademicYearProvider>
         
 
 </CourseProvider>

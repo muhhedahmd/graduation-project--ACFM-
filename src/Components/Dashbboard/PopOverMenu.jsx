@@ -1,6 +1,6 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
-import { Button, Checkbox, Divider, FormControlLabel, Link, List, ListItem } from "@mui/material";
+import { Button, Checkbox,  FormControlLabel,  List, ListItem } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 import styled from "@emotion/styled";
 
@@ -17,6 +17,7 @@ export default function PopOverMenuFilter({filterList, setFilterList}) {
 
 
   const handleCheck = (id) => {
+    console.log(filterList)
     
     setFilterList((prev)=>{
       return {...prev ,
@@ -70,10 +71,12 @@ export default function PopOverMenuFilter({filterList, setFilterList}) {
           horizontal: "center",
         }}
       >
-        <List>
+
+      <List>
+        {Object.keys(filterList).map((item)=>
           <StyledListItem>
             <FormControlLabel
-              onClick={() => handleCheck("First")}
+              onClick={() => handleCheck(item)}
               control={
                 <Checkbox
                   sx={{
@@ -82,12 +85,16 @@ export default function PopOverMenuFilter({filterList, setFilterList}) {
                       color: "#333",
                     },
                   }}
-                  checked={filterList.First}
+                  checked={filterList[item]}
                 />
               }
-              label="First Year"
+              label={item}
             />
           </StyledListItem>
+        )}
+      </List>
+        {/* <List>
+         
           <StyledListItem>
             <FormControlLabel
               onClick={() => handleCheck("Second")}
@@ -141,7 +148,7 @@ export default function PopOverMenuFilter({filterList, setFilterList}) {
    
           </StyledListItem>
           <Divider />
-        </List>
+        </List> */}
       </Popover>
     </div>
   );

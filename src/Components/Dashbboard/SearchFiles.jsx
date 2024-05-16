@@ -1,14 +1,23 @@
 import { useTheme } from '@emotion/react'
 import { Box, Button, Drawer, FormControl, Input, Typography, useMediaQuery } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import UploadAndDeleteSection from './UploadAndDeleteSection';
 import Watch from './Watch';
 import { useFileContext } from '../Contexts/FileCourseContext';
+import { useUserContext } from '../Contexts/UserContexts';
+import { useCourseContext } from '../Contexts/CourseContexts';
 
-const SearchFiles = ({setSearchItems }) => {
-  const {state} = useFileContext()
+const SearchFiles = ({setSearchItems , page }) => {
+  const {users} = useUserContext()
+  const {MainDrawerCourse} = useCourseContext()
+  const {state , FetchAlldilesofCourses} = useFileContext()
+  useEffect(()=>{
+    
+    FetchAlldilesofCourses(users , MainDrawerCourse?.courseid ,page )
+  },[users, MainDrawerCourse?.courseid, page, FetchAlldilesofCourses])
+  console.log(state,"state")
     const theme = useTheme()
   const isSm = useMediaQuery(theme.breakpoints.down('sm'))
 const [open , setOpen] = useState(false)
@@ -20,9 +29,8 @@ const handleChange = (e) => {
   const filteredData = state?.uploadedFiles?.filter((item) => regex.test(item.filename) || regex.test(item.description));
   if (value) {
     setSearchItems(filteredData);
-    // console.log("filteredData",filteredData)
   } else {
-    setSearchItems(state.uploadedFiles);
+    setSearchItems(state?.uploadedFiles);
   }
 };
   return (

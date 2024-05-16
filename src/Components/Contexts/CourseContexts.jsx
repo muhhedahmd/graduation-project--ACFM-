@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import UseAuth from './Authantication';
@@ -32,22 +32,33 @@ export const useCourseContext = () => useContext(CourseContext);
     
 // Step 5: Create the context provider
 export const CourseProvider = ({ children }) => {
+  const [AllCourses , setAllCourses] = useState([])
   const {Data} = UseAuth()
   const [courses, dispatch] = useReducer(courseReducer, []);
 
   
-  const fetchCourses = async () => {
+  const fetchAllCourses = async () => {
+    try {
+      const res = await axios.get(`https://optima-software-solutions.com/apis/courseshowall.php`);
+     setAllCourses(res.data)
+    } catch (error) {
+      console.log('Error fetching courses:', error);
+    }
+  };
+
+  const fetchCourses = useCallback(async () => {
     try {
       const res = await axios.get(`https://optima-software-solutions.com/apis/courseshow.php?userid=${Data.user.id}`);
       dispatch({ type: SET_COURSES, payload: res.data });
     } catch (error) {
       console.log('Error fetching courses:', error);
     }
-  };
+  },[Data.user.id]);
 
   useEffect(() => {
+    fetchAllCourses()
     fetchCourses();
-  }, []);
+  }, [fetchCourses]);
 
   const addCourse = async (newCourse) => {
     console.log(newCourse)
@@ -60,19 +71,8 @@ export const CourseProvider = ({ children }) => {
     }
   };
 
-  // Function to delete a course
-  const deleteCourse = async (courseId) => {
-    console.log(courseId)
-    try {
-      await axios.delete(`https://optima-software-solutions.com/apis/coursedelete.php?courseid=${courseId}`);
-      dispatch({ type: DELETE_COURSE, payload: courseId });
-      fetchCourses();
-    } catch (error) {
-      console.error('Error deleting course:', error);
-    }
-  };
 
-  // Function to edit a course
+
   const editCourse = async (courseId, courseData) => {
     try {
       await axios.put(`https://optima-software-solutions.com/apis/courseedit.php?courseid=${courseId}`, qs.stringify(courseData));
@@ -85,11 +85,11 @@ export const CourseProvider = ({ children }) => {
   const [MainDrawerCourse ,SetMainDrawerCourse] = useState({})
 
   const SelectedCourse =  (course) => SetMainDrawerCourse(course)
-  console.log(courses)
+  
 
   
   return (
-    <CourseContext.Provider value={{ courses, SelectedCourse , MainDrawerCourse  , addCourse, deleteCourse, editCourse }}>
+    <CourseContext.Provider value={{AllCourses ,  fetchAllCourses,  courses, SelectedCourse , MainDrawerCourse  , addCourse, editCourse }}>
       {children}
     </CourseContext.Provider>
   );

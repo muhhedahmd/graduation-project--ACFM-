@@ -6,8 +6,6 @@ import { Close } from "@mui/icons-material";
 import { StyledMainBtn } from "../../MainDrawer/style";
 import { useRef } from "react";
 import jsPDF from "jspdf";
-import { v4 as uuidv4 } from "uuid";
-import { useReportFiles } from "../../Components/Contexts/ReportFileContext";
 
 const ReportDrawer = ({
   mainReportState,
@@ -15,7 +13,6 @@ const ReportDrawer = ({
   setReportDrawerState,
   setMainReportState,
 }) => {
-  const { uploadFile } = useReportFiles();
   const ReportInfoRef = useRef();
   const ReportGradesRef = useRef();
   const isSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -84,13 +81,13 @@ const ReportDrawer = ({
       );
 
       //  doc.save('example.pdf');
-      const pdfBlob = doc.output("blob");
+      // const pdfBlob = doc.output("blob");
 
       // Create a URL for the Blob
-      const pdfFile = new File([pdfBlob], "example.pdf", {
-        type: "application/pdf",
-      });
-      uploadFile(pdfFile, uuidv4(), "report");
+      // const pdfFile = new File([pdfBlob], "example.pdf", {
+      //   type: "application/pdf",
+      // });
+      // uploadFile(pdfFile, uuidv4(), "report");
     } else {
       // Display an error message or take any other specified actions
       console.error("Invalid data. Please enter valid values.");
