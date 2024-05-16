@@ -1,6 +1,6 @@
 import { Box, Collapse, Typography } from "@mui/material";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useTheme } from "@emotion/react";
 
 import Table from "@mui/material/Table";
@@ -17,22 +17,21 @@ import PopFile from "./PopFile";
 import { UserProvider, useUserContext } from "../Contexts/UserContexts";
 
 function CustomizedTables({ state, colors }) {
-  const [statex , setstatex] = useState(state)
-  useEffect(()=>{
-    setstatex(Object.values(state))
-    },[state])
-  console.log('CustomizedTables' , state)
+  const statex = Object.values(state);
+
+  console.log("CustomizedTables", state);
   const { users } = useUserContext();
-  
+
   const { MainDrawerCourse } = useCourseContext();
-  const  CurrSems = MainDrawerCourse?.semester === "1"
-  ? "fall"
-  : MainDrawerCourse?.semester === "2"
-  ? "Spring"
-  : "summer"
+  const CurrSems =
+    MainDrawerCourse?.semester === "1"
+      ? "fall"
+      : MainDrawerCourse?.semester === "2"
+      ? "Spring"
+      : "summer";
   const [openRowId, setOpenRowId] = useState(null);
-  const filteredState = state.filter(row => Object.keys(row).length > 0);
-console.log('filteredState ', filteredState )
+  const filteredState = state.filter((row) => Object.keys(row).length > 0);
+  console.log("filteredState ", filteredState);
   return (
     <TableContainer
       sx={{
@@ -68,13 +67,10 @@ console.log('filteredState ', filteredState )
         </TableHead>
         <TableBody>
           {
-          // Filter out empty objects
-  statex?.map((row) => {
-
+            statex?.map((row) => {
               return (
                 <React.Fragment key={row?.id}>
-                {/* {row?.file } */}
-                 <TableRow >
+                  <TableRow>
                     <TableCell
                       onClick={() =>
                         setOpenRowId(openRowId === row?.id ? null : row?.id)
@@ -93,12 +89,9 @@ console.log('filteredState ', filteredState )
                           maxWidth: "10rem",
                         }}
                       >
-                       {typeof row.file === 'object' ? "Object" : row.file}
-
+                        {typeof row.file === "object" ? "Object" : row.file}
                       </Typography>
                     </TableCell>
-
-                  
 
                     <TableCell
                       onClick={() =>
@@ -114,11 +107,7 @@ console.log('filteredState ', filteredState )
                         )}{" "}
                     </TableCell>
 
-                    <TableCell align="right">
-
-                    {CurrSems}
-                     
-                    </TableCell>
+                    <TableCell align="right">{CurrSems}</TableCell>
 
                     <TableCell align="right">
                       <PopFile
@@ -128,7 +117,7 @@ console.log('filteredState ', filteredState )
                       />
                     </TableCell>
                   </TableRow>
-                   <TableRow>
+                  <TableRow>
                     <TableCell
                       style={{ paddingBottom: 0, paddingTop: 0 }}
                       colSpan={6}
@@ -190,7 +179,8 @@ console.log('filteredState ', filteredState )
                   </TableRow>
                 </React.Fragment>
               );
-            })}
+            })
+          }
         </TableBody>
       </Table>
     </TableContainer>
@@ -200,7 +190,6 @@ console.log('filteredState ', filteredState )
 const FilesTable = ({ NoSearch, Report, colors, state, page }) => {
   const theme = useTheme();
   const [searchItems, setSearchItems] = useState(null);
-// console.log('FilesTable',state)
   return (
     <Box
       sx={{
@@ -210,7 +199,7 @@ const FilesTable = ({ NoSearch, Report, colors, state, page }) => {
       }}
     >
       <UserProvider>
- {!NoSearch ? (
+        {!NoSearch ? (
           <SearchFiles page={page} setSearchItems={setSearchItems} />
         ) : null}
         <Box
@@ -227,7 +216,7 @@ const FilesTable = ({ NoSearch, Report, colors, state, page }) => {
             colors={colors}
             state={searchItems ? searchItems : state}
           />
-        </Box> 
+        </Box>
       </UserProvider>
     </Box>
   );

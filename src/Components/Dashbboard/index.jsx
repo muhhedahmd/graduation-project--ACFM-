@@ -17,7 +17,6 @@ const Dashbboard = ({ page }) => {
  
     FetchFilesOFCatagory(Data?.user?.id, MainDrawerCourse?.courseid, page)
 
- 
   },[Data?.user?.id, FetchFilesOFCatagory, MainDrawerCourse?.courseid, page])
 
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useCallback } from "react";
 import { createContext, useContext,  useReducer, useState } from "react";
 
 export const FILE_OPERATION = {
@@ -60,7 +61,7 @@ export const FileContextProvider = ({ children }) => {
   };
 
 
-  const FetchAlldilesofCourses = async (users, courseid, category) => {
+  const FetchAlldilesofCourses = useCallback( async (users, courseid, category) => {
     try {
       const promises = users.map(async (item) => {
         const res = await axios.post(`https://optima-software-solutions.com/apis/filesshow.php`, {
@@ -69,16 +70,15 @@ export const FileContextProvider = ({ children }) => {
           category: category
         });
       
-        return res.data; // Assuming res.data is an array of nested objects
+        return res.data; 
       });
       const results = await Promise.all(promises);
       const flattenedData = results.reduce((acc, curr) => acc.concat(curr), []); // Fl
-      console.log(flattenedData)
       dispatch({ type: FILE_OPERATION.SET_FILES, payload: flattenedData });
     } catch (error) {
       console.log('Error fetching files:', error);
     }
-  }    
+  } , [])    
   
   const uploadFile = async (file, description, userId, courseId, category) => {
     const formData = new FormData();
@@ -105,7 +105,6 @@ export const FileContextProvider = ({ children }) => {
         payload: { file, description },
       });
       alert("Uploaded Successfully");
-      console.log(state);
       FetchFilesOFCatagory(userId, courseId, category);
   
     } catch (error) {

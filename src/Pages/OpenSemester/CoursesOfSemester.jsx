@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -21,14 +21,13 @@ const CoursesOfSemester = ({
   filterList,
   setFilterList,
 }) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const transformedCourses = {
     Fall: [],
     Spring: [],
     Summer: [],
   };
 
-  const transformCourses = useCallback((courses) => {
+  const transformCourses = (courses) => {
     courses.forEach((course) => {
       const { semester } = course;
 
@@ -47,7 +46,7 @@ const CoursesOfSemester = ({
       }
     });
     return transformedCourses;
-  } ,[transformedCourses]);
+  };
 
   const [courses, setCourses] = useState(transformCourses(processedCourses));
   console.log(courses);
@@ -55,7 +54,7 @@ const CoursesOfSemester = ({
     setCheckedCourses([]);
     // Extract selected semesters from filterList
     const selectedSemesters = Object.entries(filterList)
-      .filter(([key, value]) => value)
+      .filter(([ key, value]) => value)
       .map(([key]) => key.toLowerCase().replace(" ", ""));
 
     if (selectedSemesters.length > 0) {
@@ -101,7 +100,8 @@ const CoursesOfSemester = ({
     if (everyIsFalse) {
       setCheckedCourses([]);
     }
-  }, [ChecedCourses, filterList, setCheckedCourses, transformCourses]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterList]);
 
   const [isClear, SetIsClear] = useState(false);
   console.log("ChecedCourses", ChecedCourses);

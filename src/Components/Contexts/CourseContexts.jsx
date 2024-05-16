@@ -53,7 +53,7 @@ export const CourseProvider = ({ children }) => {
     } catch (error) {
       console.log('Error fetching courses:', error);
     }
-  },[Data.user.id]);
+  },[Data?.user?.id]);
 
   useEffect(() => {
     fetchAllCourses()
