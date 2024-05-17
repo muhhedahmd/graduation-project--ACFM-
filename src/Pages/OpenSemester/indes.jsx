@@ -76,7 +76,7 @@ const OpenSemester = ({ page }) => {
   const postRequests = ChecedCourses.map(async (item) => {
     try {
       const response = await axios.post(
-        "https://optima-software-solutions.com/apis/courseadd.php",
+        "http://optima-software-solutions.com/apis/courseadd.php",
         {
           coursename: item.courseTitle,
           academicyear: AcadmicYearState[0].id,

@@ -39,7 +39,7 @@ export const CourseProvider = ({ children }) => {
   
   const fetchAllCourses = async () => {
     try {
-      const res = await axios.get(`https://optima-software-solutions.com/apis/courseshowall.php`);
+      const res = await axios.get(`http://optima-software-solutions.com/apis/courseshowall.php`);
      setAllCourses(res.data)
     } catch (error) {
       console.log('Error fetching courses:', error);
@@ -48,7 +48,7 @@ export const CourseProvider = ({ children }) => {
 
   const fetchCourses = useCallback(async () => {
     try {
-      const res = await axios.get(`https://optima-software-solutions.com/apis/courseshow.php?userid=${Data.user.id}`);
+      const res = await axios.get(`http://optima-software-solutions.com/apis/courseshow.php?userid=${Data.user.id}`);
       dispatch({ type: SET_COURSES, payload: res.data });
     } catch (error) {
       console.log('Error fetching courses:', error);
@@ -63,7 +63,7 @@ export const CourseProvider = ({ children }) => {
   const addCourse = async (newCourse) => {
     console.log(newCourse)
     try {
-      const res = await axios.post("https://optima-software-solutions.com/apis/courseadd.php", newCourse);
+      const res = await axios.post("http://optima-software-solutions.com/apis/courseadd.php", newCourse);
       dispatch({ type: ADD_COURSE, payload: res.data });
       fetchCourses();
     } catch (error) {
@@ -75,7 +75,7 @@ export const CourseProvider = ({ children }) => {
 
   const editCourse = async (courseId, courseData) => {
     try {
-      await axios.put(`https://optima-software-solutions.com/apis/courseedit.php?courseid=${courseId}`, qs.stringify(courseData));
+      await axios.put(`http://optima-software-solutions.com/apis/courseedit.php?courseid=${courseId}`, qs.stringify(courseData));
       dispatch({ type: EDIT_COURSE, payload: { id: courseId, courseData } });
       fetchCourses();
     } catch (error) {

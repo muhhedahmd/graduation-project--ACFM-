@@ -32,7 +32,7 @@ function CustomizedTables({ state, fetchData }) {
       console.log(openRowId);
       await axios
         .get(
-          `https://optima-software-solutions.com/apis/courseshow.php?userid=${openRowId}`
+          `http://optima-software-solutions.com/apis/courseshow.php?userid=${openRowId}`
         )
         .then((res) => setCourses(res.data))
         .catch((err) => console.log(err.response));

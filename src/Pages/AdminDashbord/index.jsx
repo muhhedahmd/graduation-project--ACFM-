@@ -210,7 +210,7 @@ const AdminDashbord = () => {
             justifyContent: "center",
             alignItems: "center",
             bgcolor: "#fff",
-            height: '80%',
+            height: '43%',
             boxShadow: "3px 3px 4px #dedede",
           }}
         >

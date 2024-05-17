@@ -56,7 +56,7 @@ export default function CoursesGraph({ AcadmicYearData }) {
       },
     })),
     xAxis: [{ data: Object.keys(catagoryCourses), scaleType: 'band', id: 'deaultized-x-axis-0' }],
-    height: isSm ? 300 : 320
+    height: isSm ?240  : 270
   };
 
   return (<>
