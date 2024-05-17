@@ -3,10 +3,8 @@ import { AuthProvider } from "./Components/Contexts/Authantication";
 import AppRouter from "./Components/Routes";
 import './App.css'
 // import { FileContextProvider } from "./Components/Contexts/FileContext";
-import {  SemesterProvider } from "./Components/Contexts/SemesterContext";
 import { UseView } from "./Components/Contexts/viewedFileContext";
 import PDFViewer from "./Components/PDFViewer";
-import { UserProvider } from "./Components/Contexts/UserContext";
 import { AnimatePresence , motion } from "framer-motion";
 import { CourseProvider } from "./Components/Contexts/CourseContexts";
 import { FileContextProvider } from "./Components/Contexts/FileCourseContext";
@@ -64,9 +62,8 @@ function App() {
      className="App">
     <ThemeProvider theme={theme}>
 <AuthProvider>
-<UserProvider>
 
-<SemesterProvider>
+
 
 <CourseProvider>
 <AcademicYearProvider>
@@ -145,8 +142,8 @@ function App() {
 </AnimatePresence>
 
 
-</SemesterProvider>
-</UserProvider>
+
+
 
 </AuthProvider>
     </ThemeProvider>

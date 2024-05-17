@@ -2,7 +2,6 @@ import React, { createContext, useRef, useState } from 'react'
 import StanderdBox from '../../Components/StanderdBox'
 import {Box, Typography} from '@mui/material'
 import ManageUserHeader from './ManageUserHeader'
-import { useUserContext } from '../../Components/Contexts/UserContext'
 import UsersTable from './USersTable'
 
 export const SearchContext = createContext();
@@ -13,7 +12,7 @@ const Mangeusers = ({page}) => {
 
   const SearchRef = useRef()
 
-  const {state} = useUserContext()
+
   return (
     <SearchContext.Provider value={{searchResults}}>
 
@@ -36,7 +35,7 @@ const Mangeusers = ({page}) => {
       <Box
 
       >
-  <UsersTable    SearchRef={SearchRef}  state={state} NoSearch={true}/>
+  <UsersTable    SearchRef={SearchRef}  NoSearch={true}/>
 
       </Box>
 
