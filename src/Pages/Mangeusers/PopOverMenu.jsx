@@ -17,7 +17,7 @@ export default function PopOverMenu(props) {
     try {
       setLoadingDelete(true); // Set loading to true when starting deletion
       await axios.delete(
-        `http://optima-software-solutions.com/apis/userdelete.php?id=${props.id}`,
+        `https://optima-software-solutions.com/apis/userdelete.php?id=${props.id}`,
         {
           onDownloadProgress: (progressEvent) => {
             const { loaded, total } = progressEvent;

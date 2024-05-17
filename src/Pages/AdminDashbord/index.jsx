@@ -37,7 +37,7 @@ const StyledAcdamicYearHolder = {
   // padding:"1rem 0 ",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(22rem, 1fr))",
-  gridAutoFlow: "column", // Place items in a single column
+  gridAutoFlow: "column", 
   gap: "2rem",
   overflowX: "auto",
   overflowY: "hidden",

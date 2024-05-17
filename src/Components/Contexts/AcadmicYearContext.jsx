@@ -33,7 +33,7 @@ export const AcademicYearProvider = ({ children }) => {
   // Fetch academic years data on component mount
   const fetchAcademicYears = async () => {
     try {
-      const res = await axios.get("http://optima-software-solutions.com/apis/academicyearsshow.php");
+      const res = await axios.get("https://optima-software-solutions.com/apis/academicyearsshow.php");
       dispatch({ type: SET_ACADEMIC_YEARS, payload: res.data });
     } catch (error) {
       console.error('Error fetching academic years:', error);
@@ -45,7 +45,7 @@ export const AcademicYearProvider = ({ children }) => {
 
   const addAcademicYear = async (newYear) => {
     try {
-      const res = await axios.post("http://optima-software-solutions.com/apis/academicyearsadd.php", { name: newYear });
+      const res = await axios.post("https://optima-software-solutions.com/apis/academicyearsadd.php", { name: newYear });
       dispatch({ type: ADD_ACADEMIC_YEAR, payload: res.data });
       fetchAcademicYears();
 
@@ -56,7 +56,7 @@ export const AcademicYearProvider = ({ children }) => {
 
   const deleteAcademicYear = async (id) => {
     try {
-      await axios.delete(`http://optima-software-solutions.com/apis/academicyearsdelete.php?id=${id}`);
+      await axios.delete(`https://optima-software-solutions.com/apis/academicyearsdelete.php?id=${id}`);
       dispatch({ type: DELETE_ACADEMIC_YEAR, payload: id });
       fetchAcademicYears();
     } catch (error) {

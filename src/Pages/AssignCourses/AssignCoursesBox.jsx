@@ -28,7 +28,7 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
     try {
       const promises = selectCourse.map((course) =>
         axios.post(
-          "http://optima-software-solutions.com/apis/usercourses.php",
+          "https://optima-software-solutions.com/apis/usercourses.php",
           {
             userId: selectUser.id,
             courseId: course.courseid,
@@ -57,7 +57,7 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
     (async () => {
       try {
           await axios.post(
-          "http://optima-software-solutions.com/apis/completesemester.php",
+          "https://optima-software-solutions.com/apis/completesemester.php",
           {
             academicyear_id: academicyear_id,
             semester_id: semester_id,
@@ -75,7 +75,7 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
     
   
         (async()=>{
-          await axios.delete(`http://optima-software-solutions.com/apis/coursedelete.php?courseid=${courseId}`)
+          await axios.delete(`https://optima-software-solutions.com/apis/coursedelete.php?courseid=${courseId}`)
               .then((res)=>{
         fetchAllCourses()
                 console.log(res.data)

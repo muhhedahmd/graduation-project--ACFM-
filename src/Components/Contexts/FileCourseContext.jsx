@@ -47,7 +47,7 @@ export const FileContextProvider = ({ children }) => {
   const FetchFilesOFCatagory = async (userid , courseid , category) => {
    console.log(userid , courseid , category)
     try {
-      const res = await axios.post(`http://optima-software-solutions.com/apis/filesshow.php`, {
+      const res = await axios.post(`https://optima-software-solutions.com/apis/filesshow.php`, {
         
           userid: userid,
           courseid: courseid,
@@ -64,7 +64,7 @@ export const FileContextProvider = ({ children }) => {
   const FetchAlldilesofCourses = useCallback( async (users, courseid, category) => {
     try {
       const promises = users.map(async (item) => {
-        const res = await axios.post(`http://optima-software-solutions.com/apis/filesshow.php`, {
+        const res = await axios.post(`https://optima-software-solutions.com/apis/filesshow.php`, {
           userid: item.id,
           courseid: courseid,
           category: category
@@ -89,7 +89,7 @@ export const FileContextProvider = ({ children }) => {
     formData.append('files[]', file);
     try {
       await axios.post(
-        'http://optima-software-solutions.com/apis/uploadfile.php',
+        'https://optima-software-solutions.com/apis/uploadfile.php',
         formData,
         { 
           headers: { 'Content-Type': 'multipart/form-data' },

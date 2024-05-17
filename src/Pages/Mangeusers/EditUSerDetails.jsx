@@ -105,7 +105,7 @@ const EditUSerDetails = ({
       setLoading(true);
       try {
         await axios.put(
-          "http://optima-software-solutions.com/apis/useredit.php",
+          "https://optima-software-solutions.com/apis/useredit.php",
           qs.stringify(formData),
           {
             headers: {
