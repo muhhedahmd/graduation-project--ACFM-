@@ -18,7 +18,7 @@ const LevelOptions = ({LevelOption , setLevelOption , position  ,mxwidthprop}) =
         top:"6rem",
         right:"1rem",
         zIndex:"1000", 
-        maxWidth:mxwidthprop,
+        width:mxwidthprop,
     
          minWidth: `${mxwidthprop ? 'auto ': 120}` , }}
          

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { MainDrawerData } from "../Components/Data/Data";
 import {
   Box,
@@ -7,6 +7,7 @@ import {
   ListItem,
   SvgIcon,
   Typography,
+
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { StyledBtnFlexCenter, StyledCollapse } from "./style"; // Re-added styles
@@ -14,7 +15,7 @@ import { useTheme } from "@emotion/react";
 import UseAuth from "../Components/Contexts/Authantication";
 
 const MenuCollapse = ({ isexpand }) => {
-  const {Access}= UseAuth()
+  const { Access } = UseAuth();
   const theme = useTheme();
   const initialState = MainDrawerData.reduce((acc, item) => {
     acc[item.Ttile.split(" ").join("-")] = false;
@@ -41,7 +42,6 @@ const MenuCollapse = ({ isexpand }) => {
     }
   };
   const filteredItems = MainDrawerData.filter(item => item.roles.includes(Access) || !item.roles);
-
 
   return (
     <List

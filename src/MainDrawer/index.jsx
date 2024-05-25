@@ -1,9 +1,17 @@
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  SvgIcon,
+  Typography,
+  Skeleton,
+} from "@mui/material";
 import React, { memo, useState, lazy, Suspense } from "react";
-import { Box, Button, List, ListItem, SvgIcon, Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import { useTheme } from "@emotion/react";
-import { StyledMainDrawer } from "./style";
 
 const Bullets = lazy(() => import("./Bullets"));
 const MenuCollapse = lazy(() => import("./MenuCollapse"));
@@ -20,10 +28,14 @@ const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
   const handleClouseDrawer = () => {
     setIsexpand((prev) => !prev);
   };
-
+  const renderSkeletons = (count) => (
+    Array.from({ length: count }).map((_, index) => (
+      <Skeleton key={index} width="100%" height="2rem" animation="wave" />
+    ))
+  );
   return (
     <StyledMainDrawer ismd={ismd} area={area} isexpand={isexpand}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Skeleton width="100%" height="2rem" animation="wave" />}>
         <Bullets />
       </Suspense>
       <List>
@@ -184,22 +196,22 @@ const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
               gap: ".5rem",
             }}
           >
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Skeleton width="100%" height="2rem" animation="wave" />}>
               <LevelOptions
-                mxwidthprop={"80px"}
+                mxwidthprop={"90px"}
                 position={true}
                 LevelOption={levelOption}
                 setLevelOption={setLevelOption}
               />
               <AcadamicOptions
-                mxwidthprop={"80%"}
+                mxwidthprop={"90px"}
                 position={true}
                 acadamicOptions={acadamicOptions}
                 setAcadamicOptions={setAcadamicOptions}
               />
             </Suspense>
           </Box>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Skeleton width="100%" height="2rem" animation="wave" />}>
             <Asynchronous
               acadamicOptions={acadamicOptions}
               LevelOption={levelOption}
@@ -207,7 +219,17 @@ const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
           </Suspense>
         </Box>
       </List>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div
+      style={{
+        display:"flex",
+        justifyContent:"flex-start",
+        alignItems:"flex-start",
+        gap:"1.5rem",
+        flexDirection:"column"
+      }}
+      >
+{        renderSkeletons(5)}
+      </div>}>
         <MenuCollapse isexpand={isexpand} />
       </Suspense>
     </StyledMainDrawer>

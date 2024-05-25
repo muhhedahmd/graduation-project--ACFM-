@@ -20,7 +20,7 @@ const AcadamicOptions = ({acadamicOptions, setAcadamicOptions , position  ,mxwid
         zIndex:"1000", 
            
     
-         maxWidth:mxwidthprop}}
+         width:mxwidthprop}}
          
          >
 

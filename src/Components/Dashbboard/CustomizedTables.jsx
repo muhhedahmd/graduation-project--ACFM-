@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { useCourseContext } from "../Contexts/CourseContexts";
 import { useUserContext } from "../Contexts/UserContexts";
-import { Box, Collapse, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { Table } from "react-bootstrap";
+import { Box, Collapse, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import PopFile from "./PopFile";
 
 export function CustomizedTables({ state, colors }) {
     const statex = Object.values(state);
   
-    console.log("CustomizedTables", state);
     const { users } = useUserContext();
   
     const { MainDrawerCourse } = useCourseContext();
@@ -19,16 +17,15 @@ export function CustomizedTables({ state, colors }) {
         ? "Spring"
         : "summer";
     const [openRowId, setOpenRowId] = useState(null);
-    const filteredState = state.filter((row) => Object.keys(row).length > 0);
-    console.log("filteredState ", filteredState);
     return (
       <TableContainer
         sx={{
           height: "100%",
+          width:'100%'
         }}
         component={Paper}
       >
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <Table sx={{ minWidth: 700  ,width:"100%"}} aria-label="customized table">
           <TableHead
             sx={{
               bgcolor: colors?.bgColor ? colors.bgColor : "#fff",
