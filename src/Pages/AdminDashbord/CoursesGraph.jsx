@@ -1,13 +1,10 @@
 import * as React from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-import { BarChart } from '@mui/x-charts/BarChart';
-
-// import HighlightedCode from '@mui/docs/HighlightedCode';
-import { useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { extractCourseDetails, extractCourseNames, mergeCategories, removeDuplicateUsersWithCourses } from "../../utils.js/removeduplicated";
+import { extractCourseDetails, mergeCategories, removeDuplicateUsersWithCourses } from "../../utils.js/removeduplicated";
 import { useEffect } from "react";
+import { PieChart } from "@mui/x-charts";
 
 
 
@@ -19,15 +16,9 @@ import { useEffect } from "react";
 
 export default function CoursesGraph({ AcadmicYearData }) {
 
-  const isSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
-
-  console.log(removeDuplicateUsersWithCourses(AcadmicYearData))
-  const courseNames = extractCourseNames(
-    removeDuplicateUsersWithCourses(AcadmicYearData)
-  );
 
   const catagoryCourses = mergeCategories(extractCourseDetails(removeDuplicateUsersWithCourses((AcadmicYearData))))
-  
+  console.log(removeDuplicateUsersWithCourses((AcadmicYearData)))
 
   
   
@@ -41,53 +32,91 @@ export default function CoursesGraph({ AcadmicYearData }) {
     } else {
       setFilesCountArray([]); 
     }
-  }, [catagoryCourses]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
 
-  const barChartsParams = {
-    series: Object?.values(catagoryCourses[Object.keys(catagoryCourses)[0]]?.categories)?.map((category, i) => ({
-      id: `category-${i}`,
-      data: Object?.values(catagoryCourses)?.map(course => course.categories[i]?.filesCount),
-      label: category.categoryName,
-      
-      highlightScope: {
-        highlighted: 'item',
-      },
-    })),
-    xAxis: [{ data: Object.keys(catagoryCourses), scaleType: 'band', id: 'deaultized-x-axis-0' }],
-    height: isSm ?240  : 270
-  };
-
-  return (<>
-
-  {filesCountArray ? (<Stack
-        
-          xAxis={[
-            {
-              data: courseNames,
-              scaleType: "band",
-            },
-          ]}
-          margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-          yAxis={[{ max: 50 }]}
-    direction={{ xs: 'column', md: 'column' }}
-    spacing={{ xs: 0, md: 4 }}
-    sx={{ width: '100%' }}
-  >
-    <Box sx={{ flexGrow: 1 }}>
-      <BarChart
-        {...barChartsParams}
-        
 
 
+  console.log('catagoryCourses' , catagoryCourses)
+  return (
+
+<>
+
+
+ {filesCountArray ?
+  <Box
+  sx={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+    gap: "2rem",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%", 
+    maxWidth: "100%", 
+    height: "100%",
+    overflowX: "auto", 
+        padding: "1rem",
+  }}
+>
+  {Object.keys(catagoryCourses).map((item) => (
+    <Box
+      key={item}
+      sx={{
+        flexShrink: 0,
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        flexDirection:"column",
+        gap:"1rem",
+        height:"30rem",
+        width:"30rem",
+        borderBottom: "2px solid #ccc",
+
+        overflow: "hidden",
+      }}
+    >
+    <Typography 
+    variant="body1"
+    sx={{
+      marginBottom:"-6rem"
+    }}
+    component={"p"}
+    >
+    {item}
+    </Typography>
+      <PieChart
+        width={500}
+        height={420}
+        series={[
+          {
+            data: catagoryCourses[item]?.categories.map((category, index) => (
+              {
+
+              value: category.filesCount,
+              id: index,
+              label: category.categoryName,
+              }
+            )),
+            innerRadius: 30,
+            outerRadius: 99,
+            paddingAngle: -10,
+            cornerRadius: 0,
+            startAngle: -81,
+            endAngle: 189,
+            cx: 150,
+            cy: 150,
+          },
+        ]}
       />
     </Box>
+  ))}
+</Box>
+ :""}
 
-  </Stack>)
-  :""
-  }
-  </>
+ 
+</>
 
-  );
-}
+  
+)}

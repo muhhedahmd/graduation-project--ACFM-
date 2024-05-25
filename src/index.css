@@ -30,3 +30,6 @@ code {
   background-color: #f1f1f1; /* Set the color of the scrollbar track */
   border-radius: 3px; /* Set the border radius of the scrollbar track */
 }
+html{
+  font-size: 14.5px;
+}

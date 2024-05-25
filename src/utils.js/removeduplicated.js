@@ -1,6 +1,6 @@
 export function removeDuplicateUsersWithCourses(data) {
     let uniqueUsers = {};
-    data.forEach((entry) => {
+    data?.forEach((entry) => {
       const userId = entry.user.id;
       if (!uniqueUsers[userId]) {
         uniqueUsers[userId] = {
@@ -18,8 +18,8 @@ export function removeDuplicateUsersWithCourses(data) {
   export function extractCourseDetails(data) {
     let courseDetails = {};
   
-    data.forEach((entry) => {
-      entry.courses.forEach((course) => {
+    data?.forEach((entry) => {
+      entry.courses?.forEach((course) => {
         const courseName = course.coursename;
         const categories = Object.keys(course.files);
   
@@ -30,7 +30,7 @@ export function removeDuplicateUsersWithCourses(data) {
           };
         }
   
-        categories.forEach((category) => {
+        categories?.forEach((category) => {
           const categoryFilesCount = course.files[category].length;
           courseDetails[courseName].categories.push({
             categoryName: category,
@@ -47,8 +47,8 @@ export function removeDuplicateUsersWithCourses(data) {
  export  function extractCourseNames(data) {
   
     let courseNames = [];
-    data.forEach((entry) => {
-      entry.courses.forEach((course) => {
+    data?.forEach((entry) => {
+      entry.courses?.forEach((course) => {
         courseNames.push(course.coursename);
       });
     });
@@ -93,7 +93,7 @@ export function mergeCategories(data) {
     
     for (const category in data) {
         const mergedCategories = {};
-        data[category].categories.forEach(item => {
+        data[category].categories?.forEach(item => {
             const categoryName = item.categoryName;
             if (!mergedCategories[categoryName]) {
                 mergedCategories[categoryName] = item.filesCount;

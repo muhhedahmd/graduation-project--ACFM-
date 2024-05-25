@@ -12,13 +12,7 @@ const {
 
   const [value, setValue] = useState(initialValue || '');
 
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
 
-  // Generate academic year options dynamically for the last 5 years since 2020
-  for (let year = currentYear; year >= 2020 && academicYears.length < 5; year--) {
-    academicYears.push(`${year - 1}-${year}`);
-  }
 
   const handleChange = (event ) => {
     const selectedValue = event.target.value;

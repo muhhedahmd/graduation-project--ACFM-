@@ -4,129 +4,31 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+
   Typography,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { StyledFormGroup } from "./Style";
 import { processedCourses } from "../../Components/Semsterdata";
-import PopOverMenuFilter from "../../Components/Dashbboard/PopOverMenu";
-import { useEffect } from "react";
 import AutoCompleteUsers from "./AutoCompleteUsers";
 
 const CoursesOfSemester = ({
-  ChecedCourses,
   setCheckedCourses,
   setSemesterState,
-  filterList,
-  setFilterList,
 }) => {
-  const transformedCourses = {
-    Fall: [],
-    Spring: [],
-    Summer: [],
-  };
-
-  const transformCourses = (courses) => {
-    courses.forEach((course) => {
-      const { semester } = course;
-
-      switch (semester.toLowerCase()) {
-        case "fall":
-          transformedCourses.Fall.push({ ...course, checked: false });
-          break;
-        case "spring":
-          transformedCourses.Spring.push({ ...course, checked: false });
-          break;
-        case "summer":
-          transformedCourses.Summer.push({ ...course, checked: false });
-          break;
-        default:
-          break;
-      }
-    });
-    return transformedCourses;
-  };
-
-  const [courses, setCourses] = useState(transformCourses(processedCourses));
-  console.log(courses);
-  useEffect(() => {
-    setCheckedCourses([]);
-    // Extract selected semesters from filterList
-    const selectedSemesters = Object.entries(filterList)
-      .filter(([ key, value]) => value)
-      .map(([key]) => key.toLowerCase().replace(" ", ""));
-
-    if (selectedSemesters.length > 0) {
-      selectedSemesters.forEach((selectedSemester) => {
-        setCourses((prevCourses) => {
-          const updatedCourses = Object.entries(prevCourses).reduce(
-            (acc, [key, allCourses]) => {
-              acc[key] = allCourses.map((course) => {
-                const courseSemester = `${course?.level?.toLowerCase()}${course?.semester?.toLowerCase()}`;
-                console.log(selectedSemester, courseSemester);
-
-                if (selectedSemester.includes(courseSemester)) {
-                  setCheckedCourses(prev => {
-                    // Check if any course with the same abbreviation already exists in the array
-                    const courseExists = prev.some(courseIn => courseIn.abbreviation === course.abbreviation);
-                  
-                    if (!courseExists) {
-                      return [...prev, course];
-                    } else {
-                      // If it already exists, return the previous state without modification
-                      return prev;
-                    }
-                  });
-                  console.log("ChecedCourses", ChecedCourses);
-                  return { ...course, checked: true };
-                } else {
-                  return course;
-                }
-              });
-              return acc;
-            },
-            {}
-          );
-          return updatedCourses;
-        });
-      });
-    } else {
-      setCourses(transformCourses(processedCourses));
-    }
-    const everyIsFalse = Object.values(filterList).every(
-      (item) => item === false
-    );
-    if (everyIsFalse) {
-      setCheckedCourses([]);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterList]);
+  const [SelectedSate, setSelectedSate] = useState(processedCourses);
 
   const [isClear, SetIsClear] = useState(false);
-  console.log("ChecedCourses", ChecedCourses);
 
-  const theme = useTheme();
-
-  const handleCheck = (id) => {
-    setCourses((prevCourses) => {
-      const updatedCourses = Object.keys(prevCourses).reduce(
-        (acc, semester) => {
-          acc[semester] = prevCourses[semester].map((course) =>
-            course.id === id ? { ...course, checked: !course.checked } : course
-          );
-          return acc;
-        },
-        {}
+  const handleCheck = (code) => {
+    setSelectedSate((prevCourses) => {
+      const updatedCourses = prevCourses.map((item) =>
+        item.code === code ? { ...item, checked: !item.checked } : item
       );
 
-      const flattenedCourses = Object.values(updatedCourses).flat();
+      const filteredCourses = updatedCourses.filter((course) => course.checked);
 
-      const filteredCourses = flattenedCourses.filter(
-        (course) => course.checked
-      );
-
-      // Update checkedCourses state with the filtered courses
       setCheckedCourses(filteredCourses);
 
       setSemesterState((prev) => ({
@@ -137,11 +39,30 @@ const CoursesOfSemester = ({
       return updatedCourses;
     });
   };
+  const handleSelectAll = () => {
+    const allChecked = SelectedSate.every((item) => item.checked); // Check if all items are already checked
+  
+    const updatedCourses = SelectedSate.map((item) => ({
+      ...item,
+      checked: !allChecked, // Toggle the checked property based on whether all are already checked or not
+    }));
+  
+    // Filter out the courses that are checked
+    const filteredCourses = updatedCourses.filter((course) => course.checked);
+  
+    // Update the state with the checked courses
+    setCheckedCourses(filteredCourses);
+  
+    setSelectedSate(updatedCourses);
+  };
+  
+  
 
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        height: " 62vh",
+        height: " 60vh",
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "flex-start",
@@ -167,7 +88,9 @@ const CoursesOfSemester = ({
         }}
       >
         <AutoCompleteUsers
-          setSemesterState={setSemesterState}
+          HandleSelectAll={handleSelectAll}
+          SelectedSate={SelectedSate}
+          setSelectedSate={setSelectedSate}
           isClear={isClear}
           SetIsClear={SetIsClear}
         />
@@ -184,12 +107,6 @@ const CoursesOfSemester = ({
               sx={{ color: theme.palette.primary.paper }}
             />
           </Button>
-          <Button onClick={() => SetIsClear(true)} sx={{}}>
-            <PopOverMenuFilter
-              filterList={filterList}
-              setFilterList={setFilterList}
-            />
-          </Button>
         </Box>
       </Box>
       <StyledFormGroup
@@ -199,87 +116,54 @@ const CoursesOfSemester = ({
           width: "100% !important",
         }}
       >
-        {Object.keys(courses)?.map((itemC) => (
-          <Box
-            key={`course-${itemC}`}
-            component="div"
-            sx={{
-              maxWidth: "auto",
-              width: "98%",
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              flexDirection: "column",
-              flexWrap: "nowrap",
-              gap: ".5rem",
-            }}
-          >
-            <Typography variant="subtitle1" component={"p"}>
-              {itemC}
-            </Typography>
-            {courses[itemC]?.map((item, i) => (
-              <FormControlLabel
-                key={i}
-                id={item.id}
-                checked={item.checked}
-                onClick={(e) => handleCheck(item.id)}
-                sx={{
-                  width: "97%",
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  padding: ".5rem .5rem .5rem 0",
-                  gap: "1rem",
-                  color: item.checked ? theme.palette.primary.paper : "#333",
-                  transition: ".3s",
-                  borderRadius: "6px",
-                  margin: "0",
-                }}
-                control={
-                  <Box
-                    className="item-holder-course"
-                    sx={{
-                      margin: "0",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      gap: ".5rem",
-                      flexWrap: "nowrap",
-                      width: "max-content",
-                    }}
-                  >
-                    <Checkbox
-                      id={item.id}
-                      style={{
-                        color: theme.palette.primary.paper,
-                        padding: "0",
-                        "&.MuiChecked": {
-                          color: theme.palette.primary.paper,
-                        },
-                      }}
-                      checked={item.checked}
-                    />
-                    <Typography
-                      id={item.id}
-                      sx={{
-                        width: "max-content",
-                        minWidth: "max-content",
-                        cursor: "pointer",
-                      }}
-                      variant="subtitle2"
-                      onClick={(e) => handleCheck(item.id)}
-                    >
-                      {item.courseTitle} {item.abbreviation}
-                    </Typography>
-                  </Box>
-                }
-              />
-            ))}
-          </Box>
-        ))}
+{SelectedSate?.map((itemC) => (
+  <Box
+    key={`course-${itemC.code}`}
+    sx={{
+      width: "98%",
+      display: "flex",
+      flexDirection: "column",
+      gap: "0.5rem",
+    }}
+  >
+    <FormControlLabel
+      control={
+ <Checkbox
+  id={itemC.code}
+  checked={itemC.checked}
+  style={{
+    transition:".3s",
+    color: itemC.checked ? "#ff5c00" : "#545454",
+
+
+  }}
+  onChange={() => handleCheck(itemC.code)} // Correctly calling handleCheck
+/> 
+
+      }
+      label={
+        <Typography
+          variant="subtitle2"
+          sx={{
+    transition:".3s",
+
+            cursor: "pointer",
+            color: itemC.checked ? "#ff5c00" : "#545454",
+          }}
+          onClick={() => handleCheck(itemC.code)}
+        >
+          {`${itemC.name} ${itemC.code} level: ${itemC.level}`}
+        </Typography>
+      }
+    />
+  </Box>
+))}
+
+
       </StyledFormGroup>
     </Box>
   );
 };
 
 export default CoursesOfSemester;
+

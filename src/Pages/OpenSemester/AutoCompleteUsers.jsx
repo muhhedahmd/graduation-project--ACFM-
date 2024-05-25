@@ -1,241 +1,128 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Typography, FormControl, ListItem } from '@mui/material';
+import { Box, Input } from "@mui/material"
+import { useEffect, useState } from "react"
 
-const courses =   [
-  {
-    checked:false,
-    courseName: "Math 1",
-    courseCode: "MATH101",
-    byLaw: "Required",
-    level: "100",
-    creditHours: 3,
-    semester: "Fall",
-    program: "Computer Science",
-    schedule: "Mon, Wed, Fri 9:00 AM - 10:30 AM",
-    room: "Room 101",
-  },
-  {
-    checked:false,
-    // id: 2,
-    courseName: "Physics 1",
-    courseCode: "PHY101",
-    byLaw: "Required",
-    level: "100",
-    creditHours: 3,
-    semester: "Fall",
-    program: "Computer Science",
-    schedule: "Tue, Thu 11:00 AM - 12:30 PM",
-    room: "Room 102",
-  },
+// import {SortRoundedIcon} from '@mui/icons-material'
 
-  {
-    checked:false,
-    courseName: "Advanced Programming",
-    courseCode: "COMP301",
-    byLaw: "Elective",
-    level: "300",
-    creditHours: 4,
-    semester: "Spring",
-    program: "Computer Science",
-    schedule: "Mon, Wed, Fri 9:00 AM - 10:30 AM",
-    room: "Room 201",
-  },
-  {
-    checked:false,
-    courseName: "Advanced Software Engineering",
-    courseCode: "COMP401",
-    byLaw: "Elective",
-    level: "400",
-    creditHours: 4,
-    semester: "Spring",
-    program: "Computer Science",
-    schedule: "Tue, Thu 11:00 AM - 12:30 PM",
-    room: "Room 202",
-  },
+import React from 'react'
+import { Button, FormControl } from '@mui/material'
+import { useTheme } from "@emotion/react"
+import SortPopup from "./SortPopup"
+import { SelectAll } from "@mui/icons-material"
+import { processedCourses } from "../../Components/Semsterdata"
+const AutoCompleteUsers = ({ isClear , setSelectedSate , SelectedSate , HandleSelectAll}) => {
 
-
-  {
-
-    checked:false,
-    courseName: "Database Management Systems",
-    courseCode: "COMP201",
-    byLaw: "Elective",
-    level: "200",
-    creditHours: 3,
-    semester: "Summer",
-    program: "Computer Science",
-    instructor: "Dr. White",
-    schedule: "Mon, Wed, Fri 9:00 AM - 10:30 AM",
-    room: "Room 301",
-  },
-  {
-    semester:"Summaer",
-    checked:false,
-    courseName: "Network Security",
-    courseCode: "COMP501",
-    byLaw: "Elective",
-    level: "500",
-    creditHours: 4,
-    program: "Computer Science",
-    instructor: "Dr. Black",
-    schedule: "Tue, Thu 11:00 AM - 12:30 PM",
-    room: "Room 302",
-  },
- 
-]
-
-export default function AsynchronousAutoComplete({isClear, SetIsClear , setSemesterState}) {
-    const [linksState, setLinksState] = useState(null);
-    const [inpVal, setInpVal] = useState("");
-
-    const handleSearchClick = (courseId) => {
-        setLinksState(null)
-    };
-
-
-    const HandleChange  = (e) =>{
-
-      setInpVal(e.target.value)
-      SetIsClear(false)
-    }
+    const theme = useTheme()
+    const [inpVal ,setInpVal] = useState("")
 
     useEffect(()=>{
-      if(isClear){
-          setLinksState(null)
-          setInpVal("")
+        setInpVal('')
+    },[isClear])
 
-      }
 
-    }, [isClear])
-    
-    useEffect(() => {
-        if (!inpVal) {
-            setLinksState(null);
-            return;
+    const handleChange = (e) => {
+      const { value } = e.target;
+        setInpVal(value);
+        const regex = new RegExp(value, "i");
+        const filteredData = SelectedSate.filter((item) => regex.test(item.code) || regex.test(item.name));
+        if (value) {
+          setSelectedSate(filteredData);
+        } else {
+          setSelectedSate(processedCourses);
         }
-        else {
+    };
 
-        
+  return (
 
-        const filteredCourses = courses.reduce((acc, course, index) => {
-            const regex = new RegExp(inpVal, "i");
-            if (regex.test(course?.courseName) || regex?.test(course?.courseCode)) {
-                return { ...acc, [index]: { courseName: course.courseName, courseId: course.courseCode } };
-            }
-            return acc;
-        }, {});
+        <Box
+    sx={{
+        width:"100%",
+        display:"flex",
+        justifyContent:"flex-start",
+        alignItems:"center",
+        gap:".5rem",
+    }}
+    >
 
-        setLinksState(filteredCourses);
-    }
-    }, [inpVal]);
+    <form
+    style={{
+      display:"flex",
+      justifyContent:"flex-start",
+      alignItems:"center",
+      background: theme.palette.background.paper,
 
-    return (
-        <motion.li
-            initial={{
-                width: '100%',
-            }}
-            animate={{
-                // Add your animation values here
-            }}
-            transition={{ duration: 0.4, ease: "linear", stiffness: 60 }}
-            style={{
-                background: "#fff",
-                padding: "0 .5rem .5rem .3rem",
-                borderRadius: "7px",
-                position: "relative"
-            }}
-            disablePadding
-        >
-            <form action="#">
-                <FormControl fullWidth>
-                    <TextField
-                        // onFocus={() => setIsFocused(true)}
-                        // onBlur={() => setLinksState(false)}
-                        value={inpVal}
-                        onChange={(e) => HandleChange(e)}
-                        fullWidth
-                        color="secondary"
-                        variant="standard"
-                        sx={{
-                            fontSize: ".8rem",
-                            paddingTop: "0",
-                        }}
-                        type="text"
-                        InputProps={{
-                            classes: {
-                                notchedOutline: {
-                                    borderWidth: "1px",
-                                    borderColor: "yellow !important",
-                                },
-                            },
-                        }}
-                    />
-                </FormControl>
-                {inpVal && linksState !== null && (
-                    <AnimatePresence>
-                        <motion.ul
-                            key={`search-results${inpVal}`}
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: -20 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: .2 }}
-                            id='search-results'
-                            aria-labelledby="Search results"
-                            style={{
-                                opacity: "0",
-                                left: "0%",
-                                width: "100%",
-                                borderRadius: "7px",
-                                top: "110%",
-                                position: "absolute",
-                                overflowY: "auto",
-                                maxHeight: "20rem",
-                                background: "#fff",
-                                padding: "0",
-                                zIndex: "100",
-                                boxShadow: "3px 2px 6px #dedede",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "flex-start",
-                                justifyContent: "flex-start",
-                                gap: ".5rem",
-                                color: "#222"
-                            }}
-                        >
-                            {Object.values(linksState).map((course, i) => (
-                                <ListItem
-                                    key={i}
-                                    onClick={(e) => {
-                                      e.stopPropagation()   
-                                        handleSearchClick(course.courseId);
-                                    }}
-                                    sx={{
-                                        ':hover': {
-                                            bgcolor: "#fafafa",
-                                            cursor: "pointer"
-                                        }
-                                    }}
-                                >
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "left",
-                                            fontSize: ".9rem",
-                                            color: "inherit",
-                                            textDecoration: "none"
-                                        }}
-                                    >
-                                        {course.courseName + " " + course.courseId}
-                                    </Typography>
-                                </ListItem>
-                            ))}
-                        </motion.ul>
-                    </AnimatePresence>
-                )}
-            </form>
-        </motion.li>
-    );
+      padding: ".5rem .5rem .5rem .7rem",
+width: "100%",
+margin: "0 0 .5rem  0px",
+height: "12%",
+borderRadius: "9px",
+
+    }}
+    action="#"
+    onSubmit={(e) => e.preventDefault()}
+  >
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "1rem",
+        flexWrap: "nowrap",
+        flexDirection: "row",
+      }}
+    >
+      <FormControl
+        sx={{
+          width: "100%",
+        }}
+      >
+        <Input
+        value={inpVal}
+         onChange={handleChange} fullWidth type="text" placeholder="Search Courses" />
+      </FormControl>
+      <Button
+
+      sx={{
+        padding:"0",
+        minWidth:"fit-content",
+      color: theme.palette.primary.paper,
+      }}
+       type="submit">
+      </Button>
+      <Button
+
+      onClick={()=>HandleSelectAll()}
+       sx={{
+                  minWidth:"0",
+
+      color: theme.palette.primary.paper,
+      }}
+      >
+
+       <SelectAll/>
+      </Button>
+      <Button
+      disableRipple
+      disableTouchRipple
+                sx={{
+                  minWidth:"0",
+
+      color: theme.palette.primary.paper,
+      }}
+       type="Button">
+        <SortPopup 
+SelectedSate={SelectedSate}
+ setSelectedSate={setSelectedSate}
+
+        />
+      </Button>
+    </Box>
+  </form>
+  </Box>
+
+  )
 }
+
+export default AutoCompleteUsers
+
+  

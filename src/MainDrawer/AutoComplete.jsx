@@ -6,7 +6,6 @@ import { useCourseContext } from '../Components/Contexts/CourseContexts';
 
 export default function CustomAutocomplete({ SetselectCourse, SetselectUser, options, id  }) {
 
-
   const { SelectedCourse } = useCourseContext();
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedValues, setSelectedValues] = useState([]);
@@ -62,6 +61,11 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
   }
 
   return (
+    <div
+    style={{
+    }}
+    >
+
     <Autocomplete
       multiple={id === 'Course'}
       freeSolo={id !== 'Course'}
@@ -78,5 +82,6 @@ export default function CustomAutocomplete({ SetselectCourse, SetselectUser, opt
         />
       )}
     />
+    </div>
   );
 }

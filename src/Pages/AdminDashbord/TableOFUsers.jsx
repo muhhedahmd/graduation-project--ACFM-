@@ -15,7 +15,7 @@ const TableOFUsers = ( {AcadmicYearData}) => {
     const courses = {};
   
     // Iterate over each item in the data array
-    data.forEach(item => {
+    data?.forEach(item => {
       const { user, course } = item;
       const { coursename } = course;
   

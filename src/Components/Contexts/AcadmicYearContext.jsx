@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 
 // Step 1: Create the context
@@ -31,17 +31,17 @@ export const AcademicYearProvider = ({ children }) => {
   const [academicYears, dispatch] = useReducer(academicYearReducer, []);
 
   // Fetch academic years data on component mount
-  const fetchAcademicYears = async () => {
+  const fetchAcademicYears = useCallback(async () => {
     try {
       const res = await axios.get("https://optima-software-solutions.com/apis/academicyearsshow.php");
       dispatch({ type: SET_ACADEMIC_YEARS, payload: res.data });
     } catch (error) {
       console.error('Error fetching academic years:', error);
     }
-  };
+  }, []);
   useEffect(() => {
     fetchAcademicYears();
-  }, []);
+  }, [fetchAcademicYears]);
 
   const addAcademicYear = async (newYear) => {
     try {
