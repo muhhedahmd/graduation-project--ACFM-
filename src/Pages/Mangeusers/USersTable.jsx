@@ -21,7 +21,7 @@ import axios from "axios";
 function CustomizedTables({ state, fetchData }) {
   const { setShowImage } = useImage();
   const [openRowId, setOpenRowId] = useState(null);
-  const [childDrawer, setChildDrawer] = useState(null);
+  const [childDrawer, ] = useState(null);
   const [Courses, setCourses] = useState([]);
 
   const handleParentCollapse = (rowId) => {
@@ -40,9 +40,7 @@ function CustomizedTables({ state, fetchData }) {
     fetchUSerCourses();
   }, [openRowId]);
 
-  // const handleChildCollapse = (courseId) => {
-  //   setChildDrawer(childDrawer === courseId ? null : courseId);
-  // };
+
 
   return (
     <TableContainer

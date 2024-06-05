@@ -39,21 +39,7 @@ const GenerateReport = ({ page }) => {
     ]
   )
 
-  // const [ReportAdminState , setReportAdminState ] = useState({
-    
-  //   courseid:3,
-  //   studentsattending:100,
-  //   studentscompleting:80,
-  //   passed:70,
-  //   failed:10,
-  //   gradeA:20,
-  //   gradeB:20,
-  //   gradeC:20,
-  //   gradeD:20,
-  //   weeks:[{"topic": "Week 1 Topic", "lecturehours": 2, "tutorialhours": 1, "practicalhours": 1}, {"topic": "Week 2 Topic", "lecturehours": 2, "tutorialhours": 1, "practicalhours": 1}],
-  //   studentevaluation:'Good',
-  //   externalevaluators:'Updated External Evaluator Info',
-  // })
+
 
 
   const [CourseReport, setCourseReport] = useState({
@@ -126,6 +112,13 @@ const GenerateReport = ({ page }) => {
   }, [MainDrawerCourse?.courseid, reports]);
 
 
+  const { FetchFilesOFCatagory,   }=useFileContext()
+  useEffect(()=>{
+ 
+    FetchFilesOFCatagory(Data?.user?.id, MainDrawerCourse?.courseid, page)
+
+  },[Data?.user?.id, FetchFilesOFCatagory, MainDrawerCourse?.courseid, page])
+
 
 
 
@@ -134,21 +127,6 @@ const GenerateReport = ({ page }) => {
 
 
 
-  // useEffect(()=>{
-  //   setReportAdminState((prev)=>{
-  //     return{
-  //       ...prev  ,
-  //       studentsattending:mainReportState[0].totalStudents,
-  //       studentscompleting:mainReportState[0].totalEnrolled,
-  //       passed:mainReportState[0].totalPassed,
-  //       failed:mainReportState[0].totalFailed, 
-  //       gradeA:mainReportState[1].AGrade,
-  //       gradeB:mainReportState[1].BGrade,
-  //       gradeC:mainReportState[1].CGrade,
-  //       gradeD:mainReportState[1].DGrade,
-  //     }
-  //   })
-  // },[mainReportState])
 
 
 

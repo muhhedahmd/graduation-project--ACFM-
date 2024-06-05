@@ -11,7 +11,7 @@ const TableOFUsers = ({ AcadmicYearData }) => {
     if (formattedData.length > 0) {
       setCourseOption(Object.keys(formattedData)[0])
     }
-  }, [AcadmicYearData])
+  }, [AcadmicYearData, reformatData])
 
   function removeDuplicates(users) {
     const seen = new Set()
