@@ -1,6 +1,7 @@
 export const ROUTE_PATHS = {
     Login: "/login",
     Home: "/",
+    ManageAcdamicyear:"/ManageAcdamicyear",
     LectureNotes: "/lecturenotes",
     Books: "/books",
     Attendance: "/attendance",

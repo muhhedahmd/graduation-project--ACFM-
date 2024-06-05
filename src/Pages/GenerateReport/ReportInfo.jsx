@@ -14,13 +14,33 @@ const StyledLabel = styled(FormLabel)(() => ({
   color: "#333",
 }));
 
-const ReportInfo = forwardRef((props, ref) => {
+
+// [
+//   {
+//     studentsattending: 0,
+//     studentscompleting: 0,
+//     passed: 0,
+//     totalUnenrolled: 0,
+//     failed: 0
+// }
+//   ,
+//     {
+//       gradeA: 10,
+//       gradeB: 10,
+//       gradeC: 10,
+//       gradeD: 10,
+//       FGrade: 0
+//   }
+  
+// ]
+// )
+const ReportInfo = forwardRef(({mainReportState ,setMainReportState}, ref) => {
     const isSm = useMediaQuery(theme=>theme.breakpoints.down("md"))
 
   const [participation, setParticipation] = useState({
-    totalStudents: "",
-    totalEnrolled: "",
-    totalPassed: "",
+    studentsattending: "",
+    studentscompleting: "",
+    passed: "",
   });
 
   const handleChange = (e) => {
@@ -29,30 +49,55 @@ const ReportInfo = forwardRef((props, ref) => {
       ...prevParticipation,
       [id]: value,
     }));
+    setMainReportState((prev)=>{
+      return [
+        {
+          ...prev[0],
+          [id]: value,
+          failed: participation.studentscompleting - participation.passed
+        },
+        {
+          ...prev[1],
+        }
+      ]
+ 
+     })
+console.log(mainReportState)
+
+
   };
 
   const calculateTotals = useMemo(() => {
     return () => {
-      const { totalStudents, totalEnrolled, totalPassed } = participation;
+      const { studentsattending, studentscompleting, passed } = participation;
       if (
-        totalStudents !== "" &&
-        totalEnrolled !== "" &&
-        totalPassed !== "" &&
-        !isNaN(totalStudents) &&
-        !isNaN(totalEnrolled) &&
-        !isNaN(totalPassed)
+        studentsattending !== "" &&
+        studentscompleting !== "" &&
+        passed !== "" &&
+        !isNaN(studentsattending) &&
+        !isNaN(studentscompleting) &&
+        !isNaN(passed)
       ) {
-        const students = parseInt(totalStudents);
-        const enrolled = parseInt(totalEnrolled);
-        const passed = parseInt(totalPassed);
-        if (students >= enrolled && students >= passed) {
+        const students = parseInt(studentsattending);
+        const enrolled = parseInt(studentscompleting);
+        const passedx = parseInt(passed);
+        if (students >= enrolled && students >= passedx) {
           const unenrolled = students - enrolled;
-          const failed = students - passed;
-          return { totalUnenrolled: unenrolled, totalFailed: failed };
+          const failed = enrolled - passedx;
+       
+          return { totalUnenrolled: unenrolled, failed: failed };
+
+
         }
       }
-      return { totalUnenrolled: 0, totalFailed: 0 };
+
+      return { totalUnenrolled: 0, failed: 0 };
+
+
+
     };
+
+
   }, [participation]);
 
   const totals = calculateTotals();
@@ -65,7 +110,8 @@ const ReportInfo = forwardRef((props, ref) => {
   return (
     <Box
       sx={{
-        width: `${!isSm ?  "30%":"62%"}`,
+                width: `${!isSm ?  "30%":"62%"}`,
+
       }}
     >
       <Typography color={"#222"} align="left" variant="h6" component={"p"}>
@@ -84,38 +130,38 @@ const ReportInfo = forwardRef((props, ref) => {
         }}
       >
         <StyledFormGroup>
-          <StyledLabel htmlFor="totalStudents">Total Students</StyledLabel>
+          <StyledLabel htmlFor="studentsattending">Total Students</StyledLabel>
           <Input
-            id="totalStudents"
+            id="studentsattending"
             fullWidth
             className="borderAfter"
             placeholder="Enter total students"
             type="number"
-            value={participation.totalStudents}
+            value={participation.studentsattending}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledLabel htmlFor="totalEnrolled">Total Enrolled</StyledLabel>
+          <StyledLabel htmlFor="studentscompleting">Total Enrolled</StyledLabel>
           <Input
-            id="totalEnrolled"
+            id="studentscompleting"
             fullWidth
             placeholder="Enter total Enrolled"
             className="borderAfter"
             type="number"
-            value={participation.totalEnrolled}
+            value={participation.studentscompleting}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledLabel htmlFor="totalPassed">Total Passed</StyledLabel>
+          <StyledLabel htmlFor="passed">Total Passed</StyledLabel>
           <Input
-            id="totalPassed"
+            id="passed"
             fullWidth
             placeholder="Enter total Passed"
             className="borderAfter"
             type="number"
-            value={participation.totalPassed}
+            value={participation.passed}
             onChange={handleChange}
           />
         </StyledFormGroup>
@@ -123,7 +169,7 @@ const ReportInfo = forwardRef((props, ref) => {
           Total Unenrolled: {totals.totalUnenrolled}
         </Typography>
         <Typography variant="body1" component={"p"}>
-          Total Failed: {totals.totalFailed}
+          Total Failed: {totals.failed}
         </Typography>
       </form>
     </Box>

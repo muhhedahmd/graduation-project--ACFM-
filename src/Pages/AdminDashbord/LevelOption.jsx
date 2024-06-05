@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const LevelOptions = ({LevelOption , setLevelOption , position  ,mxwidthprop}) => {
+const LevelOptions = ({LevelOption ,left, setLevelOption  ,position, top  ,mxwidthprop}) => {
 
   const handleChange = (event) => {
     setLevelOption(event.target.value)
@@ -14,19 +14,21 @@ const LevelOptions = ({LevelOption , setLevelOption , position  ,mxwidthprop}) =
   return (
     <div>
       <FormControl variant="standard" sx={{  
-        position:`${!position ? 'absolute' : "static"}`,
-        top:"6rem",
-        right:"1rem",
+        position:position,
+
+        top:`${!top ? '5rem' : 0}`,
+        right:`${left ? '0rem' : "1rem"}`,
         zIndex:"1000", 
-        width:mxwidthprop,
+        width:mxwidthprop ? mxwidthprop : 120,
     
          minWidth: `${mxwidthprop ? 'auto ': 120}` , }}
          
          >
 
         <InputLabel
-        // error={error}
-        sx={{ color: '#333 !important' }} // Label text color
+   sx={{
+
+          color: '#333 !important' }} // Label text color
 
          id="demo-simple-select-standard-label">Level</InputLabel>
         <Select

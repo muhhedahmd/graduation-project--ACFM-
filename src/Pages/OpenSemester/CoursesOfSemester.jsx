@@ -5,6 +5,8 @@ import {
   Checkbox,
   FormControlLabel,
 
+  
+
   Typography,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
@@ -127,17 +129,20 @@ const CoursesOfSemester = ({
     }}
   >
     <FormControlLabel
+  onChange={() => handleCheck(itemC.code)} // Correctly calling handleCheck
+
       control={
- <Checkbox
+ <Checkbox 
+ type="checkbox"
   id={itemC.code}
   checked={itemC.checked}
+
   style={{
     transition:".3s",
     color: itemC.checked ? "#ff5c00" : "#545454",
 
 
   }}
-  onChange={() => handleCheck(itemC.code)} // Correctly calling handleCheck
 /> 
 
       }
@@ -150,9 +155,9 @@ const CoursesOfSemester = ({
             cursor: "pointer",
             color: itemC.checked ? "#ff5c00" : "#545454",
           }}
-          onClick={() => handleCheck(itemC.code)}
+          // onClick={() => handleCheck(itemC.code)}
         >
-          {`${itemC.name} ${itemC.code} level: ${itemC.level}`}
+          {`${itemC.name} ${itemC.code}`}
         </Typography>
       }
     />

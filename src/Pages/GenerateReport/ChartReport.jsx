@@ -2,14 +2,14 @@ import * as React from 'react';
 
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useMediaQuery } from '@mui/material';
+import { useCourseContext } from '../../Components/Contexts/CourseContexts';
 
 
 
 
 
-export default function TickPlacementBars({mainReportState}) {
-  
-
+export default function TickPlacementBars({totalFailed}) {
+  const {MainDrawerCourse} = useCourseContext()  
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
 
   return (
@@ -34,15 +34,17 @@ sx={{
   }
 }}
       series={[
-        { data: [mainReportState[1].AGrade, mainReportState[1].BGrade, mainReportState[1].CGrade, mainReportState[1].DGrade , -mainReportState[1].FGrade] },
+        { data: [MainDrawerCourse?.gradeA, MainDrawerCourse?.gradeB, MainDrawerCourse?.gradeC, MainDrawerCourse?.gradeD , totalFailed] },
 
       ]
+   
+      
       
       }
       height={ isSm? 150:235}
       xAxis={[{ data: ['A', 'B', 'C',  "D", 'F' ], scaleType: 'band' }]}
       margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-      yAxis={[{ max: mainReportState[0].totalStudents }]}
+      yAxis={[{ max: MainDrawerCourse?.studentsattending }]}
           />
     </div>
   );

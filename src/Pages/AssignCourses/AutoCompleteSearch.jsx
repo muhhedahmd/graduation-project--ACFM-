@@ -1,15 +1,18 @@
 import { Box, Input } from "@mui/material"
 import { useEffect, useState } from "react"
 
-// import {SortRoundedIcon} from '@mui/icons-material'
 
 import React from 'react'
 import { Button, FormControl } from '@mui/material'
 import { useTheme } from "@emotion/react"
-import SortPopup from "./SortPopup"
-import { SelectAll } from "@mui/icons-material"
-import { processedCourses } from "../../Components/Semsterdata"
-const AutoCompleteUsers = ({ isClear , setSelectedSate , SelectedSate , HandleSelectAll , user}) => {
+import SortPopergolabal from "./SortPopergolabal"
+const AutoCompleteSearch = ({
+    
+    AllUsersStateCheced,
+    AllUsersState,
+setAllUsersState,
+    
+    isClear ,AllCoursesState  , AllCoursesStateCheced , setAllCoursesState , HandleSelectAll , user}) => {
 
     const theme = useTheme()
     const [inpVal ,setInpVal] = useState("")
@@ -20,17 +23,29 @@ const AutoCompleteUsers = ({ isClear , setSelectedSate , SelectedSate , HandleSe
 
 
     const handleChange = (e) => {
-      try {
-          const { value } = e.target;
-          setInpVal(value);
-          const regex = new RegExp(value, "i");
-          const filteredData = SelectedSate.filter((item) => regex.test(item.code) || regex.test(item.name));
-          setSelectedSate(value ? filteredData : processedCourses);
-      } catch (error) {
-          console.error(`Error occurred: ${error.message}`);
-          // You can customize the error handling here (e.g., show a user-friendly message)
-      }
-  }
+      const { value } = e.target;
+        setInpVal(value);
+
+        if(user){
+            const regex = new RegExp(value, "i");
+            const filteredData = AllUsersState.filter((item) => regex.test(item.first_name) || regex.test(item.last_name));
+            if (value) {
+                setAllUsersState(filteredData);
+            } else {
+                setAllUsersState(AllUsersStateCheced);
+            }
+        }
+        else {
+
+            const regex = new RegExp(value, "i");
+            const filteredData = AllCoursesState.filter((item) => regex.test(item.coursename) || regex.test(item.abbreviation));
+            if (value) {
+                setAllCoursesState(filteredData);
+            } else {
+                setAllCoursesState(AllCoursesStateCheced);
+            }
+        }
+    };
 
   return (
 
@@ -94,31 +109,20 @@ borderRadius: "9px",
        <>
 
       <Button
-
-      onClick={()=>HandleSelectAll()}
-       sx={{
-                  minWidth:"0",
-
-      color: theme.palette.primary.paper,
-      }}
-      >
-
-       <SelectAll/>
-      </Button>
-      <Button
       disableRipple
       disableTouchRipple
                 sx={{
-                  minWidth:"0",
+                  bgcolor:"#fff !important",
 
-      color: theme.palette.primary.paper,
       }}
+      color="secondary"
        type="Button">
        
 
-        <SortPopup 
-SelectedSate={SelectedSate}
- setSelectedSate={setSelectedSate}
+        <SortPopergolabal 
+        AllCoursesStateCheced={AllCoursesStateCheced}
+SelectedSate={AllCoursesState}
+ setSelectedSate={setAllCoursesState}
 
         />
       </Button>
@@ -132,6 +136,6 @@ SelectedSate={SelectedSate}
   )
 }
 
-export default AutoCompleteUsers
+export default AutoCompleteSearch
 
   

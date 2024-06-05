@@ -12,12 +12,12 @@ import {
   Collapse,
   List,
   ListItem,
+  Divider,
 } from "@mui/material";
 import PopOverMenu from "./PopOverMenu";
 import { SearchContext } from ".";
 import { useImage } from "../../Components/Contexts/ImageViewrContex";
 import axios from "axios";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 function CustomizedTables({ state, fetchData }) {
   const { setShowImage } = useImage();
   const [openRowId, setOpenRowId] = useState(null);
@@ -40,9 +40,9 @@ function CustomizedTables({ state, fetchData }) {
     fetchUSerCourses();
   }, [openRowId]);
 
-  const handleChildCollapse = (courseId) => {
-    setChildDrawer(childDrawer === courseId ? null : courseId);
-  };
+  // const handleChildCollapse = (courseId) => {
+  //   setChildDrawer(childDrawer === courseId ? null : courseId);
+  // };
 
   return (
     <TableContainer
@@ -56,37 +56,92 @@ function CustomizedTables({ state, fetchData }) {
           sx={{
             position: "sticky",
             top: "0",
-            bgcolor: "#ff5c00 !important",
-            borderBottom: "3px solid #dedede",
+            bgcolor: "#fff !important",
+            borderBottom: "3px solid #ff5c00",
           }}
         >
           <TableRow sx={{ bgcolor: "#fff" }}>
-            <TableCell className="usersCell " align="left">
+            <TableCell
+                sx={{
+color:"#111",
+         
+            bgcolor: "#fff !important",
+            borderBottom: "3px solid #ff5c00",
+          }}
+             className="usersCell " align="left">
               Name
             </TableCell>
-            <TableCell sx={{width:"6rem"}} className="usersCell" align="center">
+            <TableCell
+                           sx={{
+color:"#111",
+         
+                            width:"6rem",
+         bgcolor: "#fff !important",
+         borderBottom: "3px solid #ff5c00",
+       }}
+ className="usersCell" align="center">
               Phone number
             </TableCell>
-            <TableCell className="usersCell" align="center">
+            <TableCell
+                   sx={{
+color:"#111",
+         
+         width:"6rem",
+bgcolor: "#fff !important",
+borderBottom: "3px solid #ff5c00",
+}}
+             className="usersCell" align="center">
               Resmu
             </TableCell>
-            <TableCell className="usersCell" align="center">
+            <TableCell 
+                               sx={{
+color:"#111",
+         
+         width:"6rem",
+bgcolor: "#fff !important",
+borderBottom: "3px solid #ff5c00",
+}}
+            className="usersCell" align="center">
               Profile Image
             </TableCell>
-            <TableCell className="usersCell" align="center">
+            <TableCell 
+                               sx={{
+color:"#111",
+         
+         width:"6rem",
+bgcolor: "#fff !important",
+borderBottom: "3px solid #ff5c00",
+}}
+            className="usersCell" align="center">
               Creation date
             </TableCell>
-            <TableCell className="usersCell" align="center">
+            <TableCell 
+                               sx={{
+color:"#111",
+         
+         width:"6rem",
+bgcolor: "#fff !important",
+borderBottom: "3px solid #ff5c00",
+}}
+            className="usersCell" align="center">
               Role
             </TableCell>
-            <TableCell className="usersCell" align="right">
+            <TableCell 
+                               sx={{
+color:"#111",
+         width:"6rem",
+bgcolor: "#fff !important",
+borderBottom: "3px solid #ff5c00",
+}}
+            className="usersCell" align="right">
               Action
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody sx={{ height: "10vh" }}>
           {state?.map((row) => (
-            <React.Fragment key={row.id}>
+
+        (row.access === "instructor" || row.access ===  "Staff")&&<React.Fragment key={row.id}>
               <TableRow sx={{ p: "0 !important" }}>
                 <TableCell
                   sx={{ pr: "0" }}
@@ -124,28 +179,30 @@ function CustomizedTables({ state, fetchData }) {
                   </Typography>
                 </TableCell>
                 <TableCell
+                  onClick={() => handleParentCollapse(row.id)}
+                  sx={{ padding: "0" }}
+                  align="center"                >
+                  {row.phone_number}
+                </TableCell>
+                <TableCell
                   onClick={() =>{
-                    setShowImage(row.resume)
-                     handleParentCollapse(row.id)}}
+                    setShowImage(row.resume)}}
               
                   sx={{ padding: "0" , cursor:"pointer" }}
                   align="center"                >
                   Show
                 </TableCell>
                 <TableCell
+                
                   onClick={() => {
                     setShowImage(row.avatar);
-                    handleParentCollapse(row.id)}}
+                    }}
            
-                  sx={{ padding: "0" }}
+                  sx={{ padding: "0"  , 
+                      
+                  }}
                   align="center"                >
                   {'Show Image'}
-                </TableCell>
-                <TableCell
-                  onClick={() => handleParentCollapse(row.id)}
-                  sx={{ padding: "0" }}
-                  align="center"                >
-                  {row.phone_number}
                 </TableCell>
                 <TableCell
                   onClick={() => handleParentCollapse(row.id)}
@@ -180,7 +237,7 @@ function CustomizedTables({ state, fetchData }) {
                 <Collapse
                   sx={{
                     padding: "0",
-                    width: "300%",
+                    width: "335%",
                   }}
                   in={openRowId === row.id}
                   timeout="auto"
@@ -192,10 +249,9 @@ function CustomizedTables({ state, fetchData }) {
                         <ListItem
 
                         disablePadding
-                        onClick={()=>handleChildCollapse(course.courseid)}
+                        // onClick={()=>handleChildCollapse(course.courseid)}
                           sx={{
                             padding:"0",
-                            borderBottom:"2px solid #cedede",
                             flexDirection:"column",
                             display: "flex",
                             justifyContent: "space-between",
@@ -210,25 +266,24 @@ function CustomizedTables({ state, fetchData }) {
                             cursor:"pointer",
 
                                 padding:".5rem",
-                                bgcolor:"#c1bbbb1c",
                               width: "100%",
                               display: "flex",
                               justifyContent: "space-between",
                             }}
                           >
-                            <Typography>
+                            <Typography
+                            variant="h6"
+                            component={"p"}
+                            >
                               Course Name {course.coursename}
                             </Typography>
 
-                            <ArrowBackIosIcon
-                              sx={{
-                                transition:".3s",
-                                transform: `rotate(${childDrawer === course.courseid ? '-90deg' :0})`,
-                                fontSize: "1.7rem",
-                                color: "#919191",
-                              }}
-                            />
+                         
+
                           </Box>
+                          <Divider
+                            sx={{width:"100%"}}
+                          />
                           <Collapse
                             sx={{
                               bgcolor:"#2c2c2c00",

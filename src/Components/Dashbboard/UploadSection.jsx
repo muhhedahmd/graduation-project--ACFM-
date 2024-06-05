@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import React, {  useRef, useState } from 'react';
 import uploadIcon from "./file-add.svg";
 import { useTheme } from '@emotion/react';
 import Popup from '../Popup';
 import WarningPopup from '../WarningPopup';
+import { useFileContext } from '../Contexts/FileCourseContext';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -20,8 +21,7 @@ const VisuallyHiddenInput = styled("input")({
 
 const UploadSection = ({category}) => {
   const ref = useRef(null)
-  // const [progress ,setProgress] = useState(false)
-
+  const {progressContext} = useFileContext()
   const [file, setFile] = useState(null);
   const [isInvalid , setIsInValid] = useState(false)
   const theme = useTheme();
@@ -57,18 +57,27 @@ const UploadSection = ({category}) => {
       }}
     >
       <Button
+      disabled={ progressContext ? true : false}
         component="label"
         role={undefined}
         variant="contained"
         tabIndex={-1}
         startIcon={
           <>
+          {progressContext ? 
+          <CircularProgress
+            sx={{
+              color:"#333"
+            }}
+          />
+          :
             <Box>
               <img src={uploadIcon} alt="" />
               <Typography p={"0 .3rem"} variant="caption" component={"P"} color={"#888"}>
                 click here to upload or drag and drop files here
               </Typography>
             </Box>
+          }
           </>
         }
         sx={{

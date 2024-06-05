@@ -7,6 +7,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import ListIcon from "@mui/icons-material/List";
 import styled from "@emotion/styled";
 import { UseView } from "../Contexts/viewedFileContext";
+import { useFileContext } from "../Contexts/FileCourseContext";
 
 
 export default function PopFile({ url, Filename , fileId}) {
@@ -22,6 +23,7 @@ export default function PopFile({ url, Filename , fileId}) {
     setAnchorEl(null);
   };
 
+  const {DelteFile} = useFileContext()
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -49,6 +51,8 @@ export default function PopFile({ url, Filename , fileId}) {
           boxShadow: "none",
           color: "#666",
           p: "0",
+          background: "#fff !important",
+
           width: "min-content",
           ":hover ,:focus": {
             background: "#fff",
@@ -141,7 +145,7 @@ export default function PopFile({ url, Filename , fileId}) {
            
            onClick={()=>{
          setAnchorEl(null)
-        //  DeleteFile(fileId)
+         DelteFile(fileId)
             
               }}
 

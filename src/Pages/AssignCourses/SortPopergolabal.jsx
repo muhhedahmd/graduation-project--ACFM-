@@ -2,12 +2,18 @@ import * as React from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Button, FormControlLabel, Radio, RadioGroup, Typography, Checkbox } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
-import { processedCourses } from "../../Components/Semsterdata";
+import { useCourseContext } from "../../Components/Contexts/CourseContexts";
+import { useAcademicYear } from "../../Components/Contexts/AcadmicYearContext";
 
-export default function SortPopup({  setSelectedSate, SelectedSate }) {
+
+
+export default function SortPopoverGlobal({ AllCoursesStateCheced,setSelectedSate, SelectedSate }) {
+    const {academicYears} =useAcademicYear()
+  const { AllCourses } = useCourseContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedLevel, setSelectedLevel] = React.useState("");
   const [selectedSemesters, setSelectedSemesters] = React.useState([]);
+  const [selectedYear, setSelectedYear] = React.useState("");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,12 +28,7 @@ export default function SortPopup({  setSelectedSate, SelectedSate }) {
     setSelectedLevel(level);
     setSelectedSemesters([]);
 
-    if (level === "All") {
-      setSelectedSate(processedCourses);
-    } else {
-      const filteredByLevel = processedCourses.filter((item) => item.level === +level);
-      setSelectedSate(filteredByLevel);
-    }
+    filterCourses(level, selectedSemesters, selectedYear);
   };
 
   const handleCheckboxChange = (event) => {
@@ -44,22 +45,44 @@ export default function SortPopup({  setSelectedSate, SelectedSate }) {
 
     setSelectedSemesters(updatedSemesters);
 
-    let filteredCourses = processedCourses;
+    filterCourses(selectedLevel, updatedSemesters, selectedYear);
+  };
+
+  const handleYearChange = (event) => {
+    const year = event.target.value;
+    setSelectedYear(year);
+
+    filterCourses(selectedLevel, selectedSemesters, year);
+  };
+
+  const filterCourses = (level, semesters, year) => {
+    let filteredCourses = AllCourses;
     const semesterMapping = {
-      semesterFall: 1,
-      semesterSpring: 2,
+      semesterFall: "Fall",
+      semesterSpring: "Spring",
     };
 
-    if (updatedSemesters.length > 0) {
-      filteredCourses = processedCourses.filter((item) =>
-        updatedSemesters.some((semester) => item.semester === semesterMapping[semester])
+    if (level && level !== "All") {
+      filteredCourses = filteredCourses.filter((item) => +item.level === +level);
+    }
+
+    if (semesters.length > 0) {
+      filteredCourses = filteredCourses.filter((item) =>
+        semesters.some((semester) => item.semester === semesterMapping[semester])
       );
     }
 
-    if (selectedLevel !== "All" && selectedLevel !== "") {
-      filteredCourses = filteredCourses.filter((item) => item.level === +selectedLevel);
+    if (year && year !== "All") {
+      filteredCourses = filteredCourses.filter((item) => item.academicyear === year);
     }
 
+    filteredCourses = filteredCourses.map((course) => {
+        const originalCourse = AllCoursesStateCheced.find((c) => c.courseid === course.courseid);
+        return {
+          ...course,
+          checked: originalCourse?.checked || false,
+        };
+      })
     setSelectedSate(filteredCourses);
   };
 
@@ -68,19 +91,17 @@ export default function SortPopup({  setSelectedSate, SelectedSate }) {
 
   return (
     <>
-
       <Button
         disableRipple
         disableFocusRipple
         sx={{
-          background: "#fff00000 !important",
-
-          margin:"0 1.5rem",
-          minWidth:"0",
-          
+          margin: "0 1.5rem",
+          minWidth: "0",
           justifyContent: "flex-end",
           boxShadow: "none",
           color: "#666",
+          bgcolor:"#fff !important",
+
           p: "0",
           width: "min-content",
           ":hover, :focus": {
@@ -134,7 +155,7 @@ export default function SortPopup({  setSelectedSate, SelectedSate }) {
               <FormControlLabel
                 value="All"
                 control={<Radio sx={{ color: "#FF5C00 !important" }} />}
-                label="All level"
+                label="All levels"
               />
               <FormControlLabel
                 value="1"
@@ -159,7 +180,7 @@ export default function SortPopup({  setSelectedSate, SelectedSate }) {
             </RadioGroup>
           </Box>
 
-          <Box>
+          <Box mb={2}>
             <Typography>Semester</Typography>
             <FormControlLabel
               control={
@@ -183,6 +204,35 @@ export default function SortPopup({  setSelectedSate, SelectedSate }) {
               }
               label="Spring"
             />
+          </Box>
+
+          <Box>
+            <Typography>Academic Year</Typography>
+            <RadioGroup
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+              aria-label="academicYear"
+              name="academicYear"
+              value={selectedYear}
+              onChange={handleYearChange}
+              row
+            >
+              <FormControlLabel
+                value="All"
+                control={<Radio sx={{ color: "#FF5C00 !important" }} />}
+                label="All years"
+              />
+              {academicYears.map((year) => (
+                <FormControlLabel
+                  key={year.name}
+                  value={year.name}
+                  control={<Radio sx={{ color: "#FF5C00 !important" }} />}
+                  label={year.name}
+                />
+              ))}
+            </RadioGroup>
           </Box>
         </Box>
       </Popover>

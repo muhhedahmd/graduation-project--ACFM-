@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 
 // Step 1: Create the context
@@ -14,7 +14,7 @@ const EDIT_USER = 'EDIT_USER';
 const userReducer = (state, action) => {
   switch (action.type) {
     case SET_USERS:
-      return action.payload;
+      return action.payload.map(user => ({ ...user, checked: false }));
     case ADD_USER:
       return [...state, action.payload];
     case DELETE_USER:
@@ -31,7 +31,6 @@ const userReducer = (state, action) => {
 // Step 4: Create the custom hook
 export const useUserContext = () => useContext(UserContext);
     
-// Step 5: Create the context provider
 export const UserProvider = ({ children }) => {
   const [users, dispatch] = useReducer(userReducer, []);
 
@@ -49,18 +48,21 @@ export const UserProvider = ({ children }) => {
     fetchUsers();
   }, []);
 
+  const [loader ,setloader] = useState(false)
   // Function to add a new user
   const addUser = async (newUser) => {
+    setloader(true)
     try {
       const res = await axios.post("https://optima-software-solutions.com/apis/useradd.php", newUser);
       dispatch({ type: ADD_USER, payload: res.data });
       fetchUsers();
+      setloader(false)
     } catch (error) {
       console.error('Error adding user:', error);
+      setloader(false)
     }
   };
 
-  // Function to delete a user
   const deleteUser = async (id) => {
     try {
       await axios.delete(`https://optima-software-solutions.com/apis/userdelete.php?id=${id}`);
@@ -71,7 +73,6 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // Function to edit a user
   const editUser = async (id, userData) => {
     try {
       await axios.put(`https://optima-software-solutions.com/apis/useredit.php?id=${id}`, userData);
@@ -83,7 +84,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ users, addUser, deleteUser, editUser }}>
+    <UserContext.Provider value={{
+      loader,
+       users, fetchUsers,  addUser, deleteUser, editUser }}>
       {children}
     </UserContext.Provider>
   );

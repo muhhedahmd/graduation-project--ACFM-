@@ -2,6 +2,8 @@ import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material'
 import React from 'react'
 
 const InfoBoxes = ({title , icon ,value , percent}) => {
+
+    console.log( title, value , percent)
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
 
   return (

@@ -6,6 +6,7 @@ export const FILE_OPERATION = {
   UPLOAD_FILE: "UPLOAD_FILE",
   UPLOAD_FILE_ANOTHER_USER: "UPLOAD_FILE_ANOTHER_USER",
   SET_FILES: "SET_FILES",
+  Delete_FILE: "Delete_FILE",
 };
 
 const DEFAULT_STATE = {
@@ -34,6 +35,11 @@ const reducer = (state, action) => {
           ...action.payload 
         ]
       };
+    case FILE_OPERATION.Delete_FILE:
+      return {
+        ...state,
+        uploadedFiles: state.uploadedFiles.filter((item)=>item.id !== action.payload.id )
+      };
     default:
       return state;
   }
@@ -41,10 +47,10 @@ const reducer = (state, action) => {
 
 export const FileContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
-  
+
   const [progressContext ,setProgressContext] = useState()
 
-  const FetchFilesOFCatagory = async (userid , courseid , category) => {
+  const FetchFilesOFCatagory =  useCallback( async (userid , courseid , category) => {
    console.log(userid , courseid , category)
     try {
       const res = await axios.post(`https://optima-software-solutions.com/apis/filesshow.php`, {
@@ -58,7 +64,9 @@ export const FileContextProvider = ({ children }) => {
 } catch (error) {
       console.error('Error fetching files:', error);
     }
-  };
+  },[])
+
+
 
 
   const FetchAlldilesofCourses = useCallback( async (users, courseid, category) => {
@@ -81,6 +89,9 @@ export const FileContextProvider = ({ children }) => {
   } , [])    
   
   const uploadFile = async (file, description, userId, courseId, category) => {
+    console.log(file, description, userId, courseId, category , "l3;kmfm3")
+    setProgressContext(true);
+
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('courseId', courseId);
@@ -93,26 +104,46 @@ export const FileContextProvider = ({ children }) => {
         formData,
         { 
           headers: { 'Content-Type': 'multipart/form-data' },
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-            setProgressContext(progress);
-          }
+    
+          
         }
       );
-      console.log("progressContext" , progressContext)
       dispatch({
         type: FILE_OPERATION.UPLOAD_FILE,
         payload: { file, description },
       });
       alert("Uploaded Successfully");
       FetchFilesOFCatagory(userId, courseId, category);
-  
+      setProgressContext(false);
+      
     } catch (error) {
-      console.error('Error uploading file:', error.response.data); 
+      alert("failed ");
+
+      setProgressContext(false);
+      console.error('Error uploading file:', error); 
     }
   };
+
+  const DelteFile = async ( id) =>{
+    
+    console.log(id)
+    try {
+      
+      const res=  await axios.delete(`https://optima-software-solutions.com/apis/filesdelete.php?id=${id}`)
+        dispatch({
+          type: FILE_OPERATION.Delete_FILE,
+          payload: { id },
+        });
+        console.log(res , id)
+        // FetchFilesOFCatagory(userId, courseId, category);
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   return (
-    <FileContext.Provider value={{  FetchAlldilesofCourses, progressContext, uploadFile, FetchFilesOFCatagory, state }}>
+    <FileContext.Provider value={{ DelteFile , FetchAlldilesofCourses, progressContext, uploadFile, FetchFilesOFCatagory, state }}>
       {children}
     </FileContext.Provider>
   );

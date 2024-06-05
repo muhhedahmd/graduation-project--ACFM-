@@ -1,5 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress, Skeleton, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useAcademicYear } from "../../Components/Contexts/AcadmicYearContext";
@@ -7,6 +7,7 @@ import { useUserContext } from "../../Components/Contexts/UserContexts";
 import StanderdBox from "../../Components/StanderdBox";
 import SemsterOptions from "./SemsterOptions";
 import LevelOptions from "./LevelOption";
+import ProgramOptions from "./ProgramOption";
 
 const AcdamicYear = lazy(() => import("./AcdamicYear"));
 const CoursesGraph = lazy(() => import("./CoursesGraph"));
@@ -29,11 +30,10 @@ const AllCatagories = [
   "lecture notes",
   "books",
   "Attendance",
-  "ExamsAndSolutions",
+  "Exams And Model Answer",
   "Assignments",
-  "GenerateReport",
   "Final Exams",
-  "Student Survey",
+  // "Student Survey",
 ];
 
 const StyledAcdamicYearHolder = {
@@ -44,7 +44,7 @@ const StyledAcdamicYearHolder = {
   overflowX: "auto",
   overflowY: "hidden",
   maxWidth: "100%",
-  height: "20%",
+  height: "14%",
   width: "max-content",
 };
 
@@ -56,15 +56,30 @@ const AdminDashbord = () => {
   const [semsterOption, setsemsterOption] = useState("Fall");
   const [testData, setTestData] = useState({});
   const [AcadmicYearData, setAcadmicYearData] = useState([]);
-  const [LevelOption, setLevelOption] = useState(null);
+  const [LevelOption, setLevelOption] = useState('1');
+  const [ ProgramOption, setProgramOption ] = useState('Genaral');
 
   useEffect(() => {
     if (AcadmicSelect && semsterOption && testData[AcadmicSelect] && testData[AcadmicSelect][semsterOption]) {
-      const Updated = testData[AcadmicSelect][semsterOption].filter(item => +item.course.level === +LevelOption);
-      setAcadmicYearData(Updated);
+      // First filter by LevelOption
+      const levelFiltered = testData[AcadmicSelect][semsterOption].filter((item) => {
+        console.log(item, LevelOption, ProgramOption, item.course.program, item.course.level);
+        return +item.course.level === +LevelOption;
+      });
+      console.log(levelFiltered)
+      // Then filter the result by ProgramOption
+      const updated = levelFiltered.filter((item) => {
+        return item.course.program === ProgramOption;
+      });
+      console.log('updated' , updated)
+  
+      setAcadmicYearData(updated);
+    } else {
+      console.log("Invalid selection or data missing");
+      setAcadmicYearData([]); // Handle missing or invalid data
     }
-  }, [AcadmicSelect, LevelOption, semsterOption, testData]);
-
+  }, [AcadmicSelect, LevelOption, ProgramOption, semsterOption, testData]);
+  
   useEffect(() => {
     (async () => {
       try {
@@ -75,8 +90,9 @@ const AdminDashbord = () => {
       }
     })();
   }, []);
-
+const [looader , setLoader] =useState(false)
   const HandleClick = async (item) => {
+    setLoader(true)
     try {
       const academicYearData = {};
       await Promise.all(
@@ -119,9 +135,8 @@ const AdminDashbord = () => {
                       academicyearname: academicYear.name,
                       semester: semester,
                       iscompleted: course.iscompleted,
-                      status: course.status,
                       level: course.level,
-                      program: course.program,
+                      program: course.general,
                       files: {},
                     };
 
@@ -178,21 +193,29 @@ const AdminDashbord = () => {
           }
         });
       });
-
+      setLoader(false)
       setTestData(academicYearData);
     } catch (error) {
+      setLoader(false)
       console.error("Error fetching users:", error);
+    }finally{
+      setLoader(false)
     }
     setAcadmicSelect(item);
   };
 
+  const renderSkeletons = (count) => (
+    Array.from({ length: count }).map((_,  index) => (
+      <Skeleton key={index} width="100%" height="5rem" animation="wave" />
+    ))
+  );
   return (
     <StanderdBox>
       <Box sx={StyledMainBox} className="Main-Holder">
         <Box sx={StyledAcdamicYearHolder}>
           {Object.keys(staticsData).map((item, i) => (
             <motion.div key={i} onClick={() => HandleClick(item)}>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<div>{renderSkeletons(1)}</div>}>
                 <AcdamicYear AcadmicSelect={AcadmicSelect} onClick={HandleClick} title={item} />
               </Suspense>
             </motion.div>
@@ -211,13 +234,27 @@ const AdminDashbord = () => {
             boxShadow: "3px 3px 4px #dedede",
           }}
         >
-          <SemsterOptions semsterOption={semsterOption} setsemsterOption={setsemsterOption} />
-          <LevelOptions LevelOption={LevelOption} setLevelOption={setLevelOption} />
-          {AcadmicYearData.length ? (
-            <Suspense fallback={<div>Loading...</div>}>
-              <CoursesGraph AcadmicYearData={AcadmicYearData} semsterOption={semsterOption} />
-            </Suspense>
-          ) : null}
+
+
+      <SemsterOptions 
+      top={'1rem'}
+      left={'1rem'}
+      position={"absolute"} semsterOption={semsterOption} setsemsterOption={setsemsterOption} />
+      <LevelOptions position={"absolute"} LevelOption={LevelOption} setLevelOption={setLevelOption} />
+      <ProgramOptions position={"absolute"} setProgramOption={setProgramOption} ProgramOption={ProgramOption} />
+      {looader ? (
+        <div><CircularProgress sx={{ color: "#ac7" }} /></div>
+      ) : (
+        AcadmicYearData.length ? (
+          <Suspense fallback={<div><CircularProgress sx={{ color: "#eedc" }} /></div>}>
+            <CoursesGraph AcadmicYearData={AcadmicYearData} semsterOption={semsterOption} />
+          </Suspense>
+        ) : (
+          <Typography>
+            there is no courses here
+          </Typography>
+        )
+      )}
         </Box>
 
         <Box

@@ -11,6 +11,8 @@ import { CustomizedTables } from "./CustomizedTables";
 const FilesTable = ({ NoSearch, Report, colors, state, page }) => {
   const theme = useTheme();
   const [searchItems, setSearchItems] = useState(null);
+
+  console.log('state',state)
   return (
     <Box
       sx={{

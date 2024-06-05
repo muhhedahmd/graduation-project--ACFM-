@@ -2,9 +2,10 @@ import {
   Box,
   FormGroup,
   FormLabel,
+  Skeleton,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import CustomAutocomplete from "../../MainDrawer/AutoComplete";
 import { StyledMainBtn } from "../../MainDrawer/style";
 import { useUserContext } from "../../Components/Contexts/UserContexts";
@@ -12,7 +13,14 @@ import { useCourseContext } from "../../Components/Contexts/CourseContexts";
 import axios from "axios";
 import {AnimatePresence, motion} from 'framer-motion'
 import { Button } from "react-bootstrap";
+import LevelOptions from "../AdminDashbord/LevelOption";
+import AcadamicOptions from "../../MainDrawer/AcadamicOptions";
+import Asynchronous from "../../MainDrawer/MainDrawerAysnc";
 const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
+
+  
+  const [levelOption, setLevelOption] = useState();
+  const [acadamicOptions, setAcadamicOptions] = useState();
 
   const { users } = useUserContext();
   const { courses  ,fetchAllCourses } = useCourseContext();
@@ -21,36 +29,39 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
 
   const [selectUser, SetselectUser] = useState([]);
   const [selectCourse, SetselectCourse] = useState([]);
+
+  console.log(selectCourse)
   const [msg, setMsg] = useState();
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    console.log(selectCourse)
+    
+    // try {
+    //   const promises = selectCourse.map((course) =>
+    //     axios.post(
+    //       "https://optima-software-solutions.com/apis/usercourses.php",
+    //       {
+    //         userId: selectUser.id,
+    //         courseId: course.courseid,
+    //       }
+    //     )
+    //   );
   
-    try {
-      const promises = selectCourse.map((course) =>
-        axios.post(
-          "https://optima-software-solutions.com/apis/usercourses.php",
-          {
-            userId: selectUser.id,
-            courseId: course.courseid,
-          }
-        )
-      );
+    //   const responses = await Promise.all(promises);
   
-      const responses = await Promise.all(promises);
+    //   // Check if all responses were successful
+    //   const isSuccess = responses.every((res) => res.status === 200);
   
-      // Check if all responses were successful
-      const isSuccess = responses.every((res) => res.status === 200);
-  
-      if (isSuccess) {
-        alert("All courses were successfully added.")
-      } else {
-        alert("Some courses could not be added. Please try again later.")
-        // setMsg("Some courses could not be added. Please try again later.");
-      }
-    } catch (error) {
-      setMsg("An error occurred while adding courses. Please try again later.");
-      console.error(error);
-    }
+    //   if (isSuccess) {
+    //     alert("All courses were successfully added.")
+    //   } else {
+    //     alert("Some courses could not be added. Please try again later.")
+    //     // setMsg("Some courses could not be added. Please try again later.");
+    //   }
+    // } catch (error) {
+    //   setMsg("An error occurred while adding courses. Please try again later.");
+    //   console.error(error);
+    // }
   };
   const [CompMsg, setCompMsg] = useState("");
   const HandleComplete = (academicyear_id, semester_id) => {
@@ -152,14 +163,43 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
           >
             Select courses
           </FormLabel>
-          <CustomAutocomplete
-            SetselectCourse={SetselectCourse}
-            id="Course"
-            key={"coursesAssign"}
-            options={AllCourses}
-            isexpand={"true"}
-          />
+<Box
+sx={{
+  display:"flex",
+  justifyContent:"flex-start",
+  alignItems:"center",
+  gap:"1rem"
+}}
+>
+
+              <LevelOptions
+                mxwidthprop={"22vw"}
+                position={'static'}
+                LevelOption={levelOption}
+                setLevelOption={setLevelOption}
+                left={"0rem"}
+              />
+              <AcadamicOptions
+                mxwidthprop={"22vw"}
+                position={true}
+                acadamicOptions={acadamicOptions}
+                setAcadamicOptions={setAcadamicOptions}
+              />
+</Box>
+            <Asynchronous
+          assign={true}
+              acadamicOptions={acadamicOptions}
+              SetselectCourse={SetselectCourse}
+              LevelOption={levelOption}
+            />
+          
+
+
         </FormGroup>
+            {selectCourse.map((item)=>{
+              return item.coursename
+
+            })}
 
         <StyledMainBtn
           type="submit"
@@ -176,6 +216,8 @@ const AssignCoursesBox = ({ AllCourses , selctedCourse }) => {
           Course Details and Semster
         </Typography>
         <Box>
+
+
 
         <AnimatePresence>
           {Object.values(selctedCourse).length && 

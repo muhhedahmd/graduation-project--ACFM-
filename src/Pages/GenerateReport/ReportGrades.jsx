@@ -18,17 +18,16 @@ const StyledLabel = styled(FormLabel)(() => ({
   color: "#333",
 }));
 
-const ReportGrades = forwardRef((props, ref) => {
+const ReportGrades = forwardRef(({mainReportState , setMainReportState}, ref) => {
     const isSm = useMediaQuery(theme=>theme.breakpoints.down("md"))
 
   const [grades, setGrades] = useState({
-    AGrade: "",
-    BGrade: "",
-    CGrade: "",
-    DGrade: "",
-    FGrade: "",
+    gradeA: "",
+    gradeB: "",
+    gradeC: "",
+    gradeD: "",
+    gradeF: "",
   });
-
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -36,6 +35,20 @@ const ReportGrades = forwardRef((props, ref) => {
       ...prevGrades,
       [id]: value,
     }));
+    setMainReportState((prev)=>{
+      return [
+        {
+          ...prev[0]
+        },
+        {
+          ...prev[1],
+          [id]: value,
+        }
+      ]
+ 
+     })
+console.log(mainReportState)
+
   };
 
   useImperativeHandle(
@@ -71,50 +84,50 @@ const ReportGrades = forwardRef((props, ref) => {
         }}
       >
         <StyledFormGroup>
-          <StyledLabel htmlFor="AGrade">A Grade</StyledLabel>
+          <StyledLabel htmlFor="gradeA">A Grade</StyledLabel>
           <Input
-            id="AGrade"
+            id="gradeA"
             fullWidth
             className="borderAfter"
             placeholder="Enter total A Grade students"
             type="number"
-            value={grades.AGrade}
+            value={grades.gradeA}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledLabel htmlFor="BGrade">B Grade</StyledLabel>
+          <StyledLabel htmlFor="gradeB">B Grade</StyledLabel>
           <Input
-            id="BGrade"
+            id="gradeB"
             fullWidth
             className="borderAfter"
             placeholder="Enter total B Grade students"
             type="number"
-            value={grades.BGrade}
+            value={grades.gradeB}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledLabel htmlFor="CGrade">C Grade</StyledLabel>
+          <StyledLabel htmlFor="gradeC">C Grade</StyledLabel>
           <Input
-            id="CGrade"
+            id="gradeC"
             fullWidth
             className="borderAfter"
             placeholder="Enter total C Grade students"
             type="number"
-            value={grades.CGrade}
+            value={grades.gradeC}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledLabel htmlFor="DGrade">D Grade</StyledLabel>
+          <StyledLabel htmlFor="gradeD">D Grade</StyledLabel>
           <Input
-            id="DGrade"
+            id="gradeD"
             fullWidth
             className="borderAfter"
             placeholder="Enter total D Grade students"
             type="number"
-            value={grades.DGrade}
+            value={grades.gradeD}
             onChange={handleChange}
           />
         </StyledFormGroup>

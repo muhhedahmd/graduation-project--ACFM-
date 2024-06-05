@@ -80,13 +80,16 @@ export default function CoursesGraph({ AcadmicYearData }) {
     <Typography 
     variant="body1"
     sx={{
-      marginBottom:"-6rem"
+      marginBottom:"-12rem"
     }}
     component={"p"}
     >
     {item}
     </Typography>
       <PieChart
+        sx={{
+      // marginBottom:"-10rem"
+    }}
         width={500}
         height={420}
         series={[
@@ -100,13 +103,13 @@ export default function CoursesGraph({ AcadmicYearData }) {
               }
             )),
             innerRadius: 30,
-            outerRadius: 99,
+            outerRadius: 80,
             paddingAngle: -10,
             cornerRadius: 0,
-            startAngle: -81,
+            startAngle: -51,
             endAngle: 189,
-            cx: 150,
-            cy: 150,
+            cx: 130,
+            cy: 200,
           },
         ]}
       />

@@ -48,6 +48,8 @@ export default function PopOverMenuFilter({filterList, setFilterList}) {
           boxShadow: "none",
           color: "#666",
           p: "0",
+          background: "#fff !important",
+
           width: "min-content",
           ":hover ,:focus": {
             background: "#fff",

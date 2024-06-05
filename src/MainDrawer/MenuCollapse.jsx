@@ -15,7 +15,8 @@ import { useTheme } from "@emotion/react";
 import UseAuth from "../Components/Contexts/Authantication";
 
 const MenuCollapse = ({ isexpand }) => {
-  const { Access } = UseAuth();
+  const {LogOut} = UseAuth()
+   const { Access } = UseAuth();
   const theme = useTheme();
   const initialState = MainDrawerData.reduce((acc, item) => {
     acc[item.Ttile.split(" ").join("-")] = false;
@@ -27,7 +28,8 @@ const MenuCollapse = ({ isexpand }) => {
     if (isexpand) {
       setCollapse(initialState);
     }
-  }, [initialState, isexpand]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ isexpand]);
 
   const HandleClickMenucollapse = (e) => {
     if (!isexpand) {
@@ -122,23 +124,43 @@ const MenuCollapse = ({ isexpand }) => {
                         variant="caption"
                         component={"p"}
                       >
-                        <NavLink
+
+                       {Nitem !== "Log out" ? <NavLink
                           style={{
+                            fontWeight:"bold",
                             cursor: "pointer",
                             color: "inherit",
                             textDecoration: "none",
-                            fontWeight: "500",
                             letterSpacing: "1.2px",
                             transition: ".3s",
                           }}
                           to={"/" + Nitem.split(" ").join("").toLowerCase()}
                         >
                           {Nitem}
-                        </NavLink>
+                        </NavLink> : 
+                          <Typography
+                          role="button"
+                          onClick={()=>LogOut()}
+                          sx={{
+                            fontWeight:"bold",
+
+                            fontSize:".8rem",
+                            cursor: "pointer",
+                            color: "inherit",
+                            textDecoration: "none",
+                            letterSpacing: "",
+                            transition: ".3s",
+                          }}
+                          >
+                          {Nitem}
+                          </Typography>
+                        
+                        }
                       </Typography>
                     </ListItem>
                   );
                 })}
+
               </StyledCollapse>
             </Collapse>
           </ListItem>

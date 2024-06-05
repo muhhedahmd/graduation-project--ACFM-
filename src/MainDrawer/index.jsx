@@ -12,6 +12,7 @@ import { Close } from "@mui/icons-material";
 import { StyledMainDrawer } from "./style";
 import SegmentIcon from "@mui/icons-material/Segment";
 import { useTheme } from "@emotion/react";
+import SemsterOptions from "../Pages/AdminDashbord/SemsterOptions";
 
 const Bullets = lazy(() => import("./Bullets"));
 const MenuCollapse = lazy(() => import("./MenuCollapse"));
@@ -22,6 +23,7 @@ const AcadamicOptions = lazy(() => import("./AcadamicOptions"));
 const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
   const [levelOption, setLevelOption] = useState();
   const [acadamicOptions, setAcadamicOptions] = useState();
+  const [semesterOptions, setSemesterOptions] = useState();
   const theme = useTheme();
   const [isexpand, setIsexpand] = useState(false);
 
@@ -199,9 +201,10 @@ const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
             <Suspense fallback={<Skeleton width="100%" height="2rem" animation="wave" />}>
               <LevelOptions
                 mxwidthprop={"90px"}
-                position={true}
+                position={'static'}
                 LevelOption={levelOption}
                 setLevelOption={setLevelOption}
+                left={"0rem"}
               />
               <AcadamicOptions
                 mxwidthprop={"90px"}
@@ -211,8 +214,18 @@ const MainDrawer = memo(({ ismd, area, setMenuDrawer }) => {
               />
             </Suspense>
           </Box>
-          <Suspense fallback={<Skeleton width="100%" height="2rem" animation="wave" />}>
+              <SemsterOptions
+              top={'0'}
+              left={'0'}
+                mxwidthprop={"100%"}
+                position={true}
+                setsemsterOption={setSemesterOptions} 
+                 semsterOption={semesterOptions}
+              />
+          <Suspense fallback={<Skeleton width="100%" height="2.7rem" animation="wave" />}>
             <Asynchronous
+            semesterOptions={semesterOptions}
+            setSemesterOptions={setSemesterOptions}
               acadamicOptions={acadamicOptions}
               LevelOption={levelOption}
             />

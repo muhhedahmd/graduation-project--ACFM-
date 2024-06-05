@@ -15,7 +15,7 @@ export const StyledMainDrawer = styled(Box)(({theme , isexpand  , ismd , area})=
             height: "100vh",
             borderRadius:"0",
             margin:"0",
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: '#fff',
 
         }
     }
@@ -35,7 +35,7 @@ export const StyledMainDrawer = styled(Box)(({theme , isexpand  , ismd , area})=
             width: `${!isexpand ? "17rem" : "9rem"}`,
             
             height: "100vh",
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: '#fff',
         }
 
     }
@@ -122,11 +122,11 @@ export const StyledMainBtn = styled(Button)(({width = "100%" , colorProp = "#ff5
         width:width,
         background:colorProp
         ,':hover':{
-        background:"#ff5c00"
+        background:colorProp
 
         }
         ,':focus':{
-        background:"#ff5c00"
+        background:colorProp
 
         }
     }

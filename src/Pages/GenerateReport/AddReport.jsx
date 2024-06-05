@@ -4,7 +4,7 @@ import { useTheme } from '@emotion/react';
 import { useState } from 'react';
 import ReportDrawer from './ReportDrawer';
 
-const AddReport = ({setMainReportState  ,mainReportState}) => {
+const AddReport = ({setMainReportState  ,mainReportState   ,page}) => {
   const [ReportDrawerState , setReportDrawerState  ] = useState(false)
 
   const isSm = useMediaQuery((theme)=> theme.breakpoints.down("md"))
@@ -17,8 +17,8 @@ const AddReport = ({setMainReportState  ,mainReportState}) => {
     <Box
       sx={{
         margin: `${isSm  ? ".5rem 0 0 0": ""}`,
-    width: `${isSm  ? "95%" : "20%"}`,
-    height: "90%",
+        width: `100%`,
+        height: "80%",
         position: "relative",
         boxShadow: "3px 3px 4px #dedede",
     
@@ -106,7 +106,7 @@ const AddReport = ({setMainReportState  ,mainReportState}) => {
       </Button>
       
     
-    <ReportDrawer mainReportState={mainReportState}  setMainReportState={setMainReportState}  open={ReportDrawerState} setReportDrawerState={setReportDrawerState}/>
+    <ReportDrawer  page={page} mainReportState={mainReportState}  setMainReportState={setMainReportState}  open={ReportDrawerState} setReportDrawerState={setReportDrawerState}/>
     </Box>
   );
 };

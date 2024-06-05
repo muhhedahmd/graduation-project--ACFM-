@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const SemsterOptions = ({setsemsterOption , semsterOption}) => {
+const SemsterOptions = ({position  ,top ,  mxwidthprop , left, setsemsterOption , semsterOption}) => {
 
   const handleChange = (event) => {
     setsemsterOption(event.target.value)
@@ -14,15 +14,21 @@ const SemsterOptions = ({setsemsterOption , semsterOption}) => {
   return (
     <div>
       <FormControl variant="standard" sx={{  
-        position:"absolute",
-        top:"1rem",
-        right:"1rem",
-        zIndex:"1000",    
+        position:position,
+
+        top:top ,
+        right :left,
+        zIndex:"1000", 
+        width:mxwidthprop ? mxwidthprop : 120,
     
-         minWidth: 120 }}>
+         minWidth: `${mxwidthprop ? 'auto ': 120}` , }}
+         >
         <InputLabel
         // error={error}
-        sx={{ color: '#333 !important' }} // Label text color
+        
+        sx={{
+
+           color: '#333 !important' }} // Label text color
 
          id="demo-simple-select-standard-label">Semster</InputLabel>
         <Select

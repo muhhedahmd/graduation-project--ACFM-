@@ -11,14 +11,14 @@ import React, { useState } from "react";
 import StanderdBox from "../../Components/StanderdBox";
 import CoursesOfSemester from "./CoursesOfSemester";
 import AcadmicYear from "./AcadmicYear";
-import CreateAcadmicYear from "./CreateAcadmicYear";
 import axios from "axios";
+import { useCourseContext } from "../../Components/Contexts/CourseContexts";
 
 const OpenSemester = ({ page }) => {
-
+const { fetchAllCourses}= useCourseContext()
   const [ChecedCourses, setCheckedCourses] = useState([]);
   const [AcadmicYearState, setAcadmicYearState] = useState("");
-
+  console.log(AcadmicYearState)
   const [Semester, setSemester] = useState({
     Fall: true,
     Spring: false,
@@ -81,6 +81,8 @@ const OpenSemester = ({ page }) => {
             credit_hour: item.credit_hours,
           }
         );
+        fetchAllCourses()
+
         return response;
       } catch (error) {
         throw error;
@@ -192,7 +194,7 @@ const OpenSemester = ({ page }) => {
                       />
 
                       <Typography variant="body2" component={"p"}>
-                        2023  / 2024
+                      {AcadmicYearState[0]?.name&&AcadmicYearState[0]?.name }
                       </Typography>
                     </Box>
                   }
@@ -215,7 +217,6 @@ const OpenSemester = ({ page }) => {
               overflow: "auto",
             }}
           >
-            <CreateAcadmicYear />
 
             <Box
               sx={{

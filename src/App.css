@@ -1,3 +1,6 @@
+html{
+  font-size: 14px;
+}
 .App {
   text-align: center;
 }
@@ -160,7 +163,7 @@
     border-bottom: 2px solid #ff5c00 !important
 }
 .usersCell{
-  color:#fff !important;
+  color:#1b1b1b !important;
   width: 1rem;
   background-color: #ff5c00;
 }
@@ -250,4 +253,52 @@
   border: solid #0079bf;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+.p3-info-box{
+  
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:1rem;
+    margin:.5rem
+
+
+}
+.p3-info-box {
+  p{
+    text-align: start;
+    width: 20rem;
+  }
+}
+
+.flex-start{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 3rem;
+}
+.flex-Space{
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: flex-start;
+
+  p{
+    max-width: 20rem;
+  }
+
+}
+
+
+.customViewer {
+  font-size: initial !important; /* Prevent font size changes */
+}
+
+/* Additional styling to ensure the PDF viewer looks good */
+.pdf-viewer-container {
+  width: 100% !important;
+  height: auto !important;
+  overflow: auto;
 }

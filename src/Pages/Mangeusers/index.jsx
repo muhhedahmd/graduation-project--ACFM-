@@ -29,7 +29,7 @@ const Mangeusers = ({page}) => {
       variant='h5'
       component={"p"}
       >
-{page} & Courses
+{page} 
       </Typography>
         <ManageUserHeader setSearchResults={setSearchResults}  ref={SearchRef}/>
       <Box

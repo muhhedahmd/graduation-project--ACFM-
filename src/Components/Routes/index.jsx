@@ -16,6 +16,7 @@ import { AcademicYearProvider } from "../Contexts/AcadmicYearContext";
 import { UserProvider } from "../Contexts/UserContexts";
 import { CourseProvider } from "../Contexts/CourseContexts";
 import { FileContextProvider } from "../Contexts/FileCourseContext";
+import { DoctorReportProvider } from "../Contexts/DoctorReportContext";
 
 export default function AppRouter() {
   const { Access } = UseAuth();
@@ -86,7 +87,12 @@ export default function AppRouter() {
               <UserProvider>
               <CourseProvider>
                 <AcademicYearProvider>
+                <FileContextProvider>
+<DoctorReportProvider>
+
                 <GenerateReport page="GenerateReport" />
+</DoctorReportProvider>
+                </FileContextProvider>
                 </AcademicYearProvider>
               </CourseProvider>
             </UserProvider>
@@ -134,12 +140,12 @@ export default function AppRouter() {
           ),
         },
         {
-          path: ROUTE_PATHS.FinalExams,
+          path: ROUTE_PATHS.ManageAcdamicyear,
           element: (
             <CourseProvider>
               <AcademicYearProvider>
                 <UserProvider>
-                  <StaticalAndalalysis page="Final Exams" />
+                  <StaticalAndalalysis page="Manage Acdamic year" />
                 </UserProvider>
               </AcademicYearProvider>
             </CourseProvider>

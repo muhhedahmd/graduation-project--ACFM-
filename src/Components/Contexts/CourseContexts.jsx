@@ -27,10 +27,8 @@ const courseReducer = (state, action) => {
   }
 };
 
-// Step 4: Create the custom hook
 export const useCourseContext = () => useContext(CourseContext);
     
-// Step 5: Create the context provider
 export const CourseProvider = ({ children }) => {
   const [AllCourses , setAllCourses] = useState([])
   const {Data} = UseAuth()
@@ -40,11 +38,17 @@ export const CourseProvider = ({ children }) => {
   const fetchAllCourses = async () => {
     try {
       const res = await axios.get(`https://optima-software-solutions.com/apis/courseshowall.php`);
-     setAllCourses(res.data)
+      const coursesWithChecked = res.data.map(course => ({
+        ...course,
+        checked: false,
+      }));
+      setAllCourses(coursesWithChecked);
+      console.log(coursesWithChecked)
     } catch (error) {
       console.log('Error fetching courses:', error);
     }
   };
+
 
   const fetchCourses = useCallback(async () => {
     try {
@@ -71,17 +75,30 @@ export const CourseProvider = ({ children }) => {
     }
   };
 
-
+const [EditLoader , setEditLoader  ] =useState(false)
 
   const editCourse = async (courseId, courseData) => {
+    setEditLoader(true)
     try {
       await axios.put(`https://optima-software-solutions.com/apis/courseedit.php?courseid=${courseId}`, qs.stringify(courseData));
       dispatch({ type: EDIT_COURSE, payload: { id: courseId, courseData } });
-      fetchCourses();
+      alert("Course is updated ")
+      console.log( courseId, courseData)
+      SetMainDrawerCourse({...courseData ,
+
+
+        gradeA :courseData.A,
+        gradeB:  courseData.B,
+        gradeC: courseData.C,
+        gradeD : courseData.D,
+      })
+      setEditLoader(false)
     } catch (error) {
+      setEditLoader(false)
       console.error('Error editing course:', error);
     }
   };
+
   const [MainDrawerCourse ,SetMainDrawerCourse] = useState({})
 
   const SelectedCourse =  (course) => SetMainDrawerCourse(course)
@@ -89,7 +106,7 @@ export const CourseProvider = ({ children }) => {
 
   
   return (
-    <CourseContext.Provider value={{AllCourses ,  fetchAllCourses,  courses, SelectedCourse , MainDrawerCourse  , addCourse, editCourse }}>
+    <CourseContext.Provider value={{AllCourses  , fetchCourses,  SetMainDrawerCourse,  EditLoader, fetchAllCourses,  courses, SelectedCourse , MainDrawerCourse  , addCourse, editCourse }}>
       {children}
     </CourseContext.Provider>
   );

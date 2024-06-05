@@ -1,64 +1,41 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import axios from 'axios';
 import UseAuth from '../Components/Contexts/Authantication';
 import { useCourseContext } from '../Components/Contexts/CourseContexts';
 import { useAcademicYear } from '../Components/Contexts/AcadmicYearContext';
+import useFetchData from './CostumFetch';
 
-const Asynchronous = React.memo(({ LevelOption ,  acadamicOptions }) => {
+const Asynchronous = React.memo(({ LevelOption, acadamicOptions , SetselectCourse , semesterOptions, setSemesterOptions
+  , assign }) => {
   const { SelectedCourse, MainDrawerCourse } = useCourseContext();
   const { Data } = UseAuth();
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState([]);
+
   const { academicYears } = useAcademicYear();
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`https://optima-software-solutions.com/apis/courseshow.php?userid=${Data.user.id}`);
-      let filteredOptions = res.data.filter(option => option.academicyear !== null);
 
-      filteredOptions = filteredOptions.filter(option => {
-        return academicYears.some(year => year.id === option.academicyear);
-      });
+  const { options, loading } = useFetchData({ 
+    Data, 
+    LevelOption, 
+    semesterOptions, 
+    acadamicOptions, 
+    MainDrawerCourse, 
+    academicYears, 
+    SelectedCourse 
+  });
 
-      if (Data.user.access !== "Admin") {
-        filteredOptions = filteredOptions.filter(option => option.status === "In Progress");
-      }
 
-      if (LevelOption) {
-        const level = parseInt(LevelOption);
-        filteredOptions = filteredOptions.filter(option => +option.level === level);
-      }
+  const handleCourseChange = (_, newValue) => {
+    if(assign){
 
-      if (acadamicOptions) {
-        const academic = parseInt(acadamicOptions);
-        filteredOptions = filteredOptions.filter(option => +option?.academicyear === academic );
-      }
-
-      setOptions(filteredOptions);
-
-      if (filteredOptions.length > 0 && !MainDrawerCourse) {
-        SelectedCourse(filteredOptions[0]);
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
+      SetselectCourse((prev)=>{return [...prev , newValue]})
     }
-  }, [Data.user.id, Data.user.access, LevelOption, acadamicOptions, MainDrawerCourse, academicYears, SelectedCourse]);
+    else {
 
-  useEffect(() => {
-    if (open) {
-      fetchData();
+      SelectedCourse(newValue);
     }
-  }, [open, fetchData]);
-
-  const handleCourseChange = (event, newValue) => {
-    SelectedCourse(newValue);
   };
 
   return (
@@ -78,7 +55,7 @@ const Asynchronous = React.memo(({ LevelOption ,  acadamicOptions }) => {
           return option.coursename;
         }
       }}
-      options={options}
+      options={Array.isArray(options) ? options : []}
       loading={loading}
       renderInput={(params) => (
         <TextField

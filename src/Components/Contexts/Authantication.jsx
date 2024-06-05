@@ -10,8 +10,9 @@ export const AuthProvider = ({children})=>{
     const Login = (UserData)=>{
         setIsAuthenticated(true)
 
-        setData(UserData)
-        SetAcsess(UserData.user.access)
+        setData(UserData )
+
+        SetAcsess( UserData.user.access)
         console.log( "(UserData , Data)", UserData , Data)
     }
     const LogOut = ()=>{

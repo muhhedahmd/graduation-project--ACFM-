@@ -1,8 +1,7 @@
 import { Avatar, Box, Button, FormGroup, useMediaQuery } from "@mui/material";
-import React, { useImperativeHandle, useState } from "react";
+import React, { useImperativeHandle, useState, forwardRef } from "react";
 import AccesLevel from "./AccesLevel";
 import styled from "@emotion/styled";
-import { forwardRef } from "react";
 import SingleUserDetail from "./SingleUserDetail";
 
 const VisuallyHiddenInput = styled("input")({
@@ -16,55 +15,73 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
 const currentDate = new Date();
-const formattedDate = currentDate.toISOString().split('T')[0]; 
+const formattedDate = currentDate.toISOString().split('T')[0];
 
 const UserDetails = forwardRef(
   ({ validationErrors, profile, setAccessLevel, accessLevel }, ref) => {
-    const [avtarImg, setAvatarImg] = useState(null);
-    const [ResmImg, setResmuIng] = useState(null);
+    const [avatarImg, setAvatarImg] = useState(null);
+    const [resumeImg, setResumeImg] = useState(null);
 
     const isSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-    const [UserData, SetUserData] = useState({
+    const [userData, setUserData] = useState({
       AccesLevel: null,
       fName: "",
       lName: "",
       email: "",
       password: "",
       about: "",
+      specialize: "",
       PhoneNumber: "",
-      avtarImg: avtarImg,
+      avatarImg: avatarImg,
       creation_date: formattedDate,
-      resumeImg: ResmImg,
+      resumeImg: resumeImg,
     });
 
     useImperativeHandle(
       ref,
       () => ({
-        UserData: () => UserData,
+        userData: () => userData,
       }),
-      [UserData]
+      [userData]
     );
 
-    const handleChangeAvtar = (e ,setState , obj ) => {
+    const handleChangeAvatar = (e, setState, obj) => {
       const selectedFile = e.target.files[0];
-      if (e.target.files[0]) {
-        if (selectedFile.type.startsWith("image/")) {
-          console.log(selectedFile)
-          setState(URL.createObjectURL(selectedFile));
-          SetUserData({ ...UserData, [obj]: selectedFile});
-        }
+      if (selectedFile && selectedFile.type.startsWith("image/")) {
+        setState(URL.createObjectURL(selectedFile));
+        setUserData({ ...userData, [obj]: selectedFile });
       }
     };
 
-    const HandleChange = (e) => {
+    const handleChange = (e) => {
       const { id, value } = e.target;
-      SetUserData((prev) => {
-        return { ...prev, [id]: value, AccesLevel: accessLevel };
-      });
+      setUserData((prev) => ({
+        ...prev,
+        [id]: value,
+        AccesLevel: accessLevel,
+      }));
 
-      console.log(UserData)
+      // Extract about and specialize fields using regex
+      if (id === "about") {
+        const aboutPattern = /(?<=About:)(.*?)(?=Specializes in:)/;
+        const specializePattern = /(?<=Specializes in:)(.*)/;
+        const aboutMatch = value.match(aboutPattern);
+        const specializeMatch = value.match(specializePattern);
+
+        const about = aboutMatch ? aboutMatch[0].trim() : "";
+        const specialize = specializeMatch ? specializeMatch[0].trim() : "";
+
+        setUserData((prev) => ({
+          ...prev,
+          about: about || prev.about,
+          specialize: specialize || prev.specialize,
+        }));
+      }
+
+      console.log(userData);
     };
 
     return (
@@ -74,19 +91,13 @@ const UserDetails = forwardRef(
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          justifyContent: " flex-start",
+          justifyContent: "flex-start",
           gap: "2.2em",
           margin: ".5rem 0",
           height: "auto",
         }}
       >
-        <FormGroup
-          sx={{
-            margin: "0 0 -.8rem 0",
-
-            width: "100%",
-          }}
-        >
+        <FormGroup sx={{ margin: "0 0 -.8rem 0", width: "100%" }}>
           <Box
             sx={{
               width: "100%",
@@ -108,33 +119,31 @@ const UserDetails = forwardRef(
               variant="contained"
               tabIndex={-1}
               startIcon={
-                <>
-                  <Avatar
-                    sx={{
-                      width: "50px",
-                      height: "50px",
-
-                      background: `${
-                        validationErrors[6]
-                          ? "linear-gradient(180deg, #f00111, #fffbfb)"
-                          : "linear-gradient(180deg, #ff7100, #fffbfb)"
-                      }`,
-                    }}
-                  >
-                    {avtarImg ? (
-                      <img
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                        }}
-                        src={avtarImg}
-                        alt=""
-                      />
-                    ) : null}
-                  </Avatar>
-                </>
+                <Avatar
+                  sx={{
+                    width: "50px",
+                    height: "50px",
+                    background: `${
+                      validationErrors[6]
+                        ? "linear-gradient(180deg, #f00111, #fffbfb)"
+                        : "linear-gradient(180deg, #ff7100, #fffbfb)"
+                    }`,
+                  }}
+                >
+                  {avatarImg && (
+                    <img
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                      }}
+                      src={avatarImg}
+                      alt=""
+                    />
+                  )}
+                </Avatar>
               }
               sx={{
+                bgcolor: "#fff !important",
                 boxShadow: "none",
                 padding: "0",
                 ":hover , :focus": {
@@ -145,18 +154,12 @@ const UserDetails = forwardRef(
             >
               <VisuallyHiddenInput
                 type="file"
-                onChange={(e) => handleChangeAvtar(e , setAvatarImg , 'avtarImg')}
+                onChange={(e) => handleChangeAvatar(e, setAvatarImg, "avatarImg")}
               />
             </Button>
           </Box>
         </FormGroup>
-        <FormGroup
-          sx={{
-            margin: "0 0 -.8rem 0",
-
-            width: "100%",
-          }}
-        >
+        <FormGroup sx={{ margin: "0 0 -.8rem 0", width: "100%" }}>
           <Box
             sx={{
               width: "100%",
@@ -166,40 +169,34 @@ const UserDetails = forwardRef(
               gap: "2rem",
             }}
           >
-        
-
             <Button
               component="label"
               role={"button"}
               variant="contained"
               tabIndex={-1}
               startIcon={
-                <>    
-                
-              
-                {ResmImg&& 
-                    <img  
+                resumeImg && (
+                  <img
                     style={{
-                      width:"60px",
-                      height:"60px"
+                      width: "60px",
+                      height: "60px",
                     }}
-                    src={ResmImg} alt="resumeImg" />
-                }
-                </>
+                    src={resumeImg}
+                    alt="resumeImg"
+                  />
+                )
               }
               sx={{
                 boxShadow: "none",
-                padding: "0",
                 ":hover , :focus": {
-                  bgcolor: "#fff",
                   boxShadow: "none",
                 },
               }}
             >
-           {ResmImg? "Change the resmu ": 'Add Resmu'}
+              {resumeImg ? "Change the resume " : "Add Resume"}
               <VisuallyHiddenInput
                 type="file"
-                onChange={(e) => handleChangeAvtar(e , setResmuIng ,'resumeImg')}
+                onChange={(e) => handleChangeAvatar(e, setResumeImg, "resumeImg")}
               />
             </Button>
           </Box>
@@ -217,21 +214,21 @@ const UserDetails = forwardRef(
         >
           <SingleUserDetail
             id={"fName"}
-            lable={"First Name"}
-            HandleChange={HandleChange}
+            label={"First Name"}
+            HandleChange={handleChange}
             validationErrors={validationErrors}
-            UserData={UserData}
+            UserData={userData}
           />
           <SingleUserDetail
             id={"lName"}
-            lable={"Last Name"}
-            HandleChange={HandleChange}
+            label={"Last Name"}
+            HandleChange={handleChange}
             validationErrors={validationErrors}
-            UserData={UserData}
+            UserData={userData}
           />
         </Box>
         <Box
-   sx={{
+          sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-start",
@@ -240,34 +237,38 @@ const UserDetails = forwardRef(
             width: "100%",
           }}
         >
-
-        <SingleUserDetail
-          id={"email"}
-          HandleChange={HandleChange}
-          validationErrors={validationErrors}
-          UserData={UserData}
-        />
-        <SingleUserDetail
-          id={"PhoneNumber"}
-          HandleChange={HandleChange}
-          validationErrors={validationErrors}
-          UserData={UserData}
-        />
+          <SingleUserDetail
+            id={"email"}
+            HandleChange={handleChange}
+            validationErrors={validationErrors}
+            UserData={userData}
+          />
+          <SingleUserDetail
+            id={"PhoneNumber"}
+            HandleChange={handleChange}
+            validationErrors={validationErrors}
+            UserData={userData}
+          />
         </Box>
 
         <SingleUserDetail
           id={"password"}
-          HandleChange={HandleChange}
+          HandleChange={handleChange}
           validationErrors={validationErrors}
-          UserData={UserData}
+          UserData={userData}
         />
         <SingleUserDetail
           id={"about"}
-          HandleChange={HandleChange}
+          HandleChange={handleChange}
           validationErrors={validationErrors}
-          UserData={UserData}
+          UserData={userData}
         />
-       
+        <SingleUserDetail
+          id={"specialize"}
+          HandleChange={handleChange}
+          validationErrors={validationErrors}
+          UserData={userData}
+        />
       </form>
     );
   }

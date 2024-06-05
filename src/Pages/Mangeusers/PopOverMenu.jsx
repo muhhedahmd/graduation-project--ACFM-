@@ -10,32 +10,22 @@ import EditUSerDetails from './EditUSerDetails';
 import LinearWithValueLabel from '../../Components/ProgreessBar';
 
 export default function PopOverMenu(props) {
-  const [loadingDelete, setLoadingDelete] = useState(false);
-  const [progressDelete, setProgressDelete] = useState(0);
-
-  const handleDel = async () => {
-    try {
-      setLoadingDelete(true); // Set loading to true when starting deletion
-      await axios.delete(
-        `https://optima-software-solutions.com/apis/userdelete.php?id=${props.id}`,
-        {
-          onDownloadProgress: (progressEvent) => {
-            const { loaded, total } = progressEvent;
-            const progressPercent = Math.round((loaded * 100) / total);
-            setProgressDelete(progressPercent);
-          },
-        }
-      );
-      props.fetchData();
-      alert('user is removed sucessfully')
-    } catch (error) {
-      console.error('Error:', error.response.data);
-      // Handle errors here if needed
-    } finally {
-      setLoadingDelete(false); // Set loading to false regardless of success or failure
-      setProgressDelete(0); // Reset progress after completion
-    }
+  const [loadingDelete, ] = useState(false);
+  const [progressDelete, ] = useState(0);
+  const handleDel =  () => {
+    (async ()=>{
+        await axios.delete(`https://optima-software-solutions.com/apis/userdelete.php?id=${props.id}`)
+        .then((res)=>{
+          alert('done')
+          console.log(res)})
+          .catch((err)=>{
+            
+            alert('error')
+          console.log(err)})
+    })()
   };
+  
+  
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -70,6 +60,8 @@ export default function PopOverMenu(props) {
           justifyContent: 'flex-end',
           boxShadow: 'none',
           color: '#666',
+          background: '#fff',
+minWidth:"0",
           p: '0',
           width: 'min-content',
           ':hover ,:focus': {
@@ -140,7 +132,6 @@ export default function PopOverMenu(props) {
           <EditUSerDetails setOpenDrawer={setOpenDrawer} {...props} />
         </Box>
       </SwipeableDrawer>
-      {/* Conditionally render loader or progress bar */}
    {
     loadingDelete &&
         <Box sx={{

@@ -119,6 +119,7 @@ const EditUSerDetails = ({
             },
           }
         );
+        alert("user updated successfully")
       } catch (error) {
         console.log(error.response.data);
       } finally {

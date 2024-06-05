@@ -27,7 +27,7 @@ function App() {
 
       },
       primary: {
-        main: '#FFFFFF', // primary color
+        main: '#ff5c00', // primary color
         paper: '#ff5c00', // background color for paper elements
 
       },

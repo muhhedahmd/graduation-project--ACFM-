@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StanderdBox from "../../Components/StanderdBox";
 import InfoBoxes from "./InfoBoxes";
 import { Box, Typography, useMediaQuery } from "@mui/material";
@@ -7,37 +7,217 @@ import AddReport from "./AddReport";
 
 import UseAuth from "../../Components/Contexts/Authantication";
 import FilesTable from "../../Components/Dashbboard/FilesTable";
+import { StyledMainBtn } from "../../MainDrawer/style";
+import { AnimatePresence , motion } from "framer-motion";
+import Reportprint from "./testtr";
+import { Close } from "@mui/icons-material";
+import { useFileContext } from "../../Components/Contexts/FileCourseContext";
+import { useCourseContext } from "../../Components/Contexts/CourseContexts";
+import { useDoctorReportContext } from "../../Components/Contexts/DoctorReportContext";
 
 const GenerateReport = ({ page }) => {
   const  {Data}= UseAuth()
+  const [showProductionReport  , setshowProductionReport] = useState(false)
   const [mainReportState , setMainReportState ]= useState( 
     [
       {
-        totalStudents: 0,
-        totalEnrolled: 0,
-        totalPassed: 0,
+        studentsattending: 0,
+        studentscompleting: 0,
+        passed: 0,
         totalUnenrolled: 0,
-        totalFailed: 0
+        failed: 0
     }
       ,
         {
-          AGrade: 0,
-          BGrade: 0,
-          CGrade: 0,
-          DGrade: 0,
+          gradeA: 10,
+          gradeB: 10,
+          gradeC: 10,
+          gradeD: 10,
           FGrade: 0
       }
       
     ]
   )
+
+  // const [ReportAdminState , setReportAdminState ] = useState({
+    
+  //   courseid:3,
+  //   studentsattending:100,
+  //   studentscompleting:80,
+  //   passed:70,
+  //   failed:10,
+  //   gradeA:20,
+  //   gradeB:20,
+  //   gradeC:20,
+  //   gradeD:20,
+  //   weeks:[{"topic": "Week 1 Topic", "lecturehours": 2, "tutorialhours": 1, "practicalhours": 1}, {"topic": "Week 2 Topic", "lecturehours": 2, "tutorialhours": 1, "practicalhours": 1}],
+  //   studentevaluation:'Good',
+  //   externalevaluators:'Updated External Evaluator Info',
+  // })
+
+
+  const [CourseReport, setCourseReport] = useState({
+    topicstaughtperc: "",
+    reasonnot: "",
+    reasontopic: "",
+    lectures: "",
+    practical: "",
+    discussion: "",
+    quizzes: "",
+    projects: "",
+    assignments: "",
+    reasonteching: "",
+    assexamination: "",
+    assmidterm: "",
+    asspractical: "",
+    assothers: "",
+    adequate: "",
+    adminconstraint: "",
+    studentevalresponse: "",
+    externalevalresponse: "",
+    courseenhancment: "",
+    action: "",
+    state: "",
+    actionplan: "",
+    completetiondate: "",
+    personresponsible: "",
+  });
+  const [dataReportDr, setDataReportDr] = useState({
+    topicstaughtperc: "",
+    reasonnot: "",
+    reasontopic: "",
+    lectures: "",
+    practical: "",
+    discussion: "",
+    quizzes: "",
+    projects: "",
+    assignments: "",
+    reasonteching: "",
+    assexamination: "",
+    assmidterm: "",
+    asspractical: "",
+    assothers: "",
+    adequate: "",
+    adminconstraint: "",
+    studentevalresponse: "",
+    externalevalresponse: "",
+    courseenhancment: "",
+    action: "",
+    state: "",
+    actionplan: "",
+    completetiondate: "",
+    personresponsible: "",
+  });
+  const { reports,} = useDoctorReportContext();
+  
+  const {MainDrawerCourse  , users} = useCourseContext()
+  useEffect(() => {
+
+
+    const SCourseRep = reports.filter((rep) => rep.courseid === MainDrawerCourse.courseid);
+    if (SCourseRep.length > 0) {
+      setCourseReport(SCourseRep[0]);
+      setDataReportDr(SCourseRep[0]);
+    } else {
+      setCourseReport(SCourseRep);
+      setDataReportDr(SCourseRep);
+    }
+    // console.log(MainDrawerCourse.courseid , reports ,  SCourseRep)
+  }, [MainDrawerCourse?.courseid, reports]);
+
+
+
+
+
+
+ 
+
+
+
+  // useEffect(()=>{
+  //   setReportAdminState((prev)=>{
+  //     return{
+  //       ...prev  ,
+  //       studentsattending:mainReportState[0].totalStudents,
+  //       studentscompleting:mainReportState[0].totalEnrolled,
+  //       passed:mainReportState[0].totalPassed,
+  //       failed:mainReportState[0].totalFailed, 
+  //       gradeA:mainReportState[1].AGrade,
+  //       gradeB:mainReportState[1].BGrade,
+  //       gradeC:mainReportState[1].CGrade,
+  //       gradeD:mainReportState[1].DGrade,
+  //     }
+  //   })
+  // },[mainReportState])
+
+
+
+  const {state} = useFileContext()
     const isSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
-    const totalStudents = parseInt(mainReportState[0].totalStudents);
-const totalEnrolled = parseInt(mainReportState[0].totalEnrolled);
-const totalPassed = parseInt(mainReportState[0].totalPassed);
-const totalUnenrolled = parseInt(mainReportState[0].totalUnenrolled);
-const totalFailed = parseInt(mainReportState[0].totalFailed);
+    const totalStudents = parseInt(MainDrawerCourse?.studentsattending);
+const totalEnrolled = parseInt(MainDrawerCourse?.studentscompleting);
+const totalPassed = parseInt(MainDrawerCourse?.passed);
+const totalUnenrolled = parseInt(MainDrawerCourse?.studentsattending  - MainDrawerCourse?.studentscompleting );
+const totalFailed = parseInt(MainDrawerCourse?.studentscompleting -  MainDrawerCourse?.passed);
+
+const { FetchAlldilesofCourses} = useFileContext()
+useEffect(()=>{
+  
+  FetchAlldilesofCourses(users , MainDrawerCourse?.courseid ,page )
+},[users, MainDrawerCourse?.courseid, page, FetchAlldilesofCourses])
   return (
     <StanderdBox>
+    <AnimatePresence>
+  {
+    showProductionReport&& 
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1  }}
+        exit={{ opacity: 0 }}
+      style={{
+        width:"100vw",
+        height:"100vh",
+        bgcolor:"#fff",
+        zIndex:"1000",
+        backdropFilter:"brightness(0.5)",
+        position:"absolute",
+        top:"50%",
+        left:"50%",
+        transform:"translate(-50% ,-50%)"
+      }}
+    
+    >
+    <Close
+sx={{
+  cursor:"pointer",
+    color:"#000",
+  position:"absolute",
+  right:"3rem",
+  top:"2rem",
+  fontSize:"2.2rem"
+
+}}
+onClick={()=>setshowProductionReport(false)}
+
+    />
+<Reportprint
+dataReportDr={dataReportDr}
+CourseReport={CourseReport}
+setCourseReport={setCourseReport}
+setDataReportDr={setDataReportDr}
+
+
+
+
+
+
+
+
+ mainReportState={mainReportState}/>
+    </motion.div>
+  }
+    </AnimatePresence>
+
       <Box
         className="Holder"
         sx={{
@@ -83,31 +263,31 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
           <InfoBoxes
     title={"Total Students"}
     percent={((totalStudents / totalStudents) * 100).toFixed(2) }
-    value={totalStudents}
+    value={totalStudents|| 0}
     key={"1"}
 />
 <InfoBoxes
     title={"Total Enrolled"}
     percent={((totalEnrolled / totalStudents) * 100).toFixed(2)}
-    value={totalEnrolled}
+    value={totalEnrolled|| 0}
     key={"2"}
 />
 <InfoBoxes
     title={"Total Not Enrolled"}
     percent={((totalUnenrolled / totalStudents) * 100).toFixed(2)}
-    value={totalUnenrolled}
+    value={totalUnenrolled|| 0}
     key={"3"}
 />
 <InfoBoxes
     title={"Total Passed"}
-    percent={((totalPassed / totalStudents) * 100).toFixed(2)}
-    value={totalPassed}
+    percent={((totalPassed / totalEnrolled) * 100).toFixed(2)}
+    value={totalPassed|| 0}
     key={"4"}
 />
 <InfoBoxes
     title={"Total Failed"}
     percent={((totalFailed / totalStudents) * 100).toFixed(2)}
-    value={totalFailed}
+    value={totalFailed|| 0}
     key={"5"}
 />
           </Box>
@@ -127,7 +307,7 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
               alignItems: "center",
             }}
           >
-            <TickPlacementBars mainReportState={mainReportState}/>
+            <TickPlacementBars totalFailed={totalFailed} mainReportState={mainReportState}/>
           </Box>
 
           <Box
@@ -143,34 +323,70 @@ const totalFailed = parseInt(mainReportState[0].totalFailed);
 
             }}
           >
-            <AddReport  mainReportState={mainReportState} setMainReportState={setMainReportState} />
+          <Box
+          sx={{
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"flex-start",
+            alignItems:"center",
+            height:"100%",
+            width:`${isSm ?' 100%'  : '30%'}`
+          }}
+          >
+          
+
+{Data.user.access === "Instructor" || 
+Data.user.access === "Instructor" ?
+
+
+            <StyledMainBtn
+            
+            onClick={()=>{
+
+return   setshowProductionReport(true)
+          }}
+              colorProp={"#fff"}
+            sx={{
+              height:"83%",
+              boxShadow:"1px 1px 3px #333",
+              color:"#00796B",
+              // border:"3px solid #00796B",
+            }}
+            >
+              Complete the report 
+            </StyledMainBtn>
+
+:
+            <AddReport mainReportState={mainReportState} setMainReportState={setMainReportState} />
+
+}
+
+          </Box>
+          
+
             <Box
               sx={{
                 height: "84%",
                 width: `${isSm ? "98%" : "80%"}`,
               }}
             >
-            {
-              Data?.user?.access !== "Admin" ? 
 
-
-              <Typography>
-                Send Rplay 
-              </Typography>
-:
  
               <FilesTable
 
-                state={[]}
+                state={state?.uploadedFiles}
                 Report={true}
                 NoSearch={true}
               /> 
-            }
+            
             </Box> 
 
           </Box>
         </Box>
       </Box>
+
+
+      
     </StanderdBox>
   );
 };
