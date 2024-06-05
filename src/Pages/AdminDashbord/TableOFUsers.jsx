@@ -11,7 +11,8 @@ const TableOFUsers = ({ AcadmicYearData }) => {
     if (formattedData.length > 0) {
       setCourseOption(Object.keys(formattedData)[0])
     }
-  }, [AcadmicYearData, reformatData])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [AcadmicYearData])
 
   function removeDuplicates(users) {
     const seen = new Set()
@@ -22,21 +23,22 @@ const TableOFUsers = ({ AcadmicYearData }) => {
     })
   }
 
-  function reformatData(data) {
-    const courses = {}
-
-    data?.forEach(item => {
-      const { user, course } = item
-      const { coursename } = course
-
-      if (courses[coursename]) {
-        courses[coursename].push(user)
-      } else {
-        courses[coursename] = [user]
-      }
-    })
-
-    const coursesArray = Object.keys(courses).map(courseName => ({
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+    function reformatData(data) {
+      const courses = {}
+      
+      data?.forEach(item => {
+        const { user, course } = item
+        const { coursename } = course
+        
+        if (courses[coursename]) {
+          courses[coursename].push(user)
+        } else {
+          courses[coursename] = [user]
+        }
+      })
+      
+      const coursesArray = Object.keys(courses).map(courseName => ({
       course: courseName,
       users: removeDuplicates(courses[courseName])
     }))
