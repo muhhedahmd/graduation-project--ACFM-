@@ -6,6 +6,7 @@ import { useUserContext } from '../../Components/Contexts/UserContexts';
 import axios from 'axios';
 
 const tableStyle = {
+  width:"89%",
   margin: '0 auto',
   marginBottom: '20px',
   border: '1px solid black',
@@ -95,7 +96,7 @@ const P1Report = ({ refp1 }) => {
   const totalPassed = parseInt(MainDrawerCourse?.passed);
   const totalFailed = parseInt(MainDrawerCourse?.studentscompleting - MainDrawerCourse?.passed);
 
-  console.log(MainDrawerCourse)
+  console.log('MainDrawerCourse' , MainDrawerCourse)
   return (
     <div
       style={{
@@ -226,7 +227,9 @@ const P1Report = ({ refp1 }) => {
           bgcolor: '#fff00000',
         }}
       >
-        <div className="statistical-info">
+        <div 
+        
+        className="statistical-info">
           <h2>B- Statistical Information</h2>
           <Table style={tableStyle}>
             <TableHead style={headerStyle}>

@@ -17,7 +17,7 @@ export const MainDrawerData = [
 
     Ttile: "Material",
     nested: ["Lecture Notes" , "Books"],
-    roles: [ "Instructor" , "Admin"],
+    roles: [ "Instructor" , "Admin" , "Staff"],
 
   },
   {

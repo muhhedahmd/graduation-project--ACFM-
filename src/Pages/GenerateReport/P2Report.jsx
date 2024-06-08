@@ -14,28 +14,32 @@ import {
   Typography,
   FormControlLabel
 } from '@mui/material';
+import { useCourseContext } from '../../Components/Contexts/CourseContexts';
 
 const defaultScheduleData = [
-  { week: 1, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 2, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 3, topic: ".", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 4, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 5, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 6, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 7, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
+  { week: 1, topic: "", lectureHours: '', tutorialHours: '', practicalHours: ''},
+  { week: 2, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 3, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 4, topic: "", lectureHours: '', tutorialHours: '', practicalHours: ''},
+  { week: 5, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 6, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 7, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
   { week: 8, exam: "Mid-Term Exam" },
-  { week: 9, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 10, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 11, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 12, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 13, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
-  { week: 14, topic: "", lectureHours: 2, tutorialHours: 1, practicalHours: 2 },
+  { week: 9, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 10, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 11, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 12, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 13, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 14, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
   { week: 15 ,  exam: "practical Exam / final Revision" },
   { week: '-' ,  exam: "Final Exam" },
-  { week  :"-" , Totals: 'Total Hours' ,  lectureHoursTotal  : 39 ,tutorialHours: 13 , TotalpracticalHours: 26 },
+  { week  :"-" , Totals: 'Total Hours' ,  lectureHoursTotal  : '' ,tutorialHours: '' , TotalpracticalHours: '' },
 ];
 
+
 const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, setDataReportDr }) => {
+  const {editCourse} = useCourseContext()
+
   const [data, setData] = useState(scheduleData);
   const [fields, setFields] = useState({
     topicstaughtperc: "",
@@ -159,7 +163,7 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
       <Typography variant="h4" sx={{ color: "#000" }} gutterBottom>
         Course Teaching Schedule
       </Typography>
-      <TableContainer sx={{ width: "90vw" }} component={Paper}>
+      <TableContainer sx={{ width: "98%" }} component={Paper}>
         <Table sx={{ color: "#000", border: "1px solid #333" }}>
           <TableHead>
             <TableRow>
@@ -206,8 +210,34 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
                       </Typography>
                     )}
                   </TableCell>
-                  <TableCell sx={{ border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
-                    {item.lectureHours}
+                  <TableCell sx={{ lineBreak: "anywhere", border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
+                    {editingField === item.lectureHours ? (
+                      <TextField
+                        sx={{ border: "none", ':after': { border: "none" } }}
+                        value={item.lectureHours}
+                        onChange={(event) => handleInputChange(event, index, 'lectureHours')}
+                        onBlur={() => handleFieldBlur(item.week)}
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                      />
+                    ) : (
+                      <Typography
+                        variant="body1"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: "3",
+                          WebkitBoxOrient: "vertical",
+                          height: "max-content",
+                          color: "#333",
+                          fontSize: "1.3rem",
+                          fontWeight: "bold"
+                        }}
+                        onClick={() => handleFieldFocus(item.tutorialHours)}
+                      >
+                        {item.lectureHours|| '.......'}
+                      </Typography>
+                    )}
                   </TableCell>
                   <TableCell sx={{ border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
                     {item.tutorialHours}
