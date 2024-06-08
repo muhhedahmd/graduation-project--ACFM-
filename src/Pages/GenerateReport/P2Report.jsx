@@ -14,33 +14,12 @@ import {
   Typography,
   FormControlLabel
 } from '@mui/material';
-import { useCourseContext } from '../../Components/Contexts/CourseContexts';
-
-const defaultScheduleData = [
-  { week: 1, topic: "", lectureHours: '', tutorialHours: '', practicalHours: ''},
-  { week: 2, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 3, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 4, topic: "", lectureHours: '', tutorialHours: '', practicalHours: ''},
-  { week: 5, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 6, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 7, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 8, exam: "Mid-Term Exam" },
-  { week: 9, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 10, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 11, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 12, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 13, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 14, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
-  { week: 15 ,  exam: "practical Exam / final Revision" },
-  { week: '-' ,  exam: "Final Exam" },
-  { week  :"-" , Totals: 'Total Hours' ,  lectureHoursTotal  : '' ,tutorialHours: '' , TotalpracticalHours: '' },
-];
+// import { useCourseContext } from '../../Components/Contexts/CourseContexts';
 
 
-const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, setDataReportDr }) => {
-  const {editCourse} = useCourseContext()
 
-  const [data, setData] = useState(scheduleData);
+const P2Report = ({ CourseReport, p2Ref, data ,setData , setDataReportDr }) => {
+
   const [fields, setFields] = useState({
     topicstaughtperc: "",
     reasonnot: "",
@@ -60,18 +39,16 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
   }, [fields, setDataReportDr]);
 
   useEffect(() => {
-
-      setFields({
-        topicstaughtperc: CourseReport?.topicstaughtperc || "",
-        reasonnot: CourseReport?.reasonnot || "",
-        reasontopic: CourseReport?.reasontopic || "",
-        lectures: CourseReport?.lectures || "",
-        practical: CourseReport?.practical || "",
-        discussion: CourseReport?.discussion || "",
-        quizzes: CourseReport?.quizzes || "",
-        assignments: CourseReport?.assignments || "",
-      });
-    
+    setFields({
+      topicstaughtperc: CourseReport?.topicstaughtperc || "",
+      reasonnot: CourseReport?.reasonnot || "",
+      reasontopic: CourseReport?.reasontopic || "",
+      lectures: CourseReport?.lectures || "",
+      practical: CourseReport?.practical || "",
+      discussion: CourseReport?.discussion || "",
+      quizzes: CourseReport?.quizzes || "",
+      assignments: CourseReport?.assignments || "",
+    });
   }, [CourseReport]);
 
   const [editingField, setEditingField] = useState('');
@@ -109,6 +86,37 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
     newData[index][field] = event.target.value;
     setData(newData);
   };
+
+  useEffect(() => {
+    const calculateTotals = () => {
+      let lectureHoursTotal = 0;
+      let tutorialHoursTotal = 0;
+      let practicalHoursTotal = 0;
+
+      data.forEach((item) => {
+        lectureHoursTotal += parseFloat(item.lectureHours) || 0;
+        tutorialHoursTotal += parseFloat(item.tutorialHours) || 0;
+        practicalHoursTotal += parseFloat(item.practicalHours) || 0;
+      });
+
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.Totals
+            ? {
+                ...item,
+                lectureHoursTotal: lectureHoursTotal.toFixed(2),
+                tutorialHoursTotal: tutorialHoursTotal.toFixed(2),
+                practicalHoursTotal: practicalHoursTotal.toFixed(2),
+              }
+            : item
+        )
+      );
+    };
+
+    calculateTotals();
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const renderEditableField = (name, label, multiline = false) => (
     <Box
@@ -171,7 +179,7 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
               <TableCell sx={{ color: "#000" }}>Topic</TableCell>
               <TableCell sx={{ color: "#000" }}>Lecture Hours</TableCell>
               <TableCell sx={{ color: "#000" }}>Tutorial Hours</TableCell>
-              <TableCell>Practical Hours</TableCell>
+              <TableCell sx={{ color: "#000" }}>Practical Hours</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -182,12 +190,12 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
                     {item.week}
                   </TableCell>
                   <TableCell sx={{ lineBreak: "anywhere", border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
-                    {editingField === item.week ? (
+                    {editingField === `topic-${index}` ? (
                       <TextField
                         sx={{ border: "none", ':after': { border: "none" } }}
                         value={item.topic}
                         onChange={(event) => handleInputChange(event, index, 'topic')}
-                        onBlur={() => handleFieldBlur(item.week)}
+                        onBlur={() => handleFieldBlur(`topic-${index}`)}
                         variant="outlined"
                         size="small"
                         fullWidth
@@ -204,19 +212,19 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
                           fontSize: "1.3rem",
                           fontWeight: "bold"
                         }}
-                        onClick={() => handleFieldFocus(item.week)}
+                        onClick={() => handleFieldFocus(`topic-${index}`)}
                       >
                         {item.topic || '.......'}
                       </Typography>
                     )}
                   </TableCell>
                   <TableCell sx={{ lineBreak: "anywhere", border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
-                    {editingField === item.lectureHours ? (
+                    {editingField === `lectureHours-${index}` ? (
                       <TextField
                         sx={{ border: "none", ':after': { border: "none" } }}
                         value={item.lectureHours}
                         onChange={(event) => handleInputChange(event, index, 'lectureHours')}
-                        onBlur={() => handleFieldBlur(item.week)}
+                        onBlur={() => handleFieldBlur(`lectureHours-${index}`)}
                         variant="outlined"
                         size="small"
                         fullWidth
@@ -233,17 +241,69 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
                           fontSize: "1.3rem",
                           fontWeight: "bold"
                         }}
-                        onClick={() => handleFieldFocus(item.tutorialHours)}
+                        onClick={() => handleFieldFocus(`lectureHours-${index}`)}
                       >
-                        {item.lectureHours|| '.......'}
+                        {item.lectureHours || '.......'}
                       </Typography>
                     )}
                   </TableCell>
-                  <TableCell sx={{ border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
-                    {item.tutorialHours}
+                  <TableCell sx={{ lineBreak: "anywhere", border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
+                    {editingField === `tutorialHours-${index}` ? (
+                      <TextField
+                        sx={{ border: "none", ':after': { border: "none" } }}
+                        value={item.tutorialHours}
+                        onChange={(event) => handleInputChange(event, index, 'tutorialHours')}
+                        onBlur={() => handleFieldBlur(`tutorialHours-${index}`)}
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                      />
+                    ) : (
+                      <Typography
+                        variant="body1"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: "3",
+                          WebkitBoxOrient: "vertical",
+                          height: "max-content",
+                          color: "#333",
+                          fontSize: "1.3rem",
+                          fontWeight: "bold"
+                        }}
+                        onClick={() => handleFieldFocus(`tutorialHours-${index}`)}
+                      >
+                        {item.tutorialHours || '.......'}
+                      </Typography>
+                    )}
                   </TableCell>
-                  <TableCell sx={{ border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
-                    {item.practicalHours}
+                  <TableCell sx={{ lineBreak: "anywhere", border: "1px solid black", fontSize: "1.3rem", fontWeight: "bold", color: "#000" }}>
+                    {editingField === `practicalHours-${index}` ? (
+                      <TextField
+                        sx={{ border: "none", ':after': { border: "none" } }}
+                        value={item.practicalHours}
+                        onChange={(event) => handleInputChange(event, index, 'practicalHours')}
+                        onBlur={() => handleFieldBlur(`practicalHours-${index}`)}
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                      />
+                    ) : (
+                      <Typography
+                        variant="body1"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: "3",
+                          WebkitBoxOrient: "vertical",
+                          height: "max-content",
+                          color: "#333",
+                          fontSize: "1.3rem",
+                          fontWeight: "bold"
+                        }}
+                        onClick={() => handleFieldFocus(`practicalHours-${index}`)}
+                      >
+                        {item.practicalHours || '.......'}
+                      </Typography>
+                    )}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -288,7 +348,7 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
                       border: "1px solid black"
                     }}
                   >
-                    {item.tutorialHours}
+                    {item.tutorialHoursTotal}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -301,7 +361,7 @@ const P2Report = ({ CourseReport, p2Ref, scheduleData = defaultScheduleData, set
                       border: "1px solid black"
                     }}
                   >
-                    {item.TotalpracticalHours}
+                    {item.practicalHoursTotal}
                   </TableCell>
                 </TableRow>
               );

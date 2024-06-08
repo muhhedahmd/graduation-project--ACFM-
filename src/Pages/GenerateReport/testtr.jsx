@@ -1,7 +1,7 @@
 import {
   CircularProgress,
 } from "@mui/material";
-import React, {  useRef } from "react";
+import React, {  useRef, useState } from "react";
 import P1Report from "./P1Report";
 import P3report from "./P3report";
 import jsPDF from "jspdf";
@@ -14,7 +14,28 @@ import { StyledMainBtn } from "../../MainDrawer/style";
 import { useDoctorReportContext } from "../../Components/Contexts/DoctorReportContext";
 import UseAuth from "../../Components/Contexts/Authantication";
 
+const defaultScheduleData = [
+  { week: 1, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 2, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 3, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 4, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 5, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 6, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 7, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 8, exam: "Mid-Term Exam" },
+  { week: 9, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 10, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 11, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 12, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 13, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 14, topic: "", lectureHours: '', tutorialHours: '', practicalHours: '' },
+  { week: 15, exam: "Practical Exam / Final Revision" },
+  { week: '-', exam: "Final Exam" },
+  { week: "-", Totals: 'Total Hours', lectureHoursTotal: '', tutorialHoursTotal: '', practicalHoursTotal: '' },
+];
 const Reportprint = ({ printRef, mainReportState    , setDataReportDr, dataReportDr , CourseReport}) => {
+  const [data, setData] = useState(defaultScheduleData);
+
   const {  progressContext } = useFileContext();
   const { MainDrawerCourse } = useCourseContext();
   const { reports, editReport, addReport  } = useDoctorReportContext();
@@ -76,6 +97,8 @@ const {uploadFile} = useFileContext()
 
 
 
+
+
   const HandleSavePdf = async () => {
     const ifExisit = reports.some((rep) => rep.courseid === MainDrawerCourse.courseid);
 
@@ -121,6 +144,8 @@ const {uploadFile} = useFileContext()
       </div>
       <div>
         <P2report
+        data={data} 
+        setData={setData}
           dataReportDr={dataReportDr}
           setDataReportDr={setDataReportDr}
           CourseReport={CourseReport}
