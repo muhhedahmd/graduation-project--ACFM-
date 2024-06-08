@@ -20,7 +20,7 @@ const currentDate = new Date();
 const formattedDate = currentDate.toISOString().split('T')[0];
 
 const UserDetails = forwardRef(
-  ({ validationErrors, profile, setAccessLevel, accessLevel }, ref) => {
+  ({ validationErrors, setAccessLevel, accessLevel }, ref) => {
     const [avatarImg, setAvatarImg] = useState(null);
     const [resumeImg, setResumeImg] = useState(null);
 
@@ -33,7 +33,6 @@ const UserDetails = forwardRef(
       email: "",
       password: "",
       about: "",
-      specialize: "",
       PhoneNumber: "",
       avatarImg: avatarImg,
       creation_date: formattedDate,
@@ -44,6 +43,7 @@ const UserDetails = forwardRef(
       ref,
       () => ({
         userData: () => userData,
+        setUserData: setUserData,
       }),
       [userData]
     );
@@ -65,21 +65,21 @@ const UserDetails = forwardRef(
       }));
 
       // Extract about and specialize fields using regex
-      if (id === "about") {
-        const aboutPattern = /(?<=About:)(.*?)(?=Specializes in:)/;
-        const specializePattern = /(?<=Specializes in:)(.*)/;
-        const aboutMatch = value.match(aboutPattern);
-        const specializeMatch = value.match(specializePattern);
+      // if (id === "about") {
+      //   const aboutPattern = /(?<=About:)(.*?)(?=Specializes in:)/;
+      //   const specializePattern = /(?<=Specializes in:)(.*)/;
+      //   const aboutMatch = value.match(aboutPattern);
+      //   const specializeMatch = value.match(specializePattern);
 
-        const about = aboutMatch ? aboutMatch[0].trim() : "";
-        const specialize = specializeMatch ? specializeMatch[0].trim() : "";
+      //   const about = aboutMatch ? aboutMatch[0].trim() : "";
+      //   const specialize = specializeMatch ? specializeMatch[0].trim() : "";
 
-        setUserData((prev) => ({
-          ...prev,
-          about: about || prev.about,
-          specialize: specialize || prev.specialize,
-        }));
-      }
+      //   setUserData((prev) => ({
+      //     ...prev,
+      //     about: about || prev.about,
+      //     specialize: specialize || prev.specialize,
+      //   }));
+      // }
 
       console.log(userData);
     };
@@ -87,17 +87,15 @@ const UserDetails = forwardRef(
     return (
       <form
         style={{
+          height:"100%",
           width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          justifyContent: "flex-start",
-          gap: "2.2em",
-          margin: ".5rem 0",
-          height: "auto",
+          justifyContent: "space-between",
         }}
       >
-        <FormGroup sx={{ margin: "0 0 -.8rem 0", width: "100%" }}>
+        <FormGroup sx={{ margin: "0 0 .8rem 0", width: "100%" }}>
           <Box
             sx={{
               width: "100%",
@@ -159,7 +157,7 @@ const UserDetails = forwardRef(
             </Button>
           </Box>
         </FormGroup>
-        <FormGroup sx={{ margin: "0 0 -.8rem 0", width: "100%" }}>
+        <FormGroup sx={{ margin: "0 0 .8rem 0", width: "100%" }}>
           <Box
             sx={{
               width: "100%",
@@ -263,12 +261,12 @@ const UserDetails = forwardRef(
           validationErrors={validationErrors}
           UserData={userData}
         />
-        <SingleUserDetail
+        {/* <SingleUserDetail
           id={"specialize"}
           HandleChange={handleChange}
           validationErrors={validationErrors}
           UserData={userData}
-        />
+        /> */}
       </form>
     );
   }

@@ -46,7 +46,7 @@ export const MainDrawerData = [
     roles: [ "Admin","Instructor" ,"Staff"],
 
     Ttile: "Student",
-    nested: ["attendance", "Exams And Model Answer", "Assignments"],
+    nested: ["Attendance", "Exams And Model Answer", "Assignments" , 'Final Exams'],
   },
   // {
   //   iconPath: (

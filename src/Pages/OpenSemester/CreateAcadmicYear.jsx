@@ -1,5 +1,5 @@
 import { Box, FormGroup, Input, InputLabel, List, ListItem, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyledMainBtn } from "../../MainDrawer/style";
 import { useAcademicYear } from "../../Components/Contexts/AcadmicYearContext";
 
@@ -9,19 +9,31 @@ const CreateAcademicYear = ({ setSelectedAcdamic }) => {
   const [editVal, setEditVal] = useState("");
   const { academicYears, addAcademicYear, deleteAcademicYear, updateAcademicYear } = useAcademicYear();
 
+
+  useEffect(()=>{
+
+  },[])
   const handleDelete = async (id) => {
     deleteAcademicYear(id);
   };
-
+console.log(academicYears)
   const handleEdit = (id, name) => {
+    console.log(name)
     setEditId(id);
     setEditVal(name);
   };
 
   const handleEditSubmit = (id) => {
-    updateAcademicYear(id, editVal);
+    if(!editVal){
+      setEditId(null);
+      setEditVal("");
+    }
+    else {
+
+      updateAcademicYear(id, editVal);
     setEditId(null);
-    setEditVal("");
+  setEditVal("");
+  }
   };
 
   const handleFormSubmit = (e) => {

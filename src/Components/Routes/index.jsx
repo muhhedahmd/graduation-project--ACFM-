@@ -72,8 +72,14 @@ export default function AppRouter() {
           ),
         },
         {
-          path: ROUTE_PATHS.ExamsAndSolutions,
-          element: <MaterailPage page="Exams and Solutions" />,
+          path: ROUTE_PATHS.examsandsolutions,
+          element: <MaterailPage page="Exams And Model Answer" />,
+
+        },
+        {
+          path: ROUTE_PATHS.FinalExams,
+          element: <MaterailPage page="Final exam" />,
+
         },
         {
           path: ROUTE_PATHS.Assignments,

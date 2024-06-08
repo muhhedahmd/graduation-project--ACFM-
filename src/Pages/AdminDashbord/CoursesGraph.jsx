@@ -1,125 +1,70 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { BarChart } from "@mui/x-charts";
+import { calculateFileProgress2x } from "../../utils.js/removeduplicated";
 
-import { useState } from "react";
-import { extractCourseDetails, mergeCategories, removeDuplicateUsersWithCourses } from "../../utils.js/removeduplicated";
-import { useEffect } from "react";
-import { PieChart } from "@mui/x-charts";
-
-
-
-
-
-
-
-
+const categories = ["lecture notes", "Books", "Attendance", "Exams And Model Answer", "Assignments", "Final Exams"];
 
 export default function CoursesGraph({ AcadmicYearData }) {
+  const [processedData, setProcessedData] = useState([]);
 
-
-  const catagoryCourses = mergeCategories(extractCourseDetails(removeDuplicateUsersWithCourses((AcadmicYearData))))
-  console.log(removeDuplicateUsersWithCourses((AcadmicYearData)))
-
-  
-  
-  const [filesCountArray, setFilesCountArray] = useState(null);   
   useEffect(() => {
-    if (catagoryCourses && Object.values(catagoryCourses).length > 0) {
-      const newData = Object.values(catagoryCourses).map(course =>
-        course.categories.map(category => category.filesCount)
-      );
-      setFilesCountArray(newData);
-    } else {
-      setFilesCountArray([]); 
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const data = calculateFileProgress2x(AcadmicYearData);
+    setProcessedData(data);
+  }, [AcadmicYearData]);
 
-
-
-
-
-  console.log('catagoryCourses' , catagoryCourses)
   return (
-
-<>
-
-
- {filesCountArray ?
-  <Box
-  sx={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-    gap: "2rem",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: "100%", 
-    maxWidth: "100%", 
-    height: "100%",
-    overflowX: "auto", 
-        padding: "1rem",
-  }}
->
-  {Object.keys(catagoryCourses).map((item) => (
     <Box
-      key={item}
       sx={{
-        flexShrink: 0,
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        flexDirection:"column",
-        gap:"1rem",
-        height:"30rem",
-        width:"30rem",
-        borderBottom: "2px solid #ccc",
-
-        overflow: "hidden",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(800px, 1fr))",
+        gap: "2rem",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        width: "100%",
+        maxWidth: "100%",
+        height: "100%",
+        overflowX: "auto",
+        padding: "1rem",
       }}
     >
-    <Typography 
-    variant="body1"
-    sx={{
-      marginBottom:"-12rem"
-    }}
-    component={"p"}
-    >
-    {item}
-    </Typography>
-      <PieChart
-        sx={{
-      // marginBottom:"-10rem"
-    }}
-        width={500}
-        height={420}
-        series={[
-          {
-            data: catagoryCourses[item]?.categories.map((category, index) => (
-              {
+      {processedData.map((course) => (
+        <Box
+          key={course.courseName}
+          sx={{
+            flexShrink: 0,
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexDirection: "column",
+            gap: "1rem",
+            height: "280px",
+            width: "100%",
+            borderBottom: "2px solid #ccc",
+            overflow: "hidden",
+          }}
+        >
+          <Typography variant="h6">{course.courseName}</Typography>
 
-              value: category.filesCount,
-              id: index,
-              label: category.categoryName,
+          <BarChart
+            series={course.users.map((user) => ({
+              data: categories.map((category) => user.progress[category]),
+              stack: "stack",
+              label: user.userName,
+            }))}
+            barLabel={(item, context) => {
+              if ((item.value ?? 0) > 10) {
+                return 'High';
               }
-            )),
-            innerRadius: 30,
-            outerRadius: 80,
-            paddingAngle: -10,
-            cornerRadius: 0,
-            startAngle: -51,
-            endAngle: 189,
-            cx: 130,
-            cy: 200,
-          },
-        ]}
-      />
+              return context.bar.height < 60 ? null : item.value?.toString();
+            }}
+            xAxis={[{ scaleType: "band", data: categories }]}
+            width={1200}
+            height={270}
+          />
+        </Box>
+      ))}
     </Box>
-  ))}
-</Box>
- :""}
-
- 
-</>
-
-  
-)}
+  );
+}

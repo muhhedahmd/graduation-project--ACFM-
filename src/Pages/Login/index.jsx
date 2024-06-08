@@ -42,6 +42,7 @@ const Login = () => {
     }));
   };
 
+  const [ errorLog , setErrorLog] = useState("")
   
 
   const handleSubmit = async (e) => {
@@ -54,24 +55,36 @@ const Login = () => {
   
     try {
       await schema.validate(userData, { abortEarly: false });
-  
-      // Validation passed, clear any previous errors
       setErrors({ email: "", password: "" });
+      console.log(userData.email)
+      console.log(userData.password)
   
-      // Make API request
-      const response = await axios.post(
+      await axios.post(
         "https://optima-software-solutions.com/apis/login.php",
-        userData,
+        {
+          email: userData.email,
+          password:userData.password
+
+        },
+
         {
           headers: {
             accept: "application/json",
             "content-type": "application/json",
           },
         }
-      );
-  
-      console.log("Response:", response.data);
-      Login(response.data);
+      ).then((res)=> {
+        if(res.data.error){
+          setErrorLog("Invalid email or password")
+        }
+        else {
+          Login(res.data)
+        }
+        })
+        
+      .catch((err)=>setErrorLog("Invalid email or password"))
+      // console.log("Response:", response.data);
+
     } catch (validationErrors) {
       // Validation failed, set the errors
       const errorss = {};
@@ -147,6 +160,9 @@ const Login = () => {
           }}
           action="#"
         >
+        {errorLog&&<Typography color={"error"}>
+            {errorLog}
+        </Typography>}
           <FormControl fullWidth={true}>
             <FormLabel
               sx={{ textAlign: "start", color: "#222 !important" }}

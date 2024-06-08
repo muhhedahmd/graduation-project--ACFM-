@@ -5,7 +5,7 @@ export const ROUTE_PATHS = {
     LectureNotes: "/lecturenotes",
     Books: "/books",
     Attendance: "/attendance",
-    ExamsAndSolutions: "/examsandsolutions",
+    examsandsolutions: "/ExamsAndModelAnswer",
     Assignments: "/assignments",
     GenerateReport: "/generatereport",
     AdminFiles: "/adminfiles",

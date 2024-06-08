@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, FormGroup, Typography, useMediaQuery } from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, FormGroup, Typography, useMediaQuery } from "@mui/material";
 import React, {
   useEffect,
   useState,
@@ -6,9 +6,8 @@ import React, {
 import styled from "@emotion/styled";
 import SingleUserDetail from "./singleEditUser";
 import { StyledMainBtn } from "../../MainDrawer/style";
-import axios from "axios";
-import qs from "qs";
-import LinearWithValueLabel from "../../Components/ProgreessBar";
+
+import { useUserContext } from "../../Components/Contexts/UserContexts";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -33,14 +32,15 @@ const EditUSerDetails = ({
    resume
    ,avatar
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+
 
   const [accessLevel, ] = useState(access);
 
   const [avtarImg, setAvatarImg] = useState(null);
 
+  const { loader, editUser} = useUserContext()
   const isSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const [resumeImg, setResumeImg] = useState(null);
 
   const [UserData, SetUserData] = useState({
     AccesLevel: access,
@@ -50,10 +50,12 @@ const EditUSerDetails = ({
     about: about,
     PhoneNumber: "",
     img: avtarImg,
+    resumeImg: resumeImg,
   });
   useEffect(()=>{
     setAvatarImg(avatar)
-  },[avatar])
+    setResumeImg(resume)
+  },[avatar, resume])
   useEffect(() => {
     SetUserData(() => {
       return {
@@ -85,7 +87,15 @@ const EditUSerDetails = ({
     SetUserData((prev) => {
       return { ...prev, [id]: value, AccesLevel: accessLevel };
     });
+    console.log(UserData)
   };
+      const handleChangeAvatar = (e, setState, obj) => {
+      const selectedFile = e.target.files[0];
+      if (selectedFile && selectedFile.type.startsWith("image/")) {
+        setState(URL.createObjectURL(selectedFile));
+        SetUserData({ ...UserData, [obj]: selectedFile });
+      }
+    };
 
   const handleSubmit = (e) => {
     const formData = {
@@ -101,31 +111,7 @@ const EditUSerDetails = ({
 
     };
   
-    (async () => {
-      setLoading(true);
-      try {
-        await axios.put(
-          "https://optima-software-solutions.com/apis/useredit.php",
-          qs.stringify(formData),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            onUploadProgress: (progressEvent) => {
-              const progress = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total
-              );
-              setProgress(progress);
-            },
-          }
-        );
-        alert("user updated successfully")
-      } catch (error) {
-        console.log(error.response.data);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    editUser(formData.id , formData)
     e.preventDefault();
     console.log(formData, id);
   };
@@ -165,6 +151,7 @@ const EditUSerDetails = ({
           </Typography>
 
           <Button
+
             component="label"
             variant="contained"
             tabIndex={-1}
@@ -173,15 +160,17 @@ const EditUSerDetails = ({
               <>
                 <Avatar
                   sx={{
-                    width: "50px",
-                    height: "50px",
+                    padding:".2rem",
+                    border:"3px solid #222",
+                    width: "60px",
+                    height: "60px",
                   }}
                 >
                   {avtarImg ? (
                     <img
                       style={{
-                        width: "50px",
-                        height: "50px",
+                        width: "60px",
+                        height: "60px",
                       }}
                       src={avtarImg}
                       alt=""
@@ -193,6 +182,8 @@ const EditUSerDetails = ({
             sx={{
               boxShadow: "none",
               padding: "0",
+              bgcolor: "#fff !important",
+
               ":hover , :focus": {
                 bgcolor: "#fff",
                 boxShadow: "none",
@@ -204,9 +195,41 @@ const EditUSerDetails = ({
               onChange={(e) => handleChangeAvtar(e)}
             />
           </Button>
+
         </Box>
       </FormGroup>
 
+
+      <Button
+              component="label"
+              role={"button"}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={
+                resumeImg && (
+                  <img
+                    style={{
+                      width: "60px",
+                      height: "60px",
+                    }}
+                    src={resumeImg}
+                    alt="resumeImg"
+                  />
+                )
+              }
+              sx={{
+                boxShadow: "none",
+                ":hover , :focus": {
+                  boxShadow: "none",
+                },
+              }}
+            >
+              {resumeImg ? "Change the resume " : "Add Resume"}
+              <VisuallyHiddenInput
+                type="file"
+                onChange={(e) => handleChangeAvatar(e, setResumeImg, "resumeImg")}
+              />
+            </Button>
       <Box
         sx={{
           display: "flex",
@@ -231,6 +254,24 @@ const EditUSerDetails = ({
           validationErrors={[]}
           UserData={UserData}
         />
+      
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: "1rem",
+          flexDirection: `${isSm ? "column" : "row"}`,
+          width: "100%",
+        }}
+      >
+      <SingleUserDetail
+            id={"email"}
+            HandleChange={HandleChange}
+            // validationErrors={}
+            UserData={UserData}
+          />
       </Box>
       <Box
         sx={{
@@ -256,15 +297,25 @@ const EditUSerDetails = ({
         validationErrors={[]}
         UserData={UserData}
       />
-      <StyledMainBtn type="submit">Edit</StyledMainBtn>
-      <Box
-        sx={{
-          position: "relative",
-          width: "100%",
-        }}
-      >
-        {loading && <LinearWithValueLabel value={progress} />}
-      </Box>
+      <StyledMainBtn 
+      sx={{
+        color:"#fff",
+      }}
+      
+      type="submit">
+              {loader ? <CircularProgress
+              sx={{
+
+               color:"#333"
+               
+              }}
+                /> : 
+              
+              "Edit"
+              }
+
+      </StyledMainBtn>
+
     </form>
   );
 };

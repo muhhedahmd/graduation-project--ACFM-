@@ -7,12 +7,14 @@ export const AuthProvider = ({children})=>{
     const [Access, SetAcsess] = useState()
     const [Data , setData] = useState([])
     const [isAuthenticated , setIsAuthenticated] =  useState(false)
+
+
     const Login = (UserData)=>{
         setIsAuthenticated(true)
 
         setData(UserData )
-
-        SetAcsess( UserData.user.access)
+        console.log(Data)
+        SetAcsess(UserData.user.access)
         console.log( "(UserData , Data)", UserData , Data)
     }
     const LogOut = ()=>{

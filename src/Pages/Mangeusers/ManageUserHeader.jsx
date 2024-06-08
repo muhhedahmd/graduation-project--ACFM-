@@ -11,6 +11,7 @@ const ManageUserHeader = ( {setSearchResults} ) => {
   useEffect(()=>{
     setSearchResults(InpVal)
   },[InpVal, setSearchResults])
+  
 
   return (
     <Box

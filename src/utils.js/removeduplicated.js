@@ -114,3 +114,182 @@ export function mergeCategories(data) {
     return mergedData;
 }
 
+
+export function calculateFileProgress(data) {
+  let userCourses = {};
+
+  data?.forEach((entry) => {
+    const userId = entry.user.id;
+
+    if (!userCourses[userId]) {
+      userCourses[userId] = {
+        ...entry.user,
+        courses: {},
+      };
+    }
+
+    entry.courses?.forEach((course) => {
+      const courseId = course.courseid;
+
+      if (!userCourses[userId].courses[courseId]) {
+        userCourses[userId].courses[courseId] = {
+          courseName: course.coursename,
+          categories: {},
+        };
+      }
+
+      Object.entries(course.files).forEach(([categoryName, files]) => {
+        if (!userCourses[userId].courses[courseId].categories[categoryName]) {
+          userCourses[userId].courses[courseId].categories[categoryName] = {
+            filesCount: files.length,
+            progress: files.length > 0 ? 100 : 0, 
+          };
+        } else {
+          userCourses[userId].courses[courseId].categories[categoryName].filesCount += files.length;
+          userCourses[userId].courses[courseId].categories[categoryName].progress = userCourses[userId].courses[courseId].categories[categoryName].filesCount > 0 ? 100 : 0;
+        }
+      });
+    });
+  });
+
+  return Object.values(userCourses);
+}
+
+// export function processDataForGraph(data) {
+//   let processedData = [];
+
+//   data?.forEach((entry) => {
+//     const userId = entry.user.id;
+//     const userName = `${entry.user.firstName} ${entry.user.lastName}`;
+
+//     entry.courses?.forEach((course) => {
+//       const courseName = course.coursename;
+
+//       Object.entries(course.files).forEach(([categoryName, files]) => {
+//         const filesCount = files.length;
+//         const progress = filesCount > 0 ? 100 : 0; // Assuming if there's at least one file, progress is 100%
+
+//         processedData.push({
+//           user: userName,
+//           course: courseName,
+//           category: categoryName,
+//           progress: progress,
+//         });
+//       });
+//     });
+//   });
+
+//   return processedData;
+// }
+
+export const processDataForGraph = (data) => {
+  const processedData = {};
+
+  data.forEach((user) => {
+    const userName = user.user.firstName + user.user.lastName;
+    user.courses.forEach((course) => {
+      const courseName = course.coursename;
+      const categories = Object.keys(course.files);
+      const Assignments = course.files.Assignments.length 
+      const Attendance = course.files.Attendance.length 
+      const ExamsAndModelAnswer = course.files['Exams And Model Answer'].length 
+      const FinalExams = course.files['Final Exams'].length 
+      const books = course.files.books.length 
+      const lecturenotes = course.files['lecture notes'].length 
+      const totalFilesCount = categories.reduce((total, category) => total + course.files[category].length, 0);
+      const categoryProgress = categories.reduce((progress, category) => {
+        const categoryFilesCount = course.files[category].length;
+        const categoryProgress = categoryFilesCount > 0 ? 100 : 0; // If files are uploaded, progress is 100%
+        return progress + categoryProgress;
+      }, 0);
+
+      if (!processedData[courseName]) {
+        processedData[courseName] = [];
+      }
+
+      processedData[courseName].push({
+        userName,
+        category: courseName,
+        progress: categoryProgress / totalFilesCount, // Calculate progress percentage for the course
+        total: totalFilesCount, 
+      Data : [ Assignments ,
+        Attendance,
+        ExamsAndModelAnswer, 
+        FinalExams ,
+        books ,
+        lecturenotes]
+      });
+    });
+  });
+
+  return processedData;
+};
+export function calculateFileProgressx(userCourses) {
+  const userCourseLinks = [];
+
+  userCourses.forEach(userCourse => {
+    
+    const userName = userCourse.user.firstName + userCourse.user.lastName;
+      const userId = userCourse.user.id;
+      const courseId = userCourse.course.courseid;
+      const courseName = userCourse.course.coursename;
+      const files = userCourse.course.files;
+
+      const link = {
+        userName,
+          userId,
+          courseId,
+          courseName,
+          progress: {}
+      };
+
+      // Calculate progress for each category
+      Object.keys(files).forEach(category => {
+          if (files[category].length > 0) {
+              // If category has at least one file, set progress to 100%
+              link.progress[category] = 100;
+          } else {
+              // Otherwise, set progress to 0
+              link.progress[category] = 0;
+          }
+      });
+
+      userCourseLinks.push(link);
+  });
+
+  return userCourseLinks;
+}
+
+
+export function calculateFileProgress2x(userCourses) {
+  const courseProgressMap = {};
+
+  userCourses.forEach(userCourse => {
+    const userName = userCourse.user.firstName + " " + userCourse.user.lastName;
+    const userId = userCourse.user.id;
+    const courseId = userCourse.course.courseid;
+    const courseName = userCourse.course.coursename;
+    const files = userCourse.course.files;
+
+    if (!courseProgressMap[courseId]) {
+      courseProgressMap[courseId] = {
+        courseName,
+        users: []
+      };
+    }
+
+    const userProgress = {
+      userName,
+      userId,
+      progress: {}
+    };
+
+    Object.keys(files).forEach(category => {
+      userProgress.progress[category] = files[category].length > 0 ? 100 : 0;
+    });
+
+    courseProgressMap[courseId].users.push(userProgress);
+  });
+
+  return Object.values(courseProgressMap);
+}

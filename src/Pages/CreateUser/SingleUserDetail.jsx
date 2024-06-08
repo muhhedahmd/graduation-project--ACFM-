@@ -3,7 +3,7 @@ import React from 'react'
 import useErrorMsg from './UseErrorMsg';
 // import ErrorMsg from './ErrorMsg'
 
-const SingleUserDetail = ({HandleChange , validationErrors , UserData , id , lable }) => {
+const SingleUserDetail = ({HandleChange , validationErrors , UserData , id , label }) => {
 
   const isError = useErrorMsg(validationErrors, id);
 
@@ -21,7 +21,7 @@ const SingleUserDetail = ({HandleChange , validationErrors , UserData , id , lab
         }}
         htmlFor={id}
       >
-        {lable ? lable : id }
+        {label ? label : id }
       </InputLabel>
 
       <Input

@@ -5,26 +5,14 @@ import { Box, Button, List, ListItem,  SwipeableDrawer } from '@mui/material';
 import { Close, Delete, Edit } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import EditUSerDetails from './EditUSerDetails';
 import LinearWithValueLabel from '../../Components/ProgreessBar';
+import { useUserContext } from '../../Components/Contexts/UserContexts';
 
 export default function PopOverMenu(props) {
   const [loadingDelete, ] = useState(false);
   const [progressDelete, ] = useState(0);
-  const handleDel =  () => {
-    (async ()=>{
-        await axios.delete(`https://optima-software-solutions.com/apis/userdelete.php?id=${props.id}`)
-        .then((res)=>{
-          alert('done')
-          console.log(res)})
-          .catch((err)=>{
-            
-            alert('error')
-          console.log(err)})
-    })()
-  };
-  
+  const {deleteUser} = useUserContext()
   
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -61,7 +49,7 @@ export default function PopOverMenu(props) {
           boxShadow: 'none',
           color: '#666',
           background: '#fff',
-minWidth:"0",
+          minWidth:"0",
           p: '0',
           width: 'min-content',
           ':hover ,:focus': {
@@ -87,13 +75,18 @@ minWidth:"0",
         }}
       >
         <List>
-          <StyledListItem onClick={() => setOpenDrawer(true)}>
+          <StyledListItem onClick={() => {
+            
+            handleClose()
+            setOpenDrawer(true)}}>
             <Edit fontSize=".5rem" />
             <Typography sx={{ ml: '.5rem' }} variant="body2" component={'p'}>
               Edit
             </Typography>
           </StyledListItem>
-          <StyledListItem onClick={handleDel}>
+          <StyledListItem onClick={()=>{
+            handleClose()
+            deleteUser(props.id)}}>
             <Delete fontSize=".5rem" />
             <Typography sx={{ ml: '.5rem' }} variant="body2" component={'p'}>
               Delete
