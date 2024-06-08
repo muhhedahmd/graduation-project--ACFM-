@@ -47,7 +47,6 @@ const P1Report = ({ refp1 }) => {
       try {
         const selectedCourseUsers = [];
 
-        // Filter users to get only those assigned to the specified course
         await Promise.all(
           users.map(async (user) => {
             if (user.access !== 'user') {
@@ -96,6 +95,7 @@ const P1Report = ({ refp1 }) => {
   const totalPassed = parseInt(MainDrawerCourse?.passed);
   const totalFailed = parseInt(MainDrawerCourse?.studentscompleting - MainDrawerCourse?.passed);
 
+  console.log(MainDrawerCourse)
   return (
     <div
       style={{

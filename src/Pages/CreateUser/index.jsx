@@ -10,7 +10,8 @@ import { useUserContext } from '../../Components/Contexts/UserContexts';
 const validationSchema = Yup.object().shape({
   AccesLevel: Yup.string(),
   // .required('Access level is required'),
-  fName: Yup.string().min(4, "The first name should be more than 4").max(10, "The first name should be less than 10")
+  fName: Yup.string()
+  // .min(4, "The first name should be more than 4").max(10, "The first name should be less than 10")
   
   .required('First name is required'),
   lName: Yup.string(),
