@@ -10,16 +10,20 @@ import { useUserContext } from '../../Components/Contexts/UserContexts';
 const validationSchema = Yup.object().shape({
   AccesLevel: Yup.string(),
   // .required('Access level is required'),
-  fName: Yup.string().min(4, "The first name should be more than 4").max(10, "The first name should be less than 10").required('First name is required'),
-  lName: Yup.string().required('Last name is required'),
+  fName: Yup.string().min(4, "The first name should be more than 4").max(10, "The first name should be less than 10")
+  
+  .required('First name is required'),
+  lName: Yup.string(),
+  // .required('Last name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
   PhoneNumber: Yup.string().required('Phone number is required'),
   about: Yup.string(),
   avtarImg: Yup.mixed(),
-  creation_date: Yup.date()
-  .required('Creation date is required'),
-  resumeImg: Yup.mixed().required('Resume image is required'),
+  creation_date: Yup.date(),
+  // .required('Creation date is required'),
+  resumeImg: Yup.mixed(),
+  
 });
 
 const CreateUser = ({ page }) => {
